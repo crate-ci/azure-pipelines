@@ -13,12 +13,6 @@ stages:
      displayName: Compilation check
    dependsOn: []
    jobs:
-     - job: foo
-       pool:
-         vmImage: ubuntu-16.04
-       steps:
-         - script: echo '${{ format('{0}', parameters.codecov_token) }}'
-         - script: echo '${{ ne(format('{0}', parameters.codecov_token), '') }}'
      - template: cargo-check.yml
        parameters:
          name: cargo_check
