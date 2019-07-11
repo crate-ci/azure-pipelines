@@ -7,13 +7,19 @@ stages:
  # template in the upstream repository's testing setup, and give the stages
  # unique names.
  - stage: ${{ format('{0}check', parameters.prefix) }}
-   displayName: Compilation check
+   ${{ if parameters.prefix }}:
+     displayName: ${{ format('Compilation check ({0})', parameters.prefix) }}
+   ${{ if not(parameters.prefix) }}:
+     displayName: Compilation check
    dependsOn: []
    jobs:
      - template: cargo-check.yml
        parameters:
          name: cargo_check
  - stage: ${{ format('{0}test', parameters.prefix) }}
+   ${{ if parameters.prefix }}:
+     displayName: ${{ format('Test suite ({0})', parameters.prefix) }}
+   ${{ if not(parameters.prefix) }}:
    displayName: Test suite
    dependsOn: ${{ format('{0}check', parameters.prefix) }}
    jobs:
@@ -21,12 +27,18 @@ stages:
        parameters:
          minrust: ${{ parameters.minrust }}
  - stage: ${{ format('{0}style', parameters.prefix) }}
+   ${{ if parameters.prefix }}:
+     displayName: ${{ format('Style linting ({0})', parameters.prefix) }}
+   ${{ if not(parameters.prefix) }}:
    displayName: Style linting
    dependsOn: ${{ format('{0}check', parameters.prefix) }}
    jobs:
      - template: style.yml
  - ${{ if parameters.codecov_token }}:
    stage: ${{ format('{0}coverage', parameters.prefix) }}
+   ${{ if parameters.prefix }}:
+     displayName: ${{ format('Code coverage ({0})', parameters.prefix) }}
+   ${{ if not(parameters.prefix) }}:
    displayName: Code coverage
    dependsOn: ${{ format('{0}test', parameters.prefix) }}
    jobs:
