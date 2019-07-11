@@ -15,3 +15,4 @@ resources:
     - repository: templates
       type: github
       name: jonhoo/rusty-pipes
+      endpoint: jonhoo
