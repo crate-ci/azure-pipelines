@@ -40,25 +40,15 @@ stages:
    dependsOn: ${{ format('{0}check', parameters.prefix) }}
    jobs:
      - template: style.yml
- # this looks funky because we need to deal with:
- #
- #  - parameters.codecov_tokens not being set (it'll be null) _or_ being ''.
- #  - parameters.codecov_tokens being set to $(SECRET) and us being on a PR
- #    where SECRET isn't set. in this case, expansion won't happen (I think?)
- #    it'll just be left as a literal $(...), which we also check against
- #
- # we also need this format business to make sure we print compare the
- # _contents_ of the parameter and coerce to a string
- - ${{ if and(ne(format('{0}', parameters.codecov_token), ''), not(startsWith(format('{0}', parameters.codecov_token), '$('))) }}:
-   - stage: ${{ format('{0}coverage', parameters.prefix) }}
-     ${{ if ne(parameters.prefix, '') }}:
-       displayName: ${{ format('Code coverage ({0})', parameters.prefix) }}
-     ${{ if eq(parameters.prefix, '') }}:
-       displayName: Code coverage
-     dependsOn: ${{ format('{0}test', parameters.prefix) }}
-     jobs:
-       - template: coverage.yml
-         parameters:
-           codecov_token: ${{ parameters.codecov_token }}
+ - stage: ${{ format('{0}coverage', parameters.prefix) }}
+   ${{ if ne(parameters.prefix, '') }}:
+     displayName: ${{ format('Code coverage ({0})', parameters.prefix) }}
+   ${{ if eq(parameters.prefix, '') }}:
+     displayName: Code coverage
+   dependsOn: ${{ format('{0}test', parameters.prefix) }}
+   jobs:
+     - template: coverage.yml
+       parameters:
+         codecov_token: ${{ parameters.codecov_token }}
 
 # vim: ts=2:sw=2
