@@ -23,7 +23,15 @@ organization's GitHub Apps install, so you _cannot_ have multiple Azure
 Projects that are linked to different GitHub projects under the same
 GitHub user/organization. This is stupid, but such is life.
 
-Here's another fun step you now have to do. Go to "Project settings"
+This template uses [Build
+stages](https://docs.microsoft.com/en-us/azure/devops/pipelines/process/stages),
+which is a [preview
+feature](https://docs.microsoft.com/en-us/azure/devops/project/navigation/preview-features)
+of Azure Pipelines. You therefore need to enable support for it. To do
+so, click your profile icon in the top-right corner and click "Preview
+features". In the resulting box, enable "Multi-stage pipelines".
+
+Now there's another fun step you have to do. Go to "Project settings"
 (bottom left), the "Service connections" (under "Pipelines"). There
 should be one thing listed there. Note down its name.
 
@@ -63,3 +71,8 @@ Once that's all done, it's time to set up the Pipeline in Azure:
  - Click "Save & queue" towards the top.
    And then click it again...
  - Click "Save and run" bottom right
+
+*Hopefully* Azure was now happy with your efforts. If you get a big red
+box at the top of the "Run pipeline" box with an error, try to see if
+you can figure out which part of the magic incantation you missed. If it
+all looks right to you, file an issue!
