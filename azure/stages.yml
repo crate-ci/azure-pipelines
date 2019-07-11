@@ -20,7 +20,7 @@ stages:
    ${{ if eq(parameters.prefix, '') }}:
      displayName: ${{ format('Test suite ({0})', parameters.prefix) }}
    ${{ if ne(parameters.prefix, '') }}:
-   displayName: Test suite
+     displayName: Test suite
    dependsOn: ${{ format('{0}check', parameters.prefix) }}
    jobs:
      - template: tests.yml
@@ -30,7 +30,7 @@ stages:
    ${{ if eq(parameters.prefix, '') }}:
      displayName: ${{ format('Style linting ({0})', parameters.prefix) }}
    ${{ if ne(parameters.prefix, '') }}:
-   displayName: Style linting
+     displayName: Style linting
    dependsOn: ${{ format('{0}check', parameters.prefix) }}
    jobs:
      - template: style.yml
@@ -39,7 +39,7 @@ stages:
    ${{ if eq(parameters.prefix, '') }}:
      displayName: ${{ format('Code coverage ({0})', parameters.prefix) }}
    ${{ if ne(parameters.prefix, '') }}:
-   displayName: Code coverage
+     displayName: Code coverage
    dependsOn: ${{ format('{0}test', parameters.prefix) }}
    jobs:
      - template: coverage.yml
