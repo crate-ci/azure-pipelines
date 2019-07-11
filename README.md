@@ -97,3 +97,64 @@ pipeline. When you have your pipeline open, look for `definitionId` in
 the URL, and put the number you see there as `build`. If you don't do
 this, your shown status badge will be correct, but it will link to the
 wrong pipeline for… reasons.
+
+## Code coverage
+
+This pipeline is also set up to use
+[`tarpaulin`](https://github.com/xd009642/tarpaulin) and
+[codecov.io](https://codecov.io/) for test coverage reporting. To enable
+this, here's what you have to do:
+
+ - Sign up for https://codecov.io/ if you haven't already
+ - Log in (again, if you haven't already)
+ - Install the [GitHub Codecov Application](https://github.com/marketplace/codecov)
+ - Click "Configure" next to "Codecov" [here](https://github.com/settings/installations)
+ - Either enable access to "All repositories", or grant permission just
+   for the project you want coverage for.
+ - Go to https://codecov.io/gh/GITHUB_USER_OR_ORG/PROJECT/settings
+ - Copy the "Repository Upload Token"
+ - Go to https://dev.azure.com/
+ - Click the Azure project for the owner of the project you want coverage for
+ - Click "Pipelines"
+ - Click the pipeline for the project you want coverage for
+ - Click "Edit" top-right
+ - Click the vertical triple dots top-right
+ - Click "Variables"
+ - Click "Add", name it whatever you wish (I use `CODECOV_TOKEN_SECRET`),
+   paste in the "Repository Upload Token" from Codecov, and click the
+   little padlock to mark the variable as "secret".
+ - Click the little arrow next to "Save & queue" near the top
+ - Click "Save"
+ - Click "Save" again
+
+Note that this gives access to your Codecov API key to anyone with push
+access to the repository! [Use it
+wisely](https://docs.microsoft.com/en-us/azure/devops/pipelines/process/variables#secret-variables).
+Forks of your repository do _not_ have access to secrets by default.
+
+Now just add this to your entries in `azure-pipelines.yml` that use the
+templates `azure/stages.yml` or `azure/coverage.yml`:
+
+```yaml
+parameters:
+ codecov_token: $(CODECOV_TOKEN_SECRET)
+```
+
+### Code coverage for PRs
+
+**If you [are really
+sure](https://docs.microsoft.com/en-us/azure/devops/pipelines/repos/github#validate-contributions-from-forks)**
+you want to allow coverage to run for the arbitrary code people may
+submit in PRs to see your secrets, here's what you do:
+
+ - Navigate to the project's pipeline
+ - Click "Edit" top-right
+ - Click the vertical triple-dot top-right, and then "Triggers"
+ - Choose your repository under "Pull request validation"
+ - Check the box next to "Build pull requests from forks of this repository"
+ - Then, check the box next to "Make secrets available to builds of forks"
+ - You may also want to check "Require a team member's comment before building a pull request"
+
+**If you instead want to simply skip coverage on pull requests**, do
+_not_ check the box next to "Make secrets available to builds of forks".
+You should not need to change anything else.
