@@ -1,8 +1,13 @@
 jobs:
+ - job: enable
+   pool:
+     vmImage: ubuntu-16.04
+   steps:
+     - script: [[ -n '${{ parameters.codecov_token }}' ]] && echo "##vso[task.setvariable variable=has_secret;isOutput=true]true"
+       name: secret_check
  - job: tarpaulin
-   # note that we use in(_, '') to coerce the second to a string this is
-   # necessary in the cases where latter is an unset variable (== null)
-   condition: and(succeeded(), not(in(${{ parameters.codecov_token }}, '')))
+   dependsOn: enable
+   condition: and(succeeded(), eq('true', dependencies.enable.outputs['secret_check.has_secret']))
    displayName: tarpaulin
    pool:
      vmImage: ubuntu-16.04
