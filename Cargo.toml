@@ -1,0 +1,10 @@
+[package]
+name = "ci-demo"
+version = "0.1.0"
+authors = ["Jon Gjengset <jon@thesquareplanet.com>"]
+edition = "2018"
+
+[features]
+opt_out = []
+opt_in = []
+default = ["opt_out"]

@@ -1,0 +1,32 @@
+parameters:
+  minrust: 1.32.0 # Rust 2018 with uniform paths
+
+# https://docs.microsoft.com/en-us/azure/devops/pipelines/yaml-schema?view=azure-devops&tabs=schema
+stages:
+ - stage: check
+   displayName: Compilation check
+   jobs:
+     - template: azure/cargo-check.yml
+       parameters:
+         name: cargo_check
+ - stage: test
+   displayName: Test suite
+   jobs:
+     - template: azure/tests.yml
+       parameters:
+         minrust: ${{ parameters.minrust }}
+ - stage: style
+   displayName: Style linting
+   dependsOn: check
+   jobs:
+     - template: azure/style.yml
+ - ${{ if parameters.codecov_token }}
+   stage: coverage
+   displayName: Code coverage
+   dependsOn: test
+   jobs:
+     - template: azure/coverage.yml
+       parameters:
+         codecov_token: ${{ parameters.codecov_token }}
+
+# vim: ts=2:sw=2

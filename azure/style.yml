@@ -1,0 +1,28 @@
+jobs:
+  - template: ci/azure/rustfmt.yml
+    parameters:
+      name: rustfmt
+  - template: ci/azure/rustfmt.yml
+    parameters:
+      name: rustfmt_beta
+      rust: beta
+      allow_fail: true
+  - template: ci/azure/rustfmt.yml
+    parameters:
+      name: rustfmt_nightly
+      rust: nightly
+      allow_fail: true
+  - template: ci/azure/cargo-clippy.yml
+    parameters:
+      name: clippy
+      rust: stable
+  - template: ci/azure/cargo-clippy.yml
+    parameters:
+      name: clippy_beta
+      rust: beta
+      allow_fail: true
+  - template: ci/azure/cargo-clippy.yml
+    parameters:
+      name: clippy_nightly
+      rust: nightly
+      allow_fail: true
