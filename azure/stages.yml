@@ -34,8 +34,11 @@ stages:
    dependsOn: ${{ format('{0}check', parameters.prefix) }}
    jobs:
      - template: style.yml
- - ${{ if not(contains(parameters.codecov_token, '')) }}:
-     stage: ${{ format('{0}coverage', parameters.prefix) }}
+ - stage: ${{ format('{0}coverage', parameters.prefix) }}
+   ${{ if contains(parameters.codecov_token, '') }}:
+     displayName: "Coverage (skipped -- no token)"
+     dependsOn: []
+   ${{ if not(contains(parameters.codecov_token, '')) }}:
      ${{ if ne(parameters.prefix, '') }}:
        displayName: ${{ format('Code coverage ({0})', parameters.prefix) }}
      ${{ if eq(parameters.prefix, '') }}:

@@ -1,6 +1,6 @@
-jobs:
- - ${{ if not(contains(parameters.codecov_token, '')) }}:
-     job: tarpaulin
+${{ if not(contains(parameters.codecov_token, '')) }}:
+  jobs:
+   - job: tarpaulin
      displayName: tarpaulin
      pool:
        vmImage: ubuntu-16.04
