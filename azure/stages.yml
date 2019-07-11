@@ -20,13 +20,13 @@ stages:
    dependsOn: check
    jobs:
      - template: azure/style.yml
- - ${{ if parameters.codecov_token }}
-   - stage: coverage
-     displayName: Code coverage
-     dependsOn: test
-     jobs:
-       - template: azure/coverage.yml
-         parameters:
-           codecov_token: ${{ parameters.codecov_token }}
+ - ${{ if parameters.codecov_token }}:
+   stage: coverage
+   displayName: Code coverage
+   dependsOn: test
+   jobs:
+     - template: azure/coverage.yml
+       parameters:
+         codecov_token: ${{ parameters.codecov_token }}
 
 # vim: ts=2:sw=2
