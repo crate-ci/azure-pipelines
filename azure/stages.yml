@@ -13,6 +13,7 @@ stages:
      displayName: Compilation check
    dependsOn: []
    jobs:
+     - script: echo '${{ parameters.codecov_token }}'
      - template: cargo-check.yml
        parameters:
          name: cargo_check
