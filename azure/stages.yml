@@ -6,26 +6,26 @@ stages:
  - stage: check
    displayName: Compilation check
    jobs:
-     - template: azure/cargo-check.yml
+     - template: cargo-check.yml
        parameters:
          name: cargo_check
  - stage: test
    displayName: Test suite
    jobs:
-     - template: azure/tests.yml
+     - template: tests.yml
        parameters:
          minrust: ${{ parameters.minrust }}
  - stage: style
    displayName: Style linting
    dependsOn: check
    jobs:
-     - template: azure/style.yml
+     - template: style.yml
  - ${{ if parameters.codecov_token }}:
    stage: coverage
    displayName: Code coverage
    dependsOn: test
    jobs:
-     - template: azure/coverage.yml
+     - template: coverage.yml
        parameters:
          codecov_token: ${{ parameters.codecov_token }}
 

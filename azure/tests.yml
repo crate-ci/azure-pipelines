@@ -4,19 +4,19 @@ parameters:
 jobs:
  # This represents the minimum Rust version supported.
  # Tests are not run as tests may require newer versions of rust.
- - template: azure/cargo-check.yml
+ - template: cargo-check.yml
    parameters:
      name: minrust
      rust: ${{ parameters.minrust }}
- - template: azure/test.yml
+ - template: test.yml
    parameters:
      name: cargo_test_stable
      cross: true # also test on Windows and macOS
- - template: azure/test.yml
+ - template: test.yml
    parameters:
      name: cargo_test_beta
      rust: beta
- - template: azure/test.yml
+ - template: test.yml
    parameters:
      name: cargo_test_nightly
      rust: nightly
