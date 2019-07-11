@@ -1,6 +1,7 @@
 parameters:
   minrust: 1.32.0 # Rust 2018 with uniform paths
   prefix: ''
+  codecov_token: ''
 
 stages:
  # the format here is so that we can have _two_ instances of this whole

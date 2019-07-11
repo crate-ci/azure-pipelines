@@ -1,3 +1,6 @@
+parameters:
+  codecov_token: ''
+
 jobs:
  - ${{ if not(contains(parameters.codecov_token, '')) }}:
    - job: tarpaulin
