@@ -36,15 +36,15 @@ stages:
    jobs:
      - template: style.yml
  - ${{ if ne(parameters.codecov_token, '') }}:
-   stage: ${{ format('{0}coverage', parameters.prefix) }}
-   ${{ if ne(parameters.prefix, '') }}:
-     displayName: ${{ format('Code coverage ({0})', parameters.prefix) }}
-   ${{ if eq(parameters.prefix, '') }}:
-     displayName: Code coverage
-   dependsOn: ${{ format('{0}test', parameters.prefix) }}
-   jobs:
-     - template: coverage.yml
-       parameters:
-         codecov_token: ${{ parameters.codecov_token }}
+     stage: ${{ format('{0}coverage', parameters.prefix) }}
+     ${{ if ne(parameters.prefix, '') }}:
+       displayName: ${{ format('Code coverage ({0})', parameters.prefix) }}
+     ${{ if eq(parameters.prefix, '') }}:
+       displayName: Code coverage
+     dependsOn: ${{ format('{0}test', parameters.prefix) }}
+     jobs:
+       - template: coverage.yml
+         parameters:
+           codecov_token: ${{ parameters.codecov_token }}
 
 # vim: ts=2:sw=2
