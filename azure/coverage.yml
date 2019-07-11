@@ -1,5 +1,5 @@
 jobs:
- - ${{ if ne(format('{0}', parameters.codecov_tokens), '') }}
+ - ${{ if ne(format('{0}', parameters.codecov_tokens), '') }}:
    - job: tarpaulin
      displayName: tarpaulin
      pool:
