@@ -39,9 +39,7 @@ stages:
      displayName: ${{ format('Code coverage ({0})', parameters.prefix) }}
    ${{ if eq(parameters.prefix, '') }}:
      displayName: Code coverage
-   # note that we use in(_, '') to coerce the second to a string this is
-   # necessary in the cases where latter is an unset variable (== null)
-   #condition: and(succeeded(), in(${{ parameters.codecov_token }}, ''))
+   dependsOn: ${{ format('{0}test', parameters.prefix) }}
    jobs:
      - template: coverage.yml
        parameters:

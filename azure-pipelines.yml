@@ -4,18 +4,18 @@ stages:
    parameters:
      minrust: 1.34.0 # integer atomics
      prefix: "master_"
-     codecov_token: $(CODECOV_TOKEN_SECRET)
+     codecov_token: variables['Secret.CODECOV_TOKEN_SECRET']
  # check that _current_ templates work
  - template: azure/stages.yml
    parameters:
      minrust: 1.34.0 # integer atomics
-     codecov_token: $(CODECOV_TOKEN_SECRET)
+     codecov_token: variables['Secret.CODECOV_TOKEN_SECRET']
  # even without code coverage token
  - template: azure/stages.yml
    parameters:
      minrust: 1.34.0 # integer atomics
      prefix: "noci_"
-     codecov_token: $(DOES_NOT_EXIST)
+     codecov_token: variables['DOES_NOT_EXIST']
 
 resources:
   repositories:
