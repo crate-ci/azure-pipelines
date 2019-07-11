@@ -1,5 +1,5 @@
 jobs:
- - ${{ if ne(format('{0}', parameters.codecov_token), '') }}:
+ - ${{ if and(ne(format('{0}', parameters.codecov_token), ''), not(startsWith(format('{0}', parameters.codecov_token), '$('))) }}:
    - job: tarpaulin
      displayName: tarpaulin
      pool:
