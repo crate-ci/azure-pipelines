@@ -1,4 +1,4 @@
-[![Build Status](https://dev.azure.com/jonhoo/rusty-pipes/_apis/build/status/jonhoo.rusty-pipes?branchName=master)](https://dev.azure.com/jonhoo/rusty-pipes/_build/latest?definitionId=1&branchName=master)
+[![Build Status](https://dev.azure.com/jonhoo/jonhoo/_apis/build/status/rusty-pipes?branchName=master)](https://dev.azure.com/jonhoo/jonhoo/_build/latest?definitionId=2&branchName=master)
 <!-- [![Codecov](https://codecov.io/github/jonhoo/rusty-pipes/coverage.svg?branch=master)](https://codecov.io/gh/jonhoo/rusty-pipes) -->
 
 Azure _loves_ to try to get you to sign in to GitHub using OAuth,
@@ -72,7 +72,28 @@ Once that's all done, it's time to set up the Pipeline in Azure:
    And then click it again...
  - Click "Save and run" bottom right
 
-*Hopefully* Azure was now happy with your efforts. If you get a big red
-box at the top of the "Run pipeline" box with an error, try to see if
-you can figure out which part of the magic incantation you missed. If it
-all looks right to you, file an issue!
+*Hopefully* Azure was now happy with your efforts. If it is, you'll be
+taken to your new shiny "Pipeline summary" page, and it will show you
+your build and tests progress! Congrats, you now have Azure Pipelines
+CI! If you instead get a big red box at the top of the "Run pipeline"
+box with an error, try to see if you can figure out which part of the
+magic incantation you missed. If it all looks right to you, file an
+issue!
+
+## Showing off your new CI
+
+If you want to add a status badge, click "Pipelines" on the left,
+then your new pipeline, then the vertical tripe dots top right, the
+"Status badge". While you're at it, add the badge to your `Cargo.toml`
+too:
+
+```toml
+[badges]
+azure-devops = { project = "AZURE_USER/AZURE_PROJECT", pipeline = "PIPELINE_NAME", build = "FOOBAR" }
+```
+
+Where `FOOBAR` is a weird extra parameter determined entirely by your
+pipeline. When you have your pipeline open, look for `definitionId` in
+the URL, and put the number you see there as `build`. If you don't do
+this, your shown status badge will be correct, but it will link to the
+wrong pipeline for… reasons.

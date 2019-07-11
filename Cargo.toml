@@ -8,3 +8,6 @@ edition = "2018"
 opt_out = []
 opt_in = []
 default = ["opt_out"]
+
+[badges]
+azure-devops = { project = "jonhoo/jonhoo", pipeline = "rusty-pipes", build = "2" }
