@@ -13,11 +13,6 @@ stages:
      displayName: Compilation check
    dependsOn: []
    jobs:
-     - job: foo
-       pool:
-         vmImage: ubuntu-16.04
-       steps:
-         - script: echo '${{ parameters.codecov_token }}'
      - template: cargo-check.yml
        parameters:
          name: cargo_check
@@ -39,7 +34,15 @@ stages:
    dependsOn: ${{ format('{0}check', parameters.prefix) }}
    jobs:
      - template: style.yml
- - ${{ if ne('', parameters.codecov_token) }}:
+ # this looks funky because we need to deal with:
+ # parameters.codecov_tokens not being set (it'll be null)
+ #  -> ne('', x) will coerce x to string, and null becomes ''
+ # parameters.codecov_tokens being set to the empty string
+ #  -> ne('', x) will deal with this
+ # parameters.codecov_tokens being set to $(SECRET) and us being on a PR where SECRET isn't set
+ #  -> in this case, expansion won't happen (I think?)
+ #     it'll just be left as a literal $(...), which we also check against
+ - ${{ if and(ne('', parameters.codecov_tokens), not(startsWith(parameters.codecov_token, '$('))) }}:
    - stage: ${{ format('{0}coverage', parameters.prefix) }}
      ${{ if ne(parameters.prefix, '') }}:
        displayName: ${{ format('Code coverage ({0})', parameters.prefix) }}
