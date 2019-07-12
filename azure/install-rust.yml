@@ -1,6 +1,7 @@
 # defaults for any parameters that aren't specified
 parameters:
   rust: stable
+  components: []
 
 steps:
   # Linux and macOS.
