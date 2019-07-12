@@ -44,7 +44,7 @@ jobs:
          X: $(x)
  - job: tarpaulin
    dependsOn: enable
-   condition: and(succeeded(), eq('true', dependencies.enable.outputs['secret_check.has_secret']))
+   condition: and(succeeded(), eq(dependencies.enable.outputs['secret_check.has_secret'], 'true'))
    displayName: tarpaulin
    pool:
      vmImage: ubuntu-16.04
