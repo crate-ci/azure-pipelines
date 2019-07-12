@@ -1,5 +1,25 @@
 [![Build Status](https://dev.azure.com/jonhoo/jonhoo/_apis/build/status/rusty-pipes?branchName=master)](https://dev.azure.com/jonhoo/jonhoo/_build/latest?definitionId=2&branchName=master)
-<!-- [![Codecov](https://codecov.io/github/jonhoo/rusty-pipes/coverage.svg?branch=master)](https://codecov.io/gh/jonhoo/rusty-pipes) -->
+[![Codecov](https://codecov.io/github/jonhoo/rusty-pipes/coverage.svg?branch=master)](https://codecov.io/gh/jonhoo/rusty-pipes)
+
+Ah, so you want to set up continuous integration (CI) testing for your
+Rust project, and you decided you wanted to use Azure Pipelines for it?
+Well, you're in the right place!
+
+Azure Pipelines, like many other CI services, basically requires you to
+fully spell out all the steps to your CI. This is very handy if you have
+a complex CI pipeline, but is pretty inconvenient if you just want
+something that _works_. This project aims to bridge that gap. It also
+tries to guide you through how to even get Azure Pipelines set up in the
+first place, which can be a daunting thing to get right!
+
+If you're curious what your CI will ultimately look like, go take a look
+at [`tracing-timing`'s
+CI](https://dev.azure.com/jonhoo/jonhoo/_build/latest?definitionId=1&branchName=master)
+for example.
+
+And now, to quote the French, [allons-y](https://www.lawlessfrench.com/expressions/allons-y/)!
+
+## First-time setup
 
 Azure _loves_ to try to get you to sign in to GitHub using OAuth,
 thereby giving them access to all your public _and private_ repos. This
@@ -31,9 +51,15 @@ of Azure Pipelines. You therefore need to enable support for it. To do
 so, click your profile icon in the top-right corner and click "Preview
 features". In the resulting box, enable "Multi-stage pipelines".
 
-Now there's another fun step you have to do. Go to "Project settings"
-(bottom left), the "Service connections" (under "Pipelines"). There
-should be one thing listed there. Note down its name.
+## Each-time setup
+
+At this point I'll assume you have an Azure Project correctly set up for
+your GitHub user or organization (as described above).
+
+Before we continue, there's a fun little step you have to do first. Go
+to "Project settings" (bottom left), the "Service connections" (under
+"Pipelines"). There should be one thing listed there, and it's your
+authenticated connection to GitHub. Note down its name.
 
 Now, create a file `azure-pipelines.yml` in the root of the repository
 you want CI for. If you want all the bells and whistles, write:
@@ -51,8 +77,31 @@ resources:
 ```
 
 Where `PLACEHOLDER` is the service connection name we found above.
+Alternatively, you can mix-and-match templates using
 
-Once that's all done, it's time to set up the Pipeline in Azure:
+```yaml
+stages:
+ - stage: check
+   displayName: Compilation check
+   jobs:
+     - template: azure/cargo-check.yml@templates
+       parameters:
+         name: cargo_check
+ - stage: test
+   displayName: Test suite
+   dependsOn: check
+   jobs:
+     - template: azure/tests.yml@templates
+       parameters:
+         minrust: 1.34.0
+ - stage: style
+   displayName: Style linting
+   dependsOn: check
+   jobs:
+     - template: azure/style.yml@templates
+```
+
+Once that's all committed and pushed, it's time to set up the Pipeline in Azure:
 
  - Go to https://dev.azure.com/
  - Click the appropriate project
@@ -98,6 +147,21 @@ the URL, and put the number you see there as `build`. If you don't do
 this, your shown status badge will be correct, but it will link to the
 wrong pipeline for… reasons.
 
+## Minimum Rust version
+
+By default, this repository also checks that your project compiles with
+Rust 1.32.0. This version was chosen as it was the first version that
+supported the Rust 2018 edition and the "uniform paths" change. This
+version may be bumped occasionally, but will always stay at least 4
+releases behind the newest release (~6 months). If you wish to test a
+_particular_ minimum version, say 1.34.0, add this after
+`azure/stages.yml@templates`:
+
+```yaml
+parameters:
+  minrust: 1.34.0
+```
+
 ## Code coverage
 
 This pipeline is also set up to use
@@ -138,6 +202,17 @@ templates `azure/stages.yml` or `azure/coverage.yml`:
 ```yaml
 parameters:
  codecov_token: $(CODECOV_TOKEN_SECRET)
+```
+
+If you aren't using `stages.yml`, you can add a code coverage step with
+
+```yaml
+ - stage: coverage
+   displayName: Code coverage
+   jobs:
+     - template: azure/coverage.yml@templates
+       parameters:
+         codecov_token: $(CODECOV_TOKEN_SECRET)
 ```
 
 You may also want to give yourself a nice badge! Just go to the Settings
