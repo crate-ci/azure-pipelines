@@ -1,11 +1,15 @@
 jobs:
  - job: enable
+   displayName: secrets?
    pool:
      vmImage: ubuntu-16.04
    steps:
-     - script: "echo ___${CHECK}___"
+     # workaround for https://github.com/MicrosoftDocs/vsts-docs/issues/4841
+     # one day we may even be able to use this trick to skip the coverage stage
+     # but we'll need https://github.com/MicrosoftDocs/vsts-docs/issues/4466
      - script: "[[ -n $CHECK ]] && [[ ! $CHECK == '$('* ]] && echo '##vso[task.setvariable variable=has_secret;isOutput=true]true' || true"
        name: secret_check
+       displayName: Check for codecov token
        env:
          CHECK: ${{ parameters.codecov_token }}
  - job: tarpaulin
