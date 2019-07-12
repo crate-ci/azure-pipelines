@@ -14,8 +14,13 @@ stages:
  - template: azure/stages.yml
    parameters:
      minrust: 1.34.0 # integer atomics
-     prefix: "noci_"
+     prefix: "nosecret_"
      codecov_token: $(DOES_NOT_EXIST)
+ # we should also not display coverage if it's not been set up
+ - template: azure/stages.yml
+   parameters:
+     minrust: 1.34.0 # integer atomics
+     prefix: "noci_"
 
 resources:
   repositories:
