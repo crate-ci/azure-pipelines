@@ -26,5 +26,5 @@ resources:
   repositories:
     - repository: templates
       type: github
-      name: jonhoo/rusty-pipes
-      endpoint: jonhoo
+      name: crate-ci/azure-pipelines
+      endpoint: crate-ci

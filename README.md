@@ -1,5 +1,5 @@
-[![Build Status](https://dev.azure.com/jonhoo/jonhoo/_apis/build/status/rusty-pipes?branchName=master)](https://dev.azure.com/jonhoo/jonhoo/_build/latest?definitionId=2&branchName=master)
-[![Codecov](https://codecov.io/github/jonhoo/rusty-pipes/coverage.svg?branch=master)](https://codecov.io/gh/jonhoo/rusty-pipes)
+[![Build Status](https://dev.azure.com/crate-ci/crate-ci/_apis/build/status/azure-pipelines?branchName=master)](https://dev.azure.com/crate-ci/crate-ci/_build/latest?definitionId=32&branchName=master)
+[![Codecov](https://codecov.io/github/crate-ci/azure-pipelines/coverage.svg?branch=master)](https://codecov.io/gh/crate-ci/azure-pipelines)
 
 Ah, so you want to set up continuous integration (CI) testing for your
 Rust project, and you decided you wanted to use Azure Pipelines for it?
@@ -80,7 +80,7 @@ resources:
   repositories:
     - repository: templates
       type: github
-      name: jonhoo/rusty-pipes
+      name: crate-ci/azure-pipelines
       endpoint: PLACEHOLDER
 ```
 

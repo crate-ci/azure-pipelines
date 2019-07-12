@@ -10,5 +10,5 @@ opt_in = []
 default = ["opt_out"]
 
 [badges]
-azure-devops = { project = "jonhoo/jonhoo", pipeline = "rusty-pipes", build = "2" }
-codecov = { repository = "jonhoo/rusty-pipes", branch = "master", service = "github" }
+azure-devops = { project = "crate-ci/crate-ci", pipeline = "azure-pipelines", build = "32" }
+codecov = { repository = "crate-ci/azure-pipelines", branch = "master", service = "github" }
