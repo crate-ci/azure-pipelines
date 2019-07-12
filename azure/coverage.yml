@@ -3,14 +3,15 @@ jobs:
    displayName: tarpaulin
    pool:
      vmImage: ubuntu-16.04
-     #container:
-     #  image: xd009642/tarpaulin:latest
-     #  options: --security-opt seccomp=unconfined
+   container:
+     image: xd009642/tarpaulin:latest
+     options: --security-opt seccomp=unconfined
    steps:
      # workaround for https://github.com/MicrosoftDocs/vsts-docs/issues/4841
      # we sadly can't do this in a separate job, because:
      # https://developercommunity.visualstudio.com/content/problem/642219/setting-output-variable-when-multiple-stages-share.html
      # if we _could_, then we could set a condition on this whole job
+     # which would let us avoid pulling down and spinning up the container
      # one day we may even be able to use this trick to skip the coverage stage
      # but we'll need https://github.com/MicrosoftDocs/vsts-docs/issues/4466
      # note that we intentionally do not leak the secret itself
@@ -19,11 +20,11 @@ jobs:
        displayName: Check for codecov token
        env:
          CHECK: ${{ parameters.codecov_token }}
-     - script: echo we have the secret
+     - script: cargo tarpaulin --out Xml
+       displayName: Run tarpaulin
        condition: and(succeeded(), eq(variables.has_secret, 'true'))
-       #- script: cargo tarpaulin --out Xml
-       #  displayName: Run tarpaulin
-       #- script: bash <(curl -s https://codecov.io/bash)
-       #  displayName: Upload results to codecov
-       #  env:
-       #    CODECOV_TOKEN: ${{ parameters.codecov_token }}
+     - script: bash <(curl -s https://codecov.io/bash)
+       displayName: Upload results to codecov
+       condition: and(succeeded(), eq(variables.has_secret, 'true'))
+       env:
+         CODECOV_TOKEN: ${{ parameters.codecov_token }}
