@@ -11,6 +11,8 @@ jobs:
     vmImage: ubuntu-16.04
   steps:
   - template: install-rust.yml
+    parameters:
+      rust: ${{ parameters.rust }}
   - script: cargo check --all --bins --examples --tests
     displayName: Check compilation w/ default features
   - script: cargo check --all --bins --examples --tests --no-default-features

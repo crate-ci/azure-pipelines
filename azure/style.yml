@@ -15,7 +15,6 @@ jobs:
   - template: cargo-clippy.yml
     parameters:
       name: clippy
-      rust: stable
   - template: cargo-clippy.yml
     parameters:
       name: clippy_beta
