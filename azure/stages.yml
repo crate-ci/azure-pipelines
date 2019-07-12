@@ -39,8 +39,7 @@ stages:
      displayName: ${{ format('Code coverage ({0})', parameters.prefix) }}
    ${{ if eq(parameters.prefix, '') }}:
      displayName: Code coverage
-     #dependsOn: ${{ format('{0}test', parameters.prefix) }}
-   dependsOn: []
+   dependsOn: ${{ format('{0}test', parameters.prefix) }}
    jobs:
      - template: coverage.yml
        parameters:
