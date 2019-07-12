@@ -6,10 +6,10 @@ stages:
  #    prefix: "master_"
  #    codecov_token: $(CODECOV_TOKEN_SECRET)
  # check that _current_ templates work
- #- template: azure/stages.yml
- #  parameters:
- #    minrust: 1.34.0 # integer atomics
- #    codecov_token: $(CODECOV_TOKEN_SECRET)
+ - template: azure/stages.yml
+   parameters:
+     minrust: 1.34.0 # integer atomics
+     codecov_token: $(CODECOV_TOKEN_SECRET)
  # even without code coverage token
  - template: azure/stages.yml
    parameters:

@@ -1,49 +1,26 @@
 jobs:
- - job: enable
-   displayName: secrets?
-   pool:
-     vmImage: ubuntu-16.04
-   steps:
-     # workaround for https://github.com/MicrosoftDocs/vsts-docs/issues/4841
-     # one day we may even be able to use this trick to skip the coverage stage
-     # but we'll need https://github.com/MicrosoftDocs/vsts-docs/issues/4466
-     # note that we intentionally do not leak the secret itself
-     - script: "echo $CHECK"
-       env:
-         CHECK: ${{ parameters.codecov_token }}
-     - script: "if [[ -n $CHECK ]] && [[ ! $CHECK == '$('* ]]; then echo '##vso[task.setvariable variable=has_secret;isOutput=true]true'; else echo '##vso[task.setvariable variable=has_secret;isOutput=true]false'; fi"
-       name: secret_check
-       displayName: Check for codecov token
-       env:
-         CHECK: ${{ parameters.codecov_token }}
-     - script: echo $(secret_check.has_secret)
- - job: x
-   dependsOn: enable
-   pool:
-     vmImage: ubuntu-16.04
-   variables:
-     x: $[ dependencies.enable.outputs['secret_check.has_secret'] ]
-   steps:
-     - script: echo $(x)
-     - script: echo $X
-       env:
-         X: $(x)
-     - script: "echo $X"
-       env:
-         X: $(x)
  - job: tarpaulin
-   dependsOn: enable
-   condition: and(succeeded(), eq(dependencies.enable.outputs['secret_check.has_secret'], 'true'))
    displayName: tarpaulin
    pool:
      vmImage: ubuntu-16.04
      #container:
      #  image: xd009642/tarpaulin:latest
      #  options: --security-opt seccomp=unconfined
-   variables:
-     x: $[ dependencies.enable.outputs['secret_check.has_secret'] ]
    steps:
-     - script: echo $(x)
+     # workaround for https://github.com/MicrosoftDocs/vsts-docs/issues/4841
+     # we sadly can't do this in a separate job, because:
+     # https://developercommunity.visualstudio.com/content/problem/642219/setting-output-variable-when-multiple-stages-share.html
+     # if we _could_, then we could set a condition on this whole job
+     # one day we may even be able to use this trick to skip the coverage stage
+     # but we'll need https://github.com/MicrosoftDocs/vsts-docs/issues/4466
+     # note that we intentionally do not leak the secret itself
+     - script: "if [[ -n $CHECK ]] && [[ ! $CHECK == '$('* ]]; then echo '##vso[task.setvariable variable=has_secret]true'; else echo '##vso[task.setvariable variable=has_secret]false'; fi"
+       name: secret_check
+       displayName: Check for codecov token
+       env:
+         CHECK: ${{ parameters.codecov_token }}
+     - script: echo we have the secret
+       condition: and(succeeded(), eq(variables.has_secret, 'true'))
        #- script: cargo tarpaulin --out Xml
        #  displayName: Run tarpaulin
        #- script: bash <(curl -s https://codecov.io/bash)
