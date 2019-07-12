@@ -11,23 +11,12 @@ jobs:
      - script: "echo $CHECK"
        env:
          CHECK: ${{ parameters.codecov_token }}
-     - script: echo $CHECK
-       env:
-         CHECK: ${{ parameters.codecov_token }}
-     - script: |
-         echo $CHECK
-       env:
-         CHECK: ${{ parameters.codecov_token }}
-     - script: "echo _${CHECK}_"
-       env:
-         CHECK: ${{ parameters.codecov_token }}
      - script: "if [[ -n $CHECK ]] && [[ ! $CHECK == '$('* ]]; then echo '##vso[task.setvariable variable=has_secret;isOutput=true]true'; else echo '##vso[task.setvariable variable=has_secret;isOutput=true]false'; fi"
        name: secret_check
        displayName: Check for codecov token
        env:
          CHECK: ${{ parameters.codecov_token }}
      - script: echo $(secret_check.has_secret)
-     - script: "echo $(secret_check.has_secret)"
  - job: x
    dependsOn: enable
    pool:
@@ -48,13 +37,16 @@ jobs:
    displayName: tarpaulin
    pool:
      vmImage: ubuntu-16.04
-   container:
-     image: xd009642/tarpaulin:latest
-     options: --security-opt seccomp=unconfined
+     #container:
+     #  image: xd009642/tarpaulin:latest
+     #  options: --security-opt seccomp=unconfined
+   variables:
+     x: $[ dependencies.enable.outputs['secret_check.has_secret'] ]
    steps:
-     - script: cargo tarpaulin --out Xml
-       displayName: Run tarpaulin
-     - script: bash <(curl -s https://codecov.io/bash)
-       displayName: Upload results to codecov
-       env:
-         CODECOV_TOKEN: ${{ parameters.codecov_token }}
+     - script: echo $(x)
+       #- script: cargo tarpaulin --out Xml
+       #  displayName: Run tarpaulin
+       #- script: bash <(curl -s https://codecov.io/bash)
+       #  displayName: Upload results to codecov
+       #  env:
+       #    CODECOV_TOKEN: ${{ parameters.codecov_token }}
