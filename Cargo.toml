@@ -11,3 +11,4 @@ default = ["opt_out"]
 
 [badges]
 azure-devops = { project = "jonhoo/jonhoo", pipeline = "rusty-pipes", build = "2" }
+codecov = { repository = "jonhoo/rusty-pipes", branch = "master", service = "github" }

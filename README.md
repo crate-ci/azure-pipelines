@@ -140,6 +140,14 @@ parameters:
  codecov_token: $(CODECOV_TOKEN_SECRET)
 ```
 
+You may also want to give yourself a nice badge! Just go to the Settings
+page on codecov.io again and click "Badge" on the left. To add it your
+crates.io page, add this to `Cargo.toml`:
+
+```toml
+codecov = { repository = "GH_USER/GH_PROJECT", branch = "master", service = "github" }
+```
+
 ### Code coverage for PRs
 
 **If you [are really
