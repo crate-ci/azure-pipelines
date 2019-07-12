@@ -28,6 +28,10 @@ steps:
     displayName: "Install rust (windows)"
     condition: eq(variables['Agent.OS'], 'Windows_NT')
 
+  # Install additional components:
+  - ${{ each component in parameters.components }}:
+    - script: rustup component add ${{ component }}
+
   # See what we got
   - script: |
       rustc --version
