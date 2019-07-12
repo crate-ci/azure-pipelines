@@ -10,5 +10,5 @@ opt_in = []
 default = ["opt_out"]
 
 [badges]
-azure-devops = { project = "crate-ci/crate-ci", pipeline = "azure-pipelines", build = "32" }
+azure-devops = { project = "crate-ci/crate-ci", pipeline = "azure-pipelines", build = "3" }
 codecov = { repository = "crate-ci/azure-pipelines", branch = "master", service = "github" }
