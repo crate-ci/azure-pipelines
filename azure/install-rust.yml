@@ -42,7 +42,7 @@ steps:
   # Install additional components:
   - ${{ each component in parameters.components }}:
     - script: rustup component add ${{ component }}
-      displayName: "Install component '${{ component }}'"
+      displayName: "Adding component '${{ component }}'"
 
   # See what we got
   - script: |
