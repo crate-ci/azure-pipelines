@@ -23,3 +23,10 @@ steps:
       RUSTUP_TOOLCHAIN: ${{parameters.rust}}
     displayName: "Install rust (windows)"
     condition: eq(variables['Agent.OS'], 'Windows_NT')
+
+  # See what we got
+  - script: |
+      rustc --version
+      cargo --version
+      rustup --version
+    displayName: Check installed rust version
