@@ -20,6 +20,11 @@ code compiles with and without any features it may have, and ensures
 that your code works with an older Rust version. You can also
 mix-and-match these checks if you wish.
 
+**NOTE: Due to a [bug in
+Pipelines](https://developercommunity.visualstudio.com/content/problem/633563/multi-stage-pipelines-show-in-progress-github-chec.html#),
+multi-stage pipelines like the one provided by this repo leave a bunch
+of GitHub checks as "[in progress](https://github.com/jonhoo/rusty-pipes/runs/167214784)".**
+
 And now, to quote the French, [allons-y](https://www.lawlessfrench.com/expressions/allons-y/)!
 
 ## First-time setup
