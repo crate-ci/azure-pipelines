@@ -25,5 +25,7 @@ jobs:
     vmImage: $(vmImage)
   steps:
   - template: install-rust.yml
+    parameters:
+      rust: ${{ parameters.rust }}
   - script: cargo test --all
     displayName: Run tests
