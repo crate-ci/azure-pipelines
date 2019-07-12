@@ -15,7 +15,10 @@ first place, which can be a daunting thing to get right!
 If you're curious what your CI will ultimately look like, go take a look
 at [`tracing-timing`'s
 CI](https://dev.azure.com/jonhoo/jonhoo/_build/latest?definitionId=1&branchName=master)
-for example.
+for example. By default, it tests on all platforms, checks that your
+code compiles with and without any features it may have, and ensures
+that your code works with an older Rust version. You can also
+mix-and-match these checks if you wish.
 
 And now, to quote the French, [allons-y](https://www.lawlessfrench.com/expressions/allons-y/)!
 
