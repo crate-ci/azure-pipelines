@@ -116,8 +116,10 @@ Once that's all committed and pushed, it's time to set up the Pipeline in Azure:
  - Click "Pipelines"
  - Click "New Pipeline"
  - Click "Use the classic editor to create a pipeline without YAML.".
-   You must do this. If you just click GitHub, you're taken to the OAuth
-   authentication page that surrenders all your secrets.
+   You must do this ([bug
+   report](https://developercommunity.visualstudio.com/content/problem/642369/pipelines-creation-falls-back-to-github-oauth-auth.html)).
+   If you just click GitHub, you're taken to the OAuth authentication
+   page that surrenders all your secrets.
  - Click "GitHub"
  - Choose your repository using the triple-dot button
  - Click "Continue"
@@ -153,7 +155,8 @@ Where `FOOBAR` is a weird extra parameter determined entirely by your
 pipeline. When you have your pipeline open, look for `definitionId` in
 the URL, and put the number you see there as `build`. If you don't do
 this, your shown status badge will be correct, but it will link to the
-wrong pipeline for… reasons.
+wrong pipeline for…
+[reasons](https://developercommunity.visualstudio.com/idea/642367/use-pipeline-name-in-status-badge-links.html).
 
 ## Minimum Rust version
 
