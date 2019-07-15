@@ -20,6 +20,14 @@ jobs:
     displayName: Check compilation w/ no features
   - script: cargo check --all --bins --examples --tests --all-features
     displayName: Check compilation w/ all features
+  - bash: "[[ -e Cargo.lock ]] && echo '##vso[task.setvariable variable=is_locked]true' || echo '##vso[task.setvariable variable=is_locked]false'"
+    displayName: Are dependencies locked?
+  # we only check with --all here since we don't care about the actual
+  # compilation, just the dependencies + dev-dependencies resolution.
+  # we _do_ include all features as it may matter though
+  - script: cargo check --all --locked --all-features
+    condition: and(succeeded(), eq(variables.is_locked, 'true'))
+    displayName: Check that Cargo.lock is satisfiable
 
   - ${{ if ne(parameters.benches, 'false') }}:
     - script: cargo check --benches --all
