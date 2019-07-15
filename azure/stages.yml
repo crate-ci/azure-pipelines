@@ -1,5 +1,6 @@
 parameters:
   minrust: 1.32.0 # Rust 2018 with uniform paths
+  benches: false
   prefix: ''
 
 stages:
@@ -16,6 +17,7 @@ stages:
      - template: cargo-check.yml
        parameters:
          name: cargo_check
+         benches: ${{ parameters.benches }}
 - ${{ if ne(parameters.minrust, 'false' }}:
   - stage: ${{ format('{0}check_{1}', parameters.prefix, parameters.minrust) }}
     ${{ if ne(parameters.prefix, '') }}:

@@ -7,11 +7,6 @@ jobs:
       name: rustfmt_beta
       rust: beta
       allow_fail: true
-  - template: rustfmt.yml
-    parameters:
-      name: rustfmt_nightly
-      rust: nightly
-      allow_fail: true
   - template: cargo-clippy.yml
     parameters:
       name: clippy
@@ -19,9 +14,4 @@ jobs:
     parameters:
       name: clippy_beta
       rust: beta
-      allow_fail: true
-  - template: cargo-clippy.yml
-    parameters:
-      name: clippy_nightly
-      rust: nightly
       allow_fail: true
