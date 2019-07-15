@@ -18,7 +18,7 @@ stages:
        parameters:
          name: cargo_check
          benches: ${{ parameters.benches }}
-- ${{ if ne(parameters.minrust, 'false' }}:
+- ${{ if ne(parameters.minrust, 'false') }}:
   - stage: ${{ format('{0}check_{1}', parameters.prefix, parameters.minrust) }}
     ${{ if ne(parameters.prefix, '') }}:
       displayName: ${{ format('Minimum supported Rust version: {1} ({0})', parameters.prefix, parameters.minrust) }}
