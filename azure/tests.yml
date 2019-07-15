@@ -1,13 +1,4 @@
-parameters:
-  minrust: 1.32.0 # Rust 2018 with uniform paths
-
 jobs:
- # This represents the minimum Rust version supported.
- # Tests are not run as tests may require newer versions of rust.
- - template: cargo-check.yml
-   parameters:
-     name: minrust
-     rust: ${{ parameters.minrust }}
  - template: test.yml
    parameters:
      name: cargo_test_stable
