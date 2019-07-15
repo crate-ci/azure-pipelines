@@ -21,6 +21,11 @@ stages:
    parameters:
      minrust: 1.34.0 # integer atomics
      prefix: "noci_"
+ # test binary-focused stages (no min rust version test)
+ - template: azure/stages.yml
+   parameters:
+     minrust: false
+     prefix: "bin_"
 
 resources:
   repositories:
