@@ -21,7 +21,7 @@ stages:
  - ${{ if ne(parameters.minrust, 'false') }}:
    # This represents the minimum Rust version supported.
    # Tests are not run as tests may require newer versions of rust.
-   - stage: "${{ format('{0}check_{1}', parameters.prefix, parameters.minrust) }}"
+   - stage: ${{ format('{0}msrv', parameters.prefix) }}
      ${{ if ne(parameters.prefix, '') }}:
        displayName: "${{ format('Minimum supported Rust version: {1} ({0})', parameters.prefix, parameters.minrust) }}"
      ${{ if eq(parameters.prefix, '') }}:
