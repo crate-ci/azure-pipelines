@@ -1,5 +1,6 @@
 parameters:
   rust: stable
+  benches: false
 
 jobs:
 - job: ${{ parameters.name }}
@@ -28,6 +29,6 @@ jobs:
     condition: and(succeeded(), eq(variables.is_locked, 'true'))
     displayName: Check that Cargo.lock is satisfiable
 
-  - ${{ if parameters.benches }}:
+  - ${{ if ne(parameters.benches, 'false') }}:
     - script: cargo check --benches --all
       displayName: Check benchmarks
