@@ -1,5 +1,6 @@
 parameters:
   rust: stable
+  benches: false
 
 jobs:
 - job: ${{ parameters.name }}
@@ -20,6 +21,6 @@ jobs:
   - script: cargo check --all --bins --examples --tests --all-features
     displayName: Check compilation w/ all features
 
-  - ${{ if parameters.benches }}:
+  - ${{ if ne(parameters.benches, 'false') }}:
     - script: cargo check --benches --all
       displayName: Check benchmarks
