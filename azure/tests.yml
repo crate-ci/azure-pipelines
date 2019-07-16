@@ -1,7 +1,7 @@
 parameters:
   envs: {}
   setup: []
-  smoketests: true
+  canaries: true
 
 jobs:
  - template: test.yml
@@ -10,13 +10,15 @@ jobs:
      cross: true # also test on Windows and macOS
      envs: ${{ parameters.envs }}
      setup: ${{ parameters.setup }}
- - template: test.yml
-   parameters:
-     name: cargo_test_beta
-     rust: beta
-     envs: ${{ parameters.envs }}
-     setup: ${{ parameters.setup }}
- - ${{ if eq(parameters.smoketests, 'true') }}:
+ - ${{ if eq(parameters.canaries, 'true') }}:
+   - template: test.yml
+     parameters:
+       name: cargo_test_beta
+       rust: beta
+       allow_fail: true
+       envs: ${{ parameters.envs }}
+       setup: ${{ parameters.setup }}
+ - ${{ if eq(parameters.canaries, 'true') }}:
    - template: test.yml
      parameters:
        name: cargo_test_nightly
