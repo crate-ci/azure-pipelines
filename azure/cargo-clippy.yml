@@ -2,13 +2,20 @@ parameters:
   rust: stable
   allow_fail: false
   setup: []
+  fail_all: false
 
 jobs:
 - job: ${{ parameters.name }}
   ${{ if eq(parameters.rust, 'stable') }}:
-    displayName: cargo clippy
+    ${{ if eq(parameters.fail_all, 'true') }}:
+      displayName: cargo clippy -- -D warnings
+    ${{ if ne(parameters.fail_all, 'true') }}:
+      displayName: cargo clippy
   ${{ if ne(parameters.rust, 'stable') }}:
-    displayName: cargo +${{ parameters.rust }} clippy
+    ${{ if eq(parameters.fail_all, 'true') }}:
+      displayName: cargo +${{ parameters.rust }} clippy -- -D warnings
+    ${{ if ne(parameters.fail_all, 'true') }}:
+      displayName: cargo +${{ parameters.rust }} clippy
   continueOnError: ${{ parameters.allow_fail }}
   pool:
     vmImage: ubuntu-16.04
@@ -19,5 +26,9 @@ jobs:
         setup: ${{ parameters.setup }}
         components:
           - clippy
-    - script: cargo clippy --all 
-      displayName: Run clippy
+    - ${{ if eq(parameters.fail_all, 'true') }}:
+      - script: cargo clippy --all -- -D warnings
+        displayName: Run strict clippy
+    - ${{ if ne(parameters.fail_all, 'true') }}:
+      - script: cargo clippy --all
+        displayName: Run strict clippy
