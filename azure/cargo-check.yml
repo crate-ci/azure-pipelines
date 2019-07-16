@@ -1,6 +1,7 @@
 parameters:
   rust: stable
   benches: false
+  setup: []
 
 jobs:
 - job: ${{ parameters.name }}
@@ -14,6 +15,7 @@ jobs:
   - template: install-rust.yml
     parameters:
       rust: ${{ parameters.rust }}
+      setup: ${{ parameters.setup }}
   - script: cargo check --all --bins --examples --tests
     displayName: Check compilation w/ default features
   - script: cargo check --all --bins --examples --tests --no-default-features

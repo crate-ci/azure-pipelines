@@ -3,6 +3,7 @@ parameters:
   rust: stable
   components: []
   targets: []
+  setup: []
 
 steps:
   # Linux and macOS.
@@ -50,3 +51,6 @@ steps:
       cargo --version
       rustup --version
     displayName: Check installed rust version
+
+  # Run any user-specific setup steps
+  - ${{ parameters.setup }}

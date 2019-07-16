@@ -2,6 +2,7 @@ parameters:
   rust: stable
   allow_fail: false
   envs: {}
+  setup: []
 
 jobs:
 - job: ${{ parameters.name }}
@@ -28,6 +29,7 @@ jobs:
   - template: install-rust.yml
     parameters:
       rust: ${{ parameters.rust }}
+      setup: ${{ parameters.setup }}
   - script: cargo test --all
     displayName: Run tests
     env:

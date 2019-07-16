@@ -5,6 +5,8 @@ stages:
      codecov_token: $(CODECOV_TOKEN_SECRET)
      envs:
        ENV_IS_SET: true
+     setup:
+       - script: touch src/setup.rs
  # should work without code coverage token
  - template: azure/stages.yml
    parameters:
@@ -13,6 +15,8 @@ stages:
      codecov_token: $(DOES_NOT_EXIST)
      envs:
        ENV_IS_SET: true
+     setup:
+       - script: touch src/setup.rs
  # also test with various other configuration changes
  - template: azure/stages.yml
    parameters:
@@ -21,6 +25,8 @@ stages:
      prefix: "opts_"
      envs:
        ENV_IS_SET: true
+     setup:
+       - script: touch src/setup.rs
  # test binary-focused stages (no min rust version test)
  - template: azure/stages.yml
    parameters:
@@ -28,6 +34,8 @@ stages:
      prefix: "bin_"
      envs:
        ENV_IS_SET: true
+     setup:
+       - script: touch src/setup.rs
 
 resources:
   repositories:
