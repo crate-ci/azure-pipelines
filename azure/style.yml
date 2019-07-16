@@ -1,27 +1,31 @@
 parameters:
   setup: []
+  smoketests: true
 
 jobs:
   - template: rustfmt.yml
     parameters:
       name: rustfmt
-  - template: rustfmt.yml
-    parameters:
-      name: rustfmt_beta
-      rust: beta
-      allow_fail: true
+  - ${{ if eq(parameters.smoketests, 'true') }}:
+    - template: rustfmt.yml
+      parameters:
+        name: rustfmt_beta
+        rust: beta
+        allow_fail: true
   - template: cargo-clippy.yml
     parameters:
       name: clippy
       setup: ${{ parameters.setup }}
-  - template: cargo-clippy.yml
-    parameters:
-      name: clippy_nowarnings
-      fail_all: true
-      allow_fail: true
-  - template: cargo-clippy.yml
-    parameters:
-      name: clippy_beta
-      setup: ${{ parameters.setup }}
-      rust: beta
-      allow_fail: true
+  - ${{ if eq(parameters.smoketests, 'true') }}:
+    - template: cargo-clippy.yml
+      parameters:
+        name: clippy_nowarnings
+        fail_all: true
+        allow_fail: true
+  - ${{ if eq(parameters.smoketests, 'true') }}:
+    - template: cargo-clippy.yml
+      parameters:
+        name: clippy_beta
+        setup: ${{ parameters.setup }}
+        rust: beta
+        allow_fail: true

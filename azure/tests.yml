@@ -1,6 +1,7 @@
 parameters:
   envs: {}
   setup: []
+  smoketests: true
 
 jobs:
  - template: test.yml
@@ -15,10 +16,11 @@ jobs:
      rust: beta
      envs: ${{ parameters.envs }}
      setup: ${{ parameters.setup }}
- - template: test.yml
-   parameters:
-     name: cargo_test_nightly
-     rust: nightly
-     allow_fail: true
-     envs: ${{ parameters.envs }}
-     setup: ${{ parameters.setup }}
+ - ${{ if eq(parameters.smoketests, 'true') }}:
+   - template: test.yml
+     parameters:
+       name: cargo_test_nightly
+       rust: nightly
+       allow_fail: true
+       envs: ${{ parameters.envs }}
+       setup: ${{ parameters.setup }}
