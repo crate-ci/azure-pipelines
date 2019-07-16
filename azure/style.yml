@@ -17,10 +17,10 @@ jobs:
       name: clippy
       setup: ${{ parameters.setup }}
   - ${{ if eq(parameters.smoketests, 'true') }}:
-    - template: cargo-clippy.yml
+    - template: cargo-check.yml
       parameters:
-        name: clippy_nowarnings
-        fail_all: true
+        name: warning_free
+        err_on_warn: true
         allow_fail: true
   - ${{ if eq(parameters.smoketests, 'true') }}:
     - template: cargo-clippy.yml
