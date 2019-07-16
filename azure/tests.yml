@@ -1,5 +1,6 @@
 parameters:
   envs: {}
+  setup: []
 
 jobs:
  - template: test.yml
@@ -7,14 +8,17 @@ jobs:
      name: cargo_test_stable
      cross: true # also test on Windows and macOS
      envs: ${{ parameters.envs }}
+     setup: ${{ parameters.setup }}
  - template: test.yml
    parameters:
      name: cargo_test_beta
      rust: beta
      envs: ${{ parameters.envs }}
+     setup: ${{ parameters.setup }}
  - template: test.yml
    parameters:
      name: cargo_test_nightly
      rust: nightly
      allow_fail: true
      envs: ${{ parameters.envs }}
+     setup: ${{ parameters.setup }}
