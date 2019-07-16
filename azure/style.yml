@@ -20,6 +20,7 @@ jobs:
     - template: cargo-check.yml
       parameters:
         name: warning_free
+        setup: ${{ parameters.setup }}
         err_on_warn: true
         allow_fail: true
   - ${{ if eq(parameters.canaries, 'true') }}:
