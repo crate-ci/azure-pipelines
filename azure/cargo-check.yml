@@ -3,6 +3,7 @@ parameters:
   benches: false
   setup: []
   err_on_warn: false
+  allow_fail: false
 
 jobs:
 - job: ${{ parameters.name }}
@@ -16,6 +17,7 @@ jobs:
       displayName: "cargo +${{ parameters.rust }} check -Dwarnings"
     ${{ if ne(parameters.err_on_warn, 'true') }}:
       displayName: cargo +${{ parameters.rust }} check
+  continueOnError: ${{ parameters.allow_fail }}
   pool:
     vmImage: ubuntu-16.04
   steps:
