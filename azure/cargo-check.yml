@@ -8,12 +8,12 @@ jobs:
 - job: ${{ parameters.name }}
   ${{ if eq(parameters.rust, 'stable') }}:
     ${{ if eq(parameters.err_on_warn, 'true') }}:
-      displayName: "env RUSTFLAGS=-Dwarnings cargo check"
+      displayName: "cargo check -Dwarnings"
     ${{ if ne(parameters.err_on_warn, 'true') }}:
       displayName: cargo check
   ${{ if ne(parameters.rust, 'stable') }}:
     ${{ if eq(parameters.err_on_warn, 'true') }}:
-      displayName: "env RUSTFLAGS=-Dwarnings cargo +${{ parameters.rust }} check"
+      displayName: "cargo +${{ parameters.rust }} check -Dwarnings"
     ${{ if ne(parameters.err_on_warn, 'true') }}:
       displayName: cargo +${{ parameters.rust }} check
   pool:
