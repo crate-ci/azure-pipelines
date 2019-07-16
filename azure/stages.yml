@@ -2,6 +2,7 @@ parameters:
   minrust: 1.32.0 # Rust 2018 with uniform paths
   benches: false
   prefix: ''
+  envs: {}
 
 stages:
  # the format here is so that we can have _two_ instances of this whole
@@ -39,6 +40,8 @@ stages:
    dependsOn: ${{ format('{0}check', parameters.prefix) }}
    jobs:
      - template: tests.yml
+       parameters:
+         envs: ${{ parameters.envs }}
  - stage: ${{ format('{0}style', parameters.prefix) }}
    ${{ if ne(parameters.prefix, '') }}:
      displayName: ${{ format('Style linting ({0})', parameters.prefix) }}
@@ -58,3 +61,4 @@ stages:
         - template: coverage.yml
           parameters:
             codecov_token: ${{ parameters.codecov_token }}
+            envs: ${{ parameters.envs }}
