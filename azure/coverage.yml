@@ -1,3 +1,6 @@
+parameters:
+  envs: {}
+
 jobs:
  - job: tarpaulin
    displayName: tarpaulin
@@ -23,6 +26,8 @@ jobs:
      - script: cargo tarpaulin --out Xml
        displayName: Run tarpaulin
        condition: and(succeeded(), eq(variables.has_secret, 'true'))
+       env:
+         ${{ insert }}: ${{ parameters.envs }}
      - script: bash <(curl -s https://codecov.io/bash)
        displayName: Upload results to codecov
        condition: and(succeeded(), eq(variables.has_secret, 'true'))
