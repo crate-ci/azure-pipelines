@@ -52,7 +52,8 @@ which is a [preview
 feature](https://docs.microsoft.com/en-us/azure/devops/project/navigation/preview-features)
 of Azure Pipelines. You therefore need to enable support for it. To do
 so, click your profile icon in the top-right corner and click "Preview
-features". In the resulting box, enable "Multi-stage pipelines".
+features". In the drop-down at the top in the panel that appears, choose
+"for this organization", then enable "Multi-stage pipelines".
 
 ## Each-time setup
 
