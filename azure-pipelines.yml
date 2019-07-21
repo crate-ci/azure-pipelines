@@ -24,6 +24,7 @@ stages:
      benches: true
      test_ignored: true
      single_threaded: true
+     nightly_coverage: true
      prefix: "opts_"
      envs:
        ENV_IS_SET: true
