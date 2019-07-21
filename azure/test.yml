@@ -3,6 +3,7 @@ parameters:
   allow_fail: false
   envs: {}
   setup: []
+  submodules: recursive
 
 jobs:
 - job: ${{ parameters.name }}
@@ -26,6 +27,8 @@ jobs:
   pool:
     vmImage: $(vmImage)
   steps:
+  - checkout: self
+    submodules: ${{ parameters.submodules }}
   - template: install-rust.yml
     parameters:
       rust: ${{ parameters.rust }}

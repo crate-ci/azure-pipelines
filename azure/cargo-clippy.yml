@@ -2,6 +2,7 @@ parameters:
   rust: stable
   allow_fail: false
   setup: []
+  submodules: recursive
 
 jobs:
 - job: ${{ parameters.name }}
@@ -13,6 +14,8 @@ jobs:
   pool:
     vmImage: ubuntu-16.04
   steps:
+    - checkout: self
+      submodules: ${{ parameters.submodules }}
     - template: install-rust.yml
       parameters:
         rust: ${{ parameters.rust }}
