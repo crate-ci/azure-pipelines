@@ -12,6 +12,8 @@ jobs:
      image: xd009642/tarpaulin:latest
      options: --security-opt seccomp=unconfined
    steps:
+     - checkout: self
+       submodules: ${{ parameters.submodules }}
      # workaround for https://github.com/MicrosoftDocs/vsts-docs/issues/4841
      # we sadly can't do this in a separate job, because:
      # https://developercommunity.visualstudio.com/content/problem/642219/setting-output-variable-when-multiple-stages-share.html
@@ -25,9 +27,6 @@ jobs:
        displayName: Check for codecov token
        env:
          CHECK: ${{ parameters.codecov_token }}
-     - checkout: self
-       submodules: ${{ parameters.submodules }}
-       condition: and(succeeded(), eq(variables.has_secret, 'true'))
      # Run any user-specific setup steps
      # Sadly we don't have a way of communicating the condition on has_secret
      - ${{ parameters.setup }}
