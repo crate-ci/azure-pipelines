@@ -1,27 +1,22 @@
 parameters:
   setup: []
-  submodules: recursive
 
 jobs:
   - template: rustfmt.yml
     parameters:
       name: rustfmt
-      submodules: ${{ parameters.submodules }}
   - template: rustfmt.yml
     parameters:
       name: rustfmt_beta
       rust: beta
       allow_fail: true
-      submodules: ${{ parameters.submodules }}
   - template: cargo-clippy.yml
     parameters:
       name: clippy
       setup: ${{ parameters.setup }}
-      submodules: ${{ parameters.submodules }}
   - template: cargo-clippy.yml
     parameters:
       name: clippy_beta
       setup: ${{ parameters.setup }}
       rust: beta
       allow_fail: true
-      submodules: ${{ parameters.submodules }}

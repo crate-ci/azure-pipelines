@@ -4,7 +4,6 @@ parameters:
   prefix: ''
   envs: {}
   setup: []
-  submodules: recursive
 
 stages:
  # the format here is so that we can have _two_ instances of this whole
@@ -22,7 +21,6 @@ stages:
          name: cargo_check
          benches: ${{ parameters.benches }}
          setup: ${{ parameters.setup }}
-         submodules: ${{ parameters.submodules }}
  - ${{ if ne(parameters.minrust, 'false') }}:
    # This represents the minimum Rust version supported.
    # Tests are not run as tests may require newer versions of rust.
@@ -37,7 +35,6 @@ stages:
          parameters:
           rust: ${{ parameters.minrust }}
           setup: ${{ parameters.setup }}
-          submodules: ${{ parameters.submodules }}
  - stage: ${{ format('{0}test', parameters.prefix) }}
    ${{ if ne(parameters.prefix, '') }}:
      displayName: ${{ format('Test suite ({0})', parameters.prefix) }}
@@ -49,7 +46,6 @@ stages:
        parameters:
          envs: ${{ parameters.envs }}
          setup: ${{ parameters.setup }}
-         submodules: ${{ parameters.submodules }}
  - stage: ${{ format('{0}style', parameters.prefix) }}
    ${{ if ne(parameters.prefix, '') }}:
      displayName: ${{ format('Style linting ({0})', parameters.prefix) }}
@@ -60,7 +56,6 @@ stages:
      - template: style.yml
        parameters:
          setup: ${{ parameters.setup }}
-         submodules: ${{ parameters.submodules }}
  - ${{ if ne('', parameters.codecov_token) }}:
     - stage: ${{ format('{0}coverage', parameters.prefix) }}
       ${{ if ne(parameters.prefix, '') }}:
@@ -74,4 +69,3 @@ stages:
             codecov_token: ${{ parameters.codecov_token }}
             envs: ${{ parameters.envs }}
             setup: ${{ parameters.setup }}
-            submodules: ${{ parameters.submodules }}
