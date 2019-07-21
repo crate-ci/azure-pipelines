@@ -1,6 +1,7 @@
 parameters:
   envs: {}
   setup: []
+  submodules: recursive
 
 jobs:
  - template: test.yml
@@ -9,12 +10,14 @@ jobs:
      cross: true # also test on Windows and macOS
      envs: ${{ parameters.envs }}
      setup: ${{ parameters.setup }}
+     submodules: ${{ parameters.submodules }}
  - template: test.yml
    parameters:
      name: cargo_test_beta
      rust: beta
      envs: ${{ parameters.envs }}
      setup: ${{ parameters.setup }}
+     submodules: ${{ parameters.submodules }}
  - template: test.yml
    parameters:
      name: cargo_test_nightly
@@ -22,3 +25,4 @@ jobs:
      allow_fail: true
      envs: ${{ parameters.envs }}
      setup: ${{ parameters.setup }}
+     submodules: ${{ parameters.submodules }}
