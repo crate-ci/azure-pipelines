@@ -1,6 +1,7 @@
 parameters:
   rust: stable
   allow_fail: false
+  cross: false
   envs: {}
   setup: []
 
@@ -11,7 +12,7 @@ jobs:
   ${{ if ne(parameters.rust, 'stable') }}:
     displayName: cargo +${{ parameters.rust }} test
   continueOnError: ${{ parameters.allow_fail }}
-  ${{ if parameters.cross }}:
+  ${{ if eq(parameters.cross, 'true') }}:
     strategy:
       matrix:
         Linux:
