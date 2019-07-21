@@ -22,6 +22,7 @@ stages:
    parameters:
      minrust: 1.34.0 # integer atomics
      benches: true
+     test_ignored: true
      prefix: "opts_"
      envs:
        ENV_IS_SET: true

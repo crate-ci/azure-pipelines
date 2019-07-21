@@ -3,12 +3,13 @@ parameters:
   allow_fail: false
   envs: {}
   setup: []
+  test_ignored: false
 
 jobs:
 - job: ${{ parameters.name }}
-  ${{ if eq(parameters.rust, 'stable') }}:
-    displayName: cargo test
-  ${{ if ne(parameters.rust, 'stable') }}:
+  ${{ if eq(parameters.test_ignored, 'true') }}:
+    displayName: cargo +${{ parameters.rust }} test -- --ignored
+  ${{ if ne(parameters.test_ignored, 'true') }}:
     displayName: cargo +${{ parameters.rust }} test
   continueOnError: ${{ parameters.allow_fail }}
   ${{ if parameters.cross }}:
@@ -30,7 +31,10 @@ jobs:
     parameters:
       rust: ${{ parameters.rust }}
       setup: ${{ parameters.setup }}
-  - script: cargo test --all
-    displayName: Run tests
+  - displayName: Run tests
+    ${{ if eq(parameters.test_ignored, 'true') }}:
+      script: cargo test --all -- --ignored
+    ${{ if ne(parameters.test_ignored, 'true') }}:
+      script: cargo test --all
     env:
       ${{ insert }}: ${{ parameters.envs }}

@@ -4,6 +4,7 @@ parameters:
   prefix: ''
   envs: {}
   setup: []
+  test_ignored: false
 
 stages:
  # the format here is so that we can have _two_ instances of this whole
@@ -46,6 +47,7 @@ stages:
        parameters:
          envs: ${{ parameters.envs }}
          setup: ${{ parameters.setup }}
+         test_ignored: ${{ parameters.test_ignored }}
  - stage: ${{ format('{0}style', parameters.prefix) }}
    ${{ if ne(parameters.prefix, '') }}:
      displayName: ${{ format('Style linting ({0})', parameters.prefix) }}
