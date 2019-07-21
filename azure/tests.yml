@@ -2,6 +2,7 @@ parameters:
   envs: {}
   setup: []
   test_ignored: false
+  single_threaded: false
 
 jobs:
  - template: test.yml
@@ -18,6 +19,7 @@ jobs:
      envs: ${{ parameters.envs }}
      setup: ${{ parameters.setup }}
      test_ignored: ${{ parameters.test_ignored }}
+     single_threaded: ${{ parameters.single_threaded }}
  - template: test.yml
    parameters:
      name: cargo_test_nightly
