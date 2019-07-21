@@ -1,5 +1,6 @@
 parameters:
   envs: {}
+  setup: []
 
 jobs:
  - job: tarpaulin
@@ -23,6 +24,9 @@ jobs:
        displayName: Check for codecov token
        env:
          CHECK: ${{ parameters.codecov_token }}
+     # Run any user-specific setup steps
+     - ${{ parameters.setup }}
+       condition: and(succeeded(), eq(variables.has_secret, 'true'))
      - script: cargo tarpaulin --out Xml
        displayName: Run tarpaulin
        condition: and(succeeded(), eq(variables.has_secret, 'true'))
