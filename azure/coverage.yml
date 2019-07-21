@@ -25,8 +25,8 @@ jobs:
        env:
          CHECK: ${{ parameters.codecov_token }}
      # Run any user-specific setup steps
+     # Sadly we don't have a way of communicating the condition on has_secret
      - ${{ parameters.setup }}
-       condition: and(succeeded(), eq(variables.has_secret, 'true'))
      - script: cargo tarpaulin --out Xml
        displayName: Run tarpaulin
        condition: and(succeeded(), eq(variables.has_secret, 'true'))
