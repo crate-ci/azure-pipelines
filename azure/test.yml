@@ -32,14 +32,23 @@ jobs:
     parameters:
       rust: ${{ parameters.rust }}
       setup: ${{ parameters.setup }}
-  - displayName: Run tests
-    ${{ if and(eq(parameters.single_threaded, 'true'), eq(parameters.test_ignored, 'true')) }}:
-      script: cargo test --all -- --ignored --test-threads=1
-    ${{ if and(eq(parameters.single_threaded, 'true'), ne(parameters.test_ignored, 'true')) }}:
-      script: cargo test --all -- --test-threads=1
-    ${{ if and(ne(parameters.single_threaded, 'true'), eq(parameters.test_ignored, 'true')) }}:
-      script: cargo test --all -- --ignored
-    ${{ if and(ne(parameters.single_threaded, 'true'), ne(parameters.test_ignored, 'true')) }}:
-      script: cargo test --all
-    env:
-      ${{ insert }}: ${{ parameters.envs }}
+  - ${{ if and(eq(parameters.single_threaded, 'true'), eq(parameters.test_ignored, 'true')) }}:
+    - script: cargo test --all -- --ignored --test-threads=1
+      displayName: Run tests (single-threaded w/ignored)
+      env:
+        ${{ insert }}: ${{ parameters.envs }}
+  - ${{ if and(eq(parameters.single_threaded, 'true'), ne(parameters.test_ignored, 'true')) }}:
+    - script: cargo test --all -- --test-threads=1
+      displayName: Run tests (single-threaded)
+      env:
+        ${{ insert }}: ${{ parameters.envs }}
+  - ${{ if and(ne(parameters.single_threaded, 'true'), eq(parameters.test_ignored, 'true')) }}:
+    - script: cargo test --all -- --ignored
+      displayName: Run tests (incl. ignored)
+      env:
+        ${{ insert }}: ${{ parameters.envs }}
+  - ${{ if and(ne(parameters.single_threaded, 'true'), ne(parameters.test_ignored, 'true')) }}:
+    - script: cargo test --all
+      displayName: Run tests
+      env:
+        ${{ insert }}: ${{ parameters.envs }}
