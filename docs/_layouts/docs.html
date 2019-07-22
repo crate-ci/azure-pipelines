@@ -10,10 +10,10 @@ ul.menu li.active a { font-weight: bold; }
 </style>
 
 <ul class="menu">
-<li class="{% if page.path == "index.md" %}active{% endif %}"><a href="{% link index.md %}">Getting started</a>
-<li class="{% if page.path == "setup.md" %}active{% endif %}"><a href="{% link setup.md %}">Azure DevOps setup</a>
-<li class="{% if page.path == "configuration.md" %}active{% endif %}"><a href="{% link configuration.md %}">CI Configuration</a>
-<li class="{% if page.path == "custom.md" %}active{% endif %}"><a href="{% link custom.md %}">Re-usable components</a>
+<li class="{% if page.path == "index.md" %}active{% endif %}"><a href="{{ site.url }}{% link index.md %}">Getting started</a>
+<li class="{% if page.path == "setup.md" %}active{% endif %}"><a href="{{ site.url }}{% link setup.md %}">Azure DevOps setup</a>
+<li class="{% if page.path == "configuration.md" %}active{% endif %}"><a href="{{ site.url }}{% link configuration.md %}">CI Configuration</a>
+<li class="{% if page.path == "custom.md" %}active{% endif %}"><a href="{{ site.url }}{% link custom.md %}">Re-usable components</a>
 </ul>
 
 {{ content }}
