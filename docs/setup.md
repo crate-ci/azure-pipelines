@@ -1,3 +1,8 @@
+---
+title: Azure DevOps setup
+layout: docs
+---
+
 Getting Azure Pipelines and its connection to GitHub set up correctly is
 not entirely straightforward. This document takes you through _exactly_
 the steps you need to do. Stray from these at your own risk.

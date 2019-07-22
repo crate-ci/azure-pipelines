@@ -1,3 +1,8 @@
+---
+title: Re-usable components
+layout: docs
+---
+
 Sometimes, the main template `azure/stages.yml` is just too far from
 what you want your CI to be. Or, maybe you just want to run a few extra
 steps, like publishing your documentation to GitHub Pages or making a

@@ -1,3 +1,8 @@
+---
+title: CI configuration options
+layout: docs
+---
+
 The main template, `azure/stages.yml` comes configured with some
 opinionated defaults. It will check your crate against a minimum Rust
 version, check your project without features, and with all of them, and
