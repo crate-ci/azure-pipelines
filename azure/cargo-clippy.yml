@@ -20,4 +20,4 @@ jobs:
         components:
           - clippy
     - script: cargo clippy --all
-      displayName: Run strict clippy
+      displayName: Run clippy
