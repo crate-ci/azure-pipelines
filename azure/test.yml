@@ -1,9 +1,9 @@
 parameters:
   rust: stable
   allow_fail: false
+  cross: false
   envs: {}
   setup: []
-  submodules: recursive
 
 jobs:
 - job: ${{ parameters.name }}
@@ -12,7 +12,7 @@ jobs:
   ${{ if ne(parameters.rust, 'stable') }}:
     displayName: cargo +${{ parameters.rust }} test
   continueOnError: ${{ parameters.allow_fail }}
-  ${{ if parameters.cross }}:
+  ${{ if eq(parameters.cross, 'true') }}:
     strategy:
       matrix:
         Linux:
@@ -21,14 +21,12 @@ jobs:
           vmImage: macOS-10.14
         Windows:
           vmImage: windows-2019
-  ${{ if not(parameters.cross) }}:
+  ${{ if ne(parameters.cross, 'true') }}:
     variables:
       vmImage: ubuntu-16.04
   pool:
     vmImage: $(vmImage)
   steps:
-  - checkout: self
-    submodules: ${{ parameters.submodules }}
   - template: install-rust.yml
     parameters:
       rust: ${{ parameters.rust }}

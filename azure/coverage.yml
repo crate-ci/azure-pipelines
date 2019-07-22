@@ -1,5 +1,6 @@
 parameters:
   envs: {}
+  setup: []
   submodules: recursive
 
 jobs:
@@ -26,6 +27,9 @@ jobs:
        displayName: Check for codecov token
        env:
          CHECK: ${{ parameters.codecov_token }}
+     # Run any user-specific setup steps
+     # Sadly we don't have a way of communicating the condition on has_secret
+     - ${{ parameters.setup }}
      - script: cargo tarpaulin --out Xml
        displayName: Run tarpaulin
        condition: and(succeeded(), eq(variables.has_secret, 'true'))
