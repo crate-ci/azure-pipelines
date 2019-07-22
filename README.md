@@ -1,5 +1,6 @@
 [![Build Status](https://dev.azure.com/crate-ci/crate-ci/_apis/build/status/azure-pipelines?branchName=master)](https://dev.azure.com/crate-ci/crate-ci/_build/latest?definitionId=3&branchName=master)
 [![Codecov](https://codecov.io/github/crate-ci/azure-pipelines/coverage.svg?branch=master)](https://codecov.io/gh/crate-ci/azure-pipelines)
+[![Documentation](https://img.shields.io/badge/documentation-here-blue.svg)](https://crate-ci.github.io/azure-pipelines/)
 
 Ah, so you want to set up continuous integration (CI) testing for your
 Rust project, and you decided you wanted to use Azure Pipelines for it?
@@ -20,9 +21,22 @@ code compiles with and without any features it may have, and ensures
 that your code works with an older Rust version. You can also
 mix-and-match these checks if you wish.
 
-To start, go take a look at [the
-documentation](https://crate-ci.github.io/azure-pipelines/). If you've
-done this before, and just want the standard YAML again for
+To start, go take a look at [the documentation](https://crate-ci.github.io/azure-pipelines/).
+
+## Documentation
+
+You can find the documentation at
+https://crate-ci.github.io/azure-pipelines/. It includes a "getting
+started" guide, [detailed setup
+instructions](https://crate-ci.github.io/azure-pipelines/setup.html),
+documentation of [CI configuration
+options](https://crate-ci.github.io/azure-pipelines/configuration.html),
+and information about how you can [mix and match individual
+templates](https://crate-ci.github.io/azure-pipelines/custom.html).
+
+## If you've done this before:
+
+If you've done this before, and just want the standard YAML again for
 `azure-pipelines.yml`, here it is:
 
 ```yaml
