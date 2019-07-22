@@ -64,10 +64,11 @@ Installs Rust and additional components and targets as needed.
 
 #### Parameters
 
- - `rust`: which Rust version to install
- - `components`: list of Rustup [components to install](https://rust-lang.github.io/rustup-components-history/)
- - `targets`: list of [Rust targets to install](https://github.com/rust-lang/rustup.rs/#cross-compilation)
- - `setup`: list of additional tasks to run after installation (e.g., to install dependencies)
+ - `rust`: which Rust version to install (defaults to `stable`)
+ - `components`: list of Rustup [components to install](https://rust-lang.github.io/rustup-components-history/) (defaults to none)
+ - `targets`: list of [Rust targets to install](https://github.com/rust-lang/rustup.rs/#cross-compilation) (defaults to none)
+ - `setup`: list of additional tasks to run after installation (e.g., to install dependencies; defaults to none)
+ - `checkout`: sets the [submodule fetch policy](https://docs.microsoft.com/en-us/azure/devops/pipelines/repos/github#submodules) for the repository (defaults to `recursive`)
 
 ## Job templates
 
@@ -171,4 +172,17 @@ and upload the coverage test results to
 `codecov_token` that includes the codecov.io upload token (see the
 [setup instructions](setup.md#code-coverage)). You can also pass the
 parameter `envs: {...}` to pass [environment
-variables](configuration.md#environment-variables).
+variables](configuration.md#environment-variables), and `setup: [...]`
+to run [additional setup
+steps](configuration.md#additional-setup-steps).
+
+## A note on git submodules
+
+By default these jobs will all set the [submodule fetch
+policy](https://docs.microsoft.com/en-us/azure/devops/pipelines/repos/github#submodules)
+to `recursive`, and will thus fetch all your repository's git submodules
+recursively. You cannot generally override this behavior when re-using
+components from CI. If you must, you should write your own jobs on top
+of `install-rust.yml` and `coverage.yml` (which _do_ take a `submodules`
+parameter), and pass `submodules: true` for single-depth or `submodules:
+false` for no submodules.
