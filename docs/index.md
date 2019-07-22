@@ -1,3 +1,4 @@
+[![GitHub last commit](https://img.shields.io/github/last-commit/crate-ci/azure-pipelines.svg)](https://github.com/crate-ci/azure-pipelines)
 [![Build Status](https://dev.azure.com/crate-ci/crate-ci/_apis/build/status/azure-pipelines?branchName=master)](https://dev.azure.com/crate-ci/crate-ci/_build/latest?definitionId=3&branchName=master)
 [![Codecov](https://codecov.io/github/crate-ci/azure-pipelines/coverage.svg?branch=master)](https://codecov.io/gh/crate-ci/azure-pipelines)
 
