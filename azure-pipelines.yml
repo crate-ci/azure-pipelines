@@ -26,6 +26,7 @@ stages:
      single_threaded: true
      nightly_coverage: true
      prefix: "opts_"
+     check_all_features: false
      envs:
        ENV_IS_SET: true
      setup:

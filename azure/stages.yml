@@ -7,6 +7,7 @@ parameters:
   test_ignored: false
   single_threaded: false
   nightly_coverage: false
+  check_all_features: true
 
 stages:
  # the format here is so that we can have _two_ instances of this whole
@@ -24,6 +25,7 @@ stages:
          name: cargo_check
          benches: ${{ parameters.benches }}
          setup: ${{ parameters.setup }}
+         all_features: ${{ parameters.check_all_features }}
  - ${{ if ne(parameters.minrust, 'false') }}:
    # This represents the minimum Rust version supported.
    # Tests are not run as tests may require newer versions of rust.
@@ -38,6 +40,7 @@ stages:
          parameters:
           rust: ${{ parameters.minrust }}
           setup: ${{ parameters.setup }}
+          all_features: ${{ parameters.check_all_features }}
  - stage: ${{ format('{0}test', parameters.prefix) }}
    ${{ if ne(parameters.prefix, '') }}:
      displayName: ${{ format('Test suite ({0})', parameters.prefix) }}
