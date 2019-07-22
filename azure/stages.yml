@@ -73,4 +73,5 @@ stages:
           parameters:
             codecov_token: ${{ parameters.codecov_token }}
             envs: ${{ parameters.envs }}
+            setup: ${{ parameters.setup }}
             nightly: ${{ parameters.nightly_coverage }}
