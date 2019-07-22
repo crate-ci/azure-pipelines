@@ -40,6 +40,36 @@ is surprisingly good, so we won't repeat that here. You may still want
 to use some of the components that this repository provides though, so
 we'll go through those below.
 
+A good idea might be to _start_ by copy-pasting our `azure/stages.yml`
+and then starting from there. If you do, you should start by removing
+the cruft from all the lines that look like this:
+
+```yaml
+ - stage: ${{ format('{0}check', parameters.prefix) }}
+ - stage: ${{ format('{0}test', parameters.prefix) }}
+   dependsOn: ${{ format('{0}check', parameters.prefix) }}
+```
+
+So that they instead just read
+
+```yaml
+ - stage: check
+ - stage: test
+   dependsOn: check
+```
+
+You can also simplify the various ifs like this one
+
+```yaml
+${{ if ne(parameters.prefix, '') }}:
+  displayName: ${{ format('Test suite ({0})', parameters.prefix) }}
+${{ if eq(parameters.prefix, '') }}:
+  displayName: Test suite
+```
+
+by keeping just the last line and removing the double-space indent.
+
+
 ## Task templates
 
 These are [steps that you can
