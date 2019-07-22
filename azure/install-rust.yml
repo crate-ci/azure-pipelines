@@ -54,8 +54,9 @@ steps:
     displayName: Check installed rust version
 
   # Checkout any submodules the repository may have
-  - checkout: self
-    submodules: ${{ parameters.submodules }}
+  - ${{ if ne(parameters.submodules, 'manual') }}:
+    - checkout: self
+      submodules: ${{ parameters.submodules }}
 
   # Run any user-specific setup steps
   - ${{ parameters.setup }}
