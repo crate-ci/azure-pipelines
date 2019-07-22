@@ -40,10 +40,3 @@ stages:
        ENV_IS_SET: true
      setup:
        - script: touch src/setup.rs
-
-resources:
-  repositories:
-    - repository: templates
-      type: github
-      name: crate-ci/azure-pipelines
-      endpoint: crate-ci
