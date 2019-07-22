@@ -68,7 +68,6 @@ Installs Rust and additional components and targets as needed.
  - `components`: list of Rustup [components to install](https://rust-lang.github.io/rustup-components-history/) (defaults to none)
  - `targets`: list of [Rust targets to install](https://github.com/rust-lang/rustup.rs/#cross-compilation) (defaults to none)
  - `setup`: list of additional tasks to run after installation (e.g., to install dependencies; defaults to none)
- - `checkout`: sets the [submodule fetch policy](https://docs.microsoft.com/en-us/azure/devops/pipelines/repos/github#submodules) for the repository (defaults to `recursive`)
 
 ## Job templates
 
@@ -183,6 +182,8 @@ policy](https://docs.microsoft.com/en-us/azure/devops/pipelines/repos/github#sub
 to `recursive`, and will thus fetch all your repository's git submodules
 recursively. You cannot generally override this behavior when re-using
 components from CI. If you must, you should write your own jobs on top
-of `install-rust.yml` and `coverage.yml` (which _do_ take a `submodules`
-parameter), and pass `submodules: true` for single-depth or `submodules:
-false` for no submodules.
+of `install-rust.yml` and `coverage.yml`. `install-rust` will not change
+`checkout: self` at all, and `coverage` lets you override it by setting
+the parameter `submodules: true` for single-depth checkout, `submodules:
+false` for no submodules, or `submodules: manual` with a `checkout:
+self` entry in `setup` for complete manual control.
