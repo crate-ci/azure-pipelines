@@ -19,7 +19,7 @@ components](custom.md).
 stages:
  - template: azure/stages.yml@templates
    parameters:
-     minrust: <false | rust version>
+     minrust: <false | rust version> = 1.32.0
 ```
 
 By default, your pipeline will test against a minimum Rust version to
@@ -37,7 +37,7 @@ to `false`.
 stages:
  - template: azure/stages.yml@templates
    parameters:
-     nightly_coverage: <bool>
+     nightly_coverage: <bool> = false
 ```
 
 By default, your pipeline will test against the stable Rust version
@@ -56,7 +56,7 @@ CI failures.
 stages:
  - template: azure/stages.yml@templates
    parameters:
-     test_ignored: <bool>
+     test_ignored: <bool> = false
 ```
 
 Set this parameter to `true` to also run tests [marked with
@@ -68,7 +68,7 @@ Set this parameter to `true` to also run tests [marked with
 stages:
  - template: azure/stages.yml@templates
    parameters:
-     single_threaded: <bool>
+     single_threaded: <bool> = false
 ```
 
 Some codebases cannot run their test suite in a [multi-threaded
@@ -83,7 +83,7 @@ with `--test-threads=1`.
 stages:
  - template: azure/stages.yml@templates
    parameters:
-     all_features: <bool>
+     all_features: <bool> = true
 ```
 
 The default CI setup will run `cargo check --all-features` to ensure
@@ -101,7 +101,7 @@ not be run.
 stages:
  - template: azure/stages.yml@templates
    parameters:
-     benches: <bool>
+     benches: <bool> = false
 ```
 
 Since the built-in benchmarking harness (`extern crate test`) is [not
