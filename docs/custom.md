@@ -44,6 +44,7 @@ A good idea might be to _start_ by copy-pasting our `azure/stages.yml`
 and then starting from there. If you do, you should start by removing
 the cruft from all the lines that look like this:
 
+{% raw %}
 ```yaml
  - stage: ${{ format('{0}check', parameters.prefix) }}
  - stage: ${{ format('{0}test', parameters.prefix) }}
@@ -66,6 +67,7 @@ ${{ if ne(parameters.prefix, '') }}:
 ${{ if eq(parameters.prefix, '') }}:
   displayName: Test suite
 ```
+{% endraw %}
 
 by keeping just the last line and removing the double-space indent.
 
