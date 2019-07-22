@@ -26,6 +26,70 @@ you would give that version number as the `minrust` parameter to
 `azure/stages.yml`. If you wish to disable the MSRV check, set `minrust`
 to `false`.
 
+### Coverage on Rust nightly
+
+```yaml
+stages:
+ - template: azure/stages.yml@templates
+   parameters:
+     nightly_coverage: <bool>
+```
+
+By default, your pipeline will test against the stable Rust version
+bundled with the [tarpaulin Docker
+image](https://github.com/xd009642/tarpaulin#docker). If your project
+only compiles on nightly, you can use the nightly Docker image
+(`latest-nightly`) instead by setting this parameter to `true`. Note
+that you cannot set a _specific_ nightly version, but are instead tied
+to the version that tarpaulin ships. For this reason, nightly coverage
+will always be run with failures allowed (yellow CI) to avoid spurious
+CI failures.
+
+### Ignored tests
+
+```yaml
+stages:
+ - template: azure/stages.yml@templates
+   parameters:
+     test_ignored: <bool>
+```
+
+Set this parameter to `true` to also run tests [marked with
+`#[ignore]`](https://doc.rust-lang.org/book/ch11-02-running-tests.html#ignoring-some-tests-unless-specifically-requested).
+
+### Single-threaded test execution
+
+```yaml
+stages:
+ - template: azure/stages.yml@templates
+   parameters:
+     single_threaded: <bool>
+```
+
+Some codebases cannot run their test suite in a [multi-threaded
+fashion](https://doc.rust-lang.org/book/ch11-02-running-tests.html#running-tests-in-parallel-or-consecutively)
+(e.g., because they rely on external stateful tools). If this is the
+case for you, set this parameter to `true` and your tests will be run
+with `--test-threads=1`.
+
+### Disable checking all features
+
+```yaml
+stages:
+ - template: azure/stages.yml@templates
+   parameters:
+     all_features: <bool>
+```
+
+The default CI setup will run `cargo check --all-features` to ensure
+that all of your features compile, even when they are all used together
+(cargo features [should be
+additive](https://github.com/rust-lang/cargo/issues/4328)). This is
+usually what you want, but in _some_ cases you have features that should
+only be enabled on particular compiler versions, targets, or platforms.
+If you set this parameter to `false`, the `--all-features` check will
+not be run.
+
 ### Benchmark checking
 
 ```yaml

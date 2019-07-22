@@ -22,6 +22,11 @@ fn require_setup_file() {
     include_str!("setup.rs");
 }
 
+#[cfg(test)]
+#[test]
+#[ignore]
+fn ignored() {}
+
 // check that minrust gets set correctly
 #[allow(unused_imports)]
 use std::sync::atomic::AtomicU64;

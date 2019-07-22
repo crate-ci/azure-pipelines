@@ -2,14 +2,19 @@ parameters:
   envs: {}
   setup: []
   submodules: recursive
+  nightly: false
 
 jobs:
  - job: tarpaulin
    displayName: tarpaulin
    pool:
      vmImage: ubuntu-16.04
+   continueOnError: ${{ parameters.nightly }}
    container:
-     image: xd009642/tarpaulin:latest
+     ${{ if eq(parameters.nightly, 'true') }}:
+       image: xd009642/tarpaulin:latest-nightly
+     ${{ if ne(parameters.nightly, 'true') }}:
+       image: xd009642/tarpaulin:latest
      options: --security-opt seccomp=unconfined
    steps:
      # Allow the user to define checkout: self completely manually
