@@ -1,0 +1,20 @@
+# defaults for any parameters that aren't specified
+parameters:
+  rust: stable
+  components: []
+  targets: []
+  setup: []
+
+steps:
+  - template: install-rust.yml
+    parameters:
+      rust: ${{ parameters.rust }}
+      components: ${{ parameters.components }}
+      targets: ${{ parameters.targets }}
+
+  # Checkout any submodules the repository may have
+  - checkout: self
+    submodules: recursive
+
+  # Run any user-specific setup steps
+  - ${{ parameters.setup }}
