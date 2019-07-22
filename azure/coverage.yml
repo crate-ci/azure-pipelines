@@ -12,8 +12,12 @@ jobs:
      image: xd009642/tarpaulin:latest
      options: --security-opt seccomp=unconfined
    steps:
-     - checkout: self
-       submodules: ${{ parameters.submodules }}
+     # Allow the user to define checkout: self completely manually
+     # (they would do so in parameters.setup)
+     # If they don't, we will helpfully check out all submodules recursively
+     - ${{ if ne(parameters.submodules, 'manual') }}:
+       - checkout: self
+         submodules: ${{ parameters.submodules }}
      # workaround for https://github.com/MicrosoftDocs/vsts-docs/issues/4841
      # we sadly can't do this in a separate job, because:
      # https://developercommunity.visualstudio.com/content/problem/642219/setting-output-variable-when-multiple-stages-share.html
