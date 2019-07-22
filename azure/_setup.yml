@@ -4,7 +4,6 @@ parameters:
   components: []
   targets: []
   setup: []
-  submodules: recursive
 
 steps:
   - template: install-rust.yml
@@ -14,9 +13,8 @@ steps:
       targets: ${{ parameters.targets }}
 
   # Checkout any submodules the repository may have
-  - ${{ if ne(parameters.submodules, 'manual') }}:
-    - checkout: self
-      submodules: ${{ parameters.submodules }}
+  - checkout: self
+    submodules: recursive
 
   # Run any user-specific setup steps
   - ${{ parameters.setup }}
