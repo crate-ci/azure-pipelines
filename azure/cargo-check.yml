@@ -29,9 +29,14 @@ jobs:
   # we only check with --all here since we don't care about the actual
   # compilation, just the dependencies + dev-dependencies resolution.
   # we _do_ include all features as it may matter though
-  - script: cargo check --all --locked --all-features
-    condition: and(succeeded(), eq(variables.is_locked, 'true'))
-    displayName: Check that Cargo.lock is satisfiable
+  - ${{ if eq(parameters.all_features, 'true') }}:
+    - script: cargo check --all --locked --all-features
+      condition: and(succeeded(), eq(variables.is_locked, 'true'))
+      displayName: Check that Cargo.lock is satisfiable
+  - ${{ if ne(parameters.all_features, 'true') }}:
+    - script: cargo check --all --locked
+      condition: and(succeeded(), eq(variables.is_locked, 'true'))
+      displayName: Check that Cargo.lock is satisfiable
 
   - ${{ if ne(parameters.benches, 'false') }}:
     - script: cargo check --benches --all
