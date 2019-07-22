@@ -20,8 +20,10 @@ code compiles with and without any features it may have, and ensures
 that your code works with an older Rust version. You can also
 mix-and-match these checks if you wish.
 
-To start, go see [the docs](docs/). If you've done this before, and just
-want the standard YAML again for `azure-pipelines.yml`, here it is:
+To start, go take a look at [the
+documentation](https://crate-ci.github.io/azure-pipelines/). If you've
+done this before, and just want the standard YAML again for
+`azure-pipelines.yml`, here it is:
 
 ```yaml
 stages:
