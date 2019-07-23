@@ -169,6 +169,7 @@ parameters:
   allow_fail: <bool> = false
   test_ignored: <bool> = false
   single_threaded: <bool> = false
+  features: <string> = ''
   envs:
     NAME: value
   setup:
@@ -186,7 +187,8 @@ nightly versions of the compiler. To run tests [marked with
 `#[ignore]`](https://doc.rust-lang.org/book/ch11-02-running-tests.html#ignoring-some-tests-unless-specifically-requested),
 set `test_ignored: true`. To run tests with
 [`--test-threads=1`](https://doc.rust-lang.org/book/ch11-02-running-tests.html#running-tests-in-parallel-or-consecutively),
-set `single_threaded: true`.
+set `single_threaded: true`. To run tests with particular features
+enabled, pass `features: "feat1,feat2,subcrate/feat3"`.
 
 ### Style
 

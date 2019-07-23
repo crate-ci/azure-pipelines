@@ -6,6 +6,7 @@ parameters:
   setup: []
   test_ignored: false
   single_threaded: false
+  features: '' # empty feature list is == default
 
 jobs:
 - job: ${{ parameters.name }}
@@ -34,22 +35,22 @@ jobs:
       rust: ${{ parameters.rust }}
       setup: ${{ parameters.setup }}
   - ${{ if and(eq(parameters.single_threaded, 'true'), eq(parameters.test_ignored, 'true')) }}:
-    - script: cargo test --all -- --ignored --test-threads=1
+    - script: cargo test --all --features "${{ parameters.features }}" -- --ignored --test-threads=1
       displayName: Run tests (single-threaded w/ignored)
       env:
         ${{ insert }}: ${{ parameters.envs }}
   - ${{ if and(eq(parameters.single_threaded, 'true'), ne(parameters.test_ignored, 'true')) }}:
-    - script: cargo test --all -- --test-threads=1
+    - script: cargo test --all --features "${{ parameters.features }}" -- --test-threads=1
       displayName: Run tests (single-threaded)
       env:
         ${{ insert }}: ${{ parameters.envs }}
   - ${{ if and(ne(parameters.single_threaded, 'true'), eq(parameters.test_ignored, 'true')) }}:
-    - script: cargo test --all -- --ignored
+    - script: cargo test --all --features "${{ parameters.features }}" -- --ignored
       displayName: Run tests (incl. ignored)
       env:
         ${{ insert }}: ${{ parameters.envs }}
   - ${{ if and(ne(parameters.single_threaded, 'true'), ne(parameters.test_ignored, 'true')) }}:
-    - script: cargo test --all
+    - script: cargo test --features "${{ parameters.features }}" --all
       displayName: Run tests
       env:
         ${{ insert }}: ${{ parameters.envs }}
