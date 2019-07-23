@@ -23,7 +23,6 @@ jobs:
         setup: ${{ parameters.setup }}
         err_on_warn: true
         allow_fail: true
-  - ${{ if eq(parameters.canaries, 'true') }}:
     - template: cargo-clippy.yml
       parameters:
         name: clippy_beta
