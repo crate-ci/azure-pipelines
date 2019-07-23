@@ -3,6 +3,7 @@ parameters:
   setup: []
   test_ignored: false
   single_threaded: false
+  nightly_feature: ''
 
 jobs:
  - template: test.yml
@@ -28,3 +29,4 @@ jobs:
      envs: ${{ parameters.envs }}
      setup: ${{ parameters.setup }}
      test_ignored: ${{ parameters.test_ignored }}
+     features: ${{ parameters.nightly_feature }}

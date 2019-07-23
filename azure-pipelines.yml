@@ -25,6 +25,7 @@ stages:
      test_ignored: true
      single_threaded: true
      nightly_coverage: true
+     nightly_feature: 'opt_in'
      prefix: "opts_"
      check_all_features: false
      envs:
