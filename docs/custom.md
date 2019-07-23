@@ -157,7 +157,10 @@ Runs `cargo test` on all platforms and across stable, beta, and nightly.
 You can pass the parameter `envs: {...}` to pass [environment
 variables](configuration.md#environment-variables), and `setup: [...]`
 to run [additional setup
-steps](configuration.md#additional-setup-steps).
+steps](configuration.md#additional-setup-steps). You can also pass
+`features` and/or `nightly_feature` to include additional cargo features
+when running the tests. `nightly_feature` will only be included on runs
+with the nightly compiler. See the [test docs](#test) for details.
 
 ### Test
 

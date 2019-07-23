@@ -9,6 +9,7 @@ parameters:
   nightly_coverage: false
   check_all_features: true
   nightly_feature: ''
+  test_features: ''
 
 stages:
  # the format here is so that we can have _two_ instances of this whole
@@ -56,6 +57,7 @@ stages:
          test_ignored: ${{ parameters.test_ignored }}
          single_threaded: ${{ parameters.single_threaded }}
          nightly_feature: ${{ parameters.nightly_feature }}
+         features: ${{ parameters.test_features }}
  - stage: ${{ format('{0}style', parameters.prefix) }}
    ${{ if ne(parameters.prefix, '') }}:
      displayName: ${{ format('Style linting ({0})', parameters.prefix) }}
@@ -80,3 +82,4 @@ stages:
             envs: ${{ parameters.envs }}
             setup: ${{ parameters.setup }}
             nightly: ${{ parameters.nightly_coverage }}
+            features: ${{ parameters.test_features }}
