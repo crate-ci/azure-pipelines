@@ -16,12 +16,12 @@ fn require_env() {
     std::env::var("ENV_IS_SET").unwrap();
 }
 
-#[cfg(not(feature = "ci"))]
+#[cfg(and(test, not(feature = "ci")))]
 fn must_exist() {
     panic!("ci feature was not enabled for test run");
 }
 
-#[cfg(feature = "ci")]
+#[cfg(and(test, feature = "ci"))]
 fn must_exist() {}
 
 #[cfg(test)]
