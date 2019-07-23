@@ -1,6 +1,10 @@
 parameters:
   envs: {}
   setup: []
+  test_ignored: false
+  single_threaded: false
+  nightly_feature: ''
+  features: ''
   canaries: true
 
 jobs:
@@ -10,15 +14,18 @@ jobs:
      cross: true # also test on Windows and macOS
      envs: ${{ parameters.envs }}
      setup: ${{ parameters.setup }}
+     test_ignored: ${{ parameters.test_ignored }}
+     features: ${{ parameters.features }}
  - ${{ if eq(parameters.canaries, 'true') }}:
    - template: test.yml
      parameters:
        name: cargo_test_beta
        rust: beta
-       allow_fail: true
        envs: ${{ parameters.envs }}
        setup: ${{ parameters.setup }}
- - ${{ if eq(parameters.canaries, 'true') }}:
+       test_ignored: ${{ parameters.test_ignored }}
+       single_threaded: ${{ parameters.single_threaded }}
+       features: ${{ parameters.features }}
    - template: test.yml
      parameters:
        name: cargo_test_nightly
@@ -26,3 +33,5 @@ jobs:
        allow_fail: true
        envs: ${{ parameters.envs }}
        setup: ${{ parameters.setup }}
+       test_ignored: ${{ parameters.test_ignored }}
+       features: "${{ parameters.features }},${{ parameters.nightly_feature }}"

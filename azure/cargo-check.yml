@@ -2,6 +2,7 @@ parameters:
   rust: stable
   benches: false
   setup: []
+  all_features: false
   err_on_warn: false
   allow_fail: false
 
@@ -21,7 +22,7 @@ jobs:
   pool:
     vmImage: ubuntu-16.04
   steps:
-  - template: install-rust.yml
+  - template: _setup.yml
     parameters:
       rust: ${{ parameters.rust }}
       setup: ${{ parameters.setup }}
@@ -32,16 +33,29 @@ jobs:
     displayName: Check compilation w/ default features
   - script: cargo check --all --bins --examples --tests --no-default-features
     displayName: Check compilation w/ no features
-  - script: cargo check --all --bins --examples --tests --all-features
-    displayName: Check compilation w/ all features
-  - bash: "[[ -e Cargo.lock ]] && echo '##vso[task.setvariable variable=is_locked]true' || echo '##vso[task.setvariable variable=is_locked]false'"
+  - ${{ if eq(parameters.all_features, 'true') }}:
+    - script: cargo check --all --bins --examples --tests --all-features
+      displayName: Check compilation w/ all features
+  - bash: |
+      if git cat-file -e HEAD:Cargo.lock; then
+        echo 'Found Cargo.lock';
+        echo '##vso[task.setvariable variable=is_locked]true';
+      else
+        echo 'Did not find Cargo.lock';
+        echo '##vso[task.setvariable variable=is_locked]false';
+      fi
     displayName: Are dependencies locked?
   # we only check with --all here since we don't care about the actual
   # compilation, just the dependencies + dev-dependencies resolution.
   # we _do_ include all features as it may matter though
-  - script: cargo check --all --locked --all-features
-    condition: and(succeeded(), eq(variables.is_locked, 'true'))
-    displayName: Check that Cargo.lock is satisfiable
+  - ${{ if eq(parameters.all_features, 'true') }}:
+    - script: cargo check --all --locked --all-features
+      condition: and(succeeded(), eq(variables.is_locked, 'true'))
+      displayName: Check that Cargo.lock is satisfiable
+  - ${{ if ne(parameters.all_features, 'true') }}:
+    - script: cargo check --all --locked
+      condition: and(succeeded(), eq(variables.is_locked, 'true'))
+      displayName: Check that Cargo.lock is satisfiable
 
   - ${{ if ne(parameters.benches, 'false') }}:
     - script: cargo check --benches --all
