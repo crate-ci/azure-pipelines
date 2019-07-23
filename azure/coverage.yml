@@ -40,7 +40,7 @@ jobs:
      # Run any user-specific setup steps
      # Sadly we don't have a way of communicating the condition on has_secret
      - ${{ parameters.setup }}
-     - script: cargo tarpaulin --featurs "${{ parameters.features }}" --out Xml
+     - script: cargo tarpaulin --features "${{ parameters.features }}" --out Xml
        displayName: Run tarpaulin
        condition: and(succeeded(), eq(variables.has_secret, 'true'))
        env:
