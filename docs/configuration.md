@@ -62,28 +62,29 @@ stages:
 Set this parameter to `true` to also run tests [marked with
 `#[ignore]`](https://doc.rust-lang.org/book/ch11-02-running-tests.html#ignoring-some-tests-unless-specifically-requested).
 
-### Nightly feature flags
+### Feature flags
 
 ```yaml
 stages:
  - template: azure/stages.yml@templates
    parameters:
+     test_features: <string> = ''
      nightly_feature: <string> = ''
 ```
 
 If this parameter is set, it is passed along with `--features` to `cargo
-test` when run on nightly (and _only_ on nightly). This is useful if you
-have nightly-only features that you'd still like to test on CI. Do note
-that since nightly tests are always allowed to fail, you will only see
-yellow CI if these tests fail. If you have such a feature, you
-_probably_ also want to disable [checking all
-features](#disable-checking-all-features). You can pass multiple
-features separated by comma (no spaces).
+test`. This is useful if you have non-default features that you'd like
+to test on CI. You can also set `nightly_feature` which will only be
+included when run on nightly, though do note that since nightly tests
+are always allowed to fail, you will only see yellow CI if these tests
+fail. If you have features like this, you _probably_ also want to
+disable [checking all features](#disable-checking-all-features). You can
+pass multiple features separated by comma (no spaces).
 
 If you are working within a cargo workspace, you will have to pass
 features as `subcrate/feature` as described in [this
 issue](https://github.com/rust-lang/cargo/issues/5015). There is not
-currently a way to disabling default features on nightly for CI.
+currently a way to disabling default features for CI tests.
 
 ### Single-threaded test execution
 

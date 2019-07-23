@@ -4,6 +4,7 @@ parameters:
   test_ignored: false
   single_threaded: false
   nightly_feature: ''
+  features: ''
 
 jobs:
  - template: test.yml
@@ -13,6 +14,7 @@ jobs:
      envs: ${{ parameters.envs }}
      setup: ${{ parameters.setup }}
      test_ignored: ${{ parameters.test_ignored }}
+     features: ${{ parameters.features }}
  - template: test.yml
    parameters:
      name: cargo_test_beta
@@ -21,6 +23,7 @@ jobs:
      setup: ${{ parameters.setup }}
      test_ignored: ${{ parameters.test_ignored }}
      single_threaded: ${{ parameters.single_threaded }}
+     features: ${{ parameters.features }}
  - template: test.yml
    parameters:
      name: cargo_test_nightly
@@ -29,4 +32,4 @@ jobs:
      envs: ${{ parameters.envs }}
      setup: ${{ parameters.setup }}
      test_ignored: ${{ parameters.test_ignored }}
-     features: ${{ parameters.nightly_feature }}
+     features: "${{ parameters.features }},${{ parameters.nightly_feature }}"
