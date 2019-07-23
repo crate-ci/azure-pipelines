@@ -3,7 +3,7 @@ stages:
    parameters:
      minrust: 1.34.0 # integer atomics
      codecov_token: $(CODECOV_TOKEN_SECRET)
-     ci_features: ci
+     test_features: ci
      envs:
        ENV_IS_SET: true
      setup:
@@ -14,7 +14,7 @@ stages:
      minrust: 1.34.0 # integer atomics
      prefix: "nosecret_"
      codecov_token: $(DOES_NOT_EXIST)
-     ci_features: ci
+     test_features: ci
      envs:
        ENV_IS_SET: true
      setup:
@@ -24,7 +24,7 @@ stages:
    parameters:
      minrust: 1.34.0 # integer atomics
      benches: true
-     ci_features: ci
+     test_features: ci
      test_ignored: true
      single_threaded: true
      nightly_coverage: true
@@ -40,7 +40,7 @@ stages:
    parameters:
      minrust: false
      prefix: "bin_"
-     ci_features: ci
+     test_features: ci
      envs:
        ENV_IS_SET: true
      setup:
