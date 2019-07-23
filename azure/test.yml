@@ -44,12 +44,12 @@ jobs:
       displayName: Run tests (single-threaded)
       env:
         ${{ insert }}: ${{ parameters.envs }}
-  - ${{ if and(ne(parameters.single_threaded, 'true'), eq(parameters.test_ignored, 'true')) }}:
+  - ${{ if and(eq(parameters.test_ignored, 'true'), ne(parameters.single_threaded, 'true')) }}:
     - script: cargo test --all --features "${{ parameters.features }}" -- --ignored
       displayName: Run ignored tests
       env:
         ${{ insert }}: ${{ parameters.envs }}
-  - ${{ if and(eq(parameters.single_threaded, 'true'), eq(parameters.test_ignored, 'true')) }}:
+  - ${{ if and(eq(parameters.test_ignored, 'true'), eq(parameters.single_threaded, 'true')) }}:
     - script: cargo test --all --features "${{ parameters.features }}" -- --ignored --test-threads=1
       displayName: Run ignored tests (single-threaded)
       env:
