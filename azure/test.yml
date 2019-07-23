@@ -35,7 +35,7 @@ jobs:
       rust: ${{ parameters.rust }}
       setup: ${{ parameters.setup }}
   - ${{ if ne(parameters.single_threaded, 'true') }}:
-    - script: cargo test --features "${{ parameters.features }}" --all
+    - script: cargo test --all --features "${{ parameters.features }}"
       displayName: Run tests
       env:
         ${{ insert }}: ${{ parameters.envs }}
