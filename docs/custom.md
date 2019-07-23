@@ -163,11 +163,20 @@ steps](configuration.md#additional-setup-steps).
 
 ```yaml
 template: azure/test.yml@templates
+parameters:
+  rust: <string> = 'stable'
+  cross: <bool> = false
+  allow_fail: <bool> = false
+  test_ignored: <bool> = false
+  single_threaded: <bool> = false
+  envs:
+    NAME: value
+  setup:
+    - task
 ```
 
-Runs `cargo test` on a given Rust version (`rust` parameter), on Linux
-(or all platforms if `cross: true`) You can pass the parameter `envs:
-{...}` to pass [environment
+Runs `cargo test` on Linux (or all platforms if `cross: true`) You can
+pass the parameter `envs: {...}` to pass [environment
 variables](configuration.md#environment-variables), and `setup: [...]`
 to run [additional setup
 steps](configuration.md#additional-setup-steps). If you pass
