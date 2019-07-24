@@ -28,7 +28,7 @@ stages:
          benches: ${{ parameters.benches }}
          setup: ${{ parameters.setup }}
          all_features: ${{ parameters.check_all_features }}
- - ${{ if ne(parameters.minrust, 'false') }}:
+ - ${{ if ne('false', parameters.minrust) }}:
    # This represents the minimum Rust version supported.
    # Tests are not run as tests may require newer versions of rust.
    - stage: ${{ format('{0}msrv', parameters.prefix) }}
