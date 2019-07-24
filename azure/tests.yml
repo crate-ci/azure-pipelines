@@ -14,6 +14,7 @@ jobs:
      envs: ${{ parameters.envs }}
      setup: ${{ parameters.setup }}
      test_ignored: ${{ parameters.test_ignored }}
+     single_threaded: ${{ parameters.single_threaded }}
      features: ${{ parameters.features }}
  - template: test.yml
    parameters:
@@ -32,4 +33,5 @@ jobs:
      envs: ${{ parameters.envs }}
      setup: ${{ parameters.setup }}
      test_ignored: ${{ parameters.test_ignored }}
+     single_threaded: ${{ parameters.single_threaded }}
      features: "${{ parameters.features }},${{ parameters.nightly_feature }}"
