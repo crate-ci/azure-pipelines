@@ -21,7 +21,7 @@ jobs:
     displayName: Check compilation w/ default features
   - script: cargo check --all --bins --examples --tests --no-default-features
     displayName: Check compilation w/ no features
-  - ${{ if eq(parameters.all_features, 'true') }}:
+  - ${{ if eq('true', parameters.all_features) }}:
     - script: cargo check --all --bins --examples --tests --all-features
       displayName: Check compilation w/ all features
   - bash: |
@@ -36,15 +36,15 @@ jobs:
   # we only check with --all here since we don't care about the actual
   # compilation, just the dependencies + dev-dependencies resolution.
   # we _do_ include all features as it may matter though
-  - ${{ if eq(parameters.all_features, 'true') }}:
+  - ${{ if eq('true', parameters.all_features) }}:
     - script: cargo check --all --locked --all-features
       condition: and(succeeded(), eq(variables.is_locked, 'true'))
       displayName: Check that Cargo.lock is satisfiable
-  - ${{ if ne(parameters.all_features, 'true') }}:
+  - ${{ if ne('true', parameters.all_features) }}:
     - script: cargo check --all --locked
       condition: and(succeeded(), eq(variables.is_locked, 'true'))
       displayName: Check that Cargo.lock is satisfiable
 
-  - ${{ if ne(parameters.benches, 'false') }}:
+  - ${{ if ne('false', parameters.benches) }}:
     - script: cargo check --benches --all
       displayName: Check benchmarks

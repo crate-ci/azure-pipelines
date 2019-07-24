@@ -12,9 +12,9 @@ jobs:
      vmImage: ubuntu-16.04
    continueOnError: ${{ parameters.nightly }}
    container:
-     ${{ if eq(parameters.nightly, 'true') }}:
+     ${{ if eq('true', parameters.nightly) }}:
        image: xd009642/tarpaulin:latest-nightly
-     ${{ if ne(parameters.nightly, 'true') }}:
+     ${{ if ne('true', parameters.nightly) }}:
        image: xd009642/tarpaulin:latest
      options: --security-opt seccomp=unconfined
    steps:
@@ -42,11 +42,11 @@ jobs:
      - ${{ parameters.setup }}
      - script: cargo tarpaulin --features "${{ parameters.features }}" --out Xml
        displayName: Run tarpaulin
-       condition: and(succeeded(), eq(variables.has_secret, 'true'))
+       condition: and(succeeded(), eq('true', variables.has_secret))
        env:
          ${{ insert }}: ${{ parameters.envs }}
      - script: bash <(curl -s https://codecov.io/bash)
        displayName: Upload results to codecov
-       condition: and(succeeded(), eq(variables.has_secret, 'true'))
+       condition: and(succeeded(), eq('true', variables.has_secret))
        env:
          CODECOV_TOKEN: ${{ parameters.codecov_token }}

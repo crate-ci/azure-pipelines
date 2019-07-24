@@ -10,12 +10,12 @@ parameters:
 
 jobs:
 - job: ${{ parameters.name }}
-  ${{ if eq(parameters.test_ignored, 'true') }}:
+  ${{ if eq('true', parameters.test_ignored) }}:
     displayName: cargo +${{ parameters.rust }} test -- --ignored
-  ${{ if ne(parameters.test_ignored, 'true') }}:
+  ${{ if ne('true', parameters.test_ignored) }}:
     displayName: cargo +${{ parameters.rust }} test
   continueOnError: ${{ parameters.allow_fail }}
-  ${{ if eq(parameters.cross, 'true') }}:
+  ${{ if eq('true', parameters.cross) }}:
     strategy:
       matrix:
         Linux:
@@ -24,7 +24,7 @@ jobs:
           vmImage: macOS-10.14
         Windows:
           vmImage: windows-2019
-  ${{ if ne(parameters.cross, 'true') }}:
+  ${{ if ne('true', parameters.cross) }}:
     variables:
       vmImage: ubuntu-16.04
   pool:
@@ -34,22 +34,22 @@ jobs:
     parameters:
       rust: ${{ parameters.rust }}
       setup: ${{ parameters.setup }}
-  - ${{ if ne(parameters.single_threaded, 'true') }}:
+  - ${{ if ne('true', parameters.single_threaded) }}:
     - script: cargo test --all --features "${{ parameters.features }}"
       displayName: Run tests
       env:
         ${{ insert }}: ${{ parameters.envs }}
-  - ${{ if eq(parameters.single_threaded, 'true') }}:
+  - ${{ if eq('true', parameters.single_threaded) }}:
     - script: cargo test --all --features "${{ parameters.features }}" -- --test-threads=1
       displayName: Run tests (single-threaded)
       env:
         ${{ insert }}: ${{ parameters.envs }}
-  - ${{ if and(eq(parameters.test_ignored, 'true'), ne(parameters.single_threaded, 'true')) }}:
+  - ${{ if and(eq('true', parameters.test_ignored), ne('true', parameters.single_threaded)) }}:
     - script: cargo test --all --features "${{ parameters.features }}" -- --ignored
       displayName: Run ignored tests
       env:
         ${{ insert }}: ${{ parameters.envs }}
-  - ${{ if and(eq(parameters.test_ignored, 'true'), eq(parameters.single_threaded, 'true')) }}:
+  - ${{ if and(eq('true', parameters.test_ignored), eq('true', parameters.single_threaded)) }}:
     - script: cargo test --all --features "${{ parameters.features }}" -- --ignored --test-threads=1
       displayName: Run ignored tests (single-threaded)
       env:
