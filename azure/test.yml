@@ -43,12 +43,12 @@ jobs:
     - script: echo '##vso[task.setvariable variable=options]$(options) --test_threads=1'
   - ${{ if eq(parameters.test_ignored, 'true')}}:
     - script: echo '##vso[task.setvariable variable=options]$(options) --ignored'
-  - ${{ if eq(parameters.raw_opts, 'true') }}:
+  - ${{ if eq(true, parameters.raw_opts) }}:
     - script: cargo test ${{ parameters.raw_opts }}
       displayName: Run tests (with... ${{ parameters.raw_opts }})
       env:
         ${{ insert }}: ${{ parameters.envs }}
-  - ${{ if ne(parameters.raw_opts, 'true') }}:
+  - ${{ if ne(true, parameters.raw_opts) }}:
     - script: cargo test $(options)
       displayName: Run tests
       env:
