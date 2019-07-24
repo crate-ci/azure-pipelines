@@ -31,13 +31,12 @@ jobs:
       vmImage: ubuntu-16.04
   pool:
     vmImage: $(vmImage)
-  variables:
-    options: ''
   steps:
   - template: _setup.yml
     parameters:
       rust: ${{ parameters.rust }}
       setup: ${{ parameters.setup }}
+  - script: echo '##vso[task.setvariable variable=options] '
   - ${{ if or(eq(parameters.single_threaded, 'true'), eq(parameters.test_ignored, 'true'))}}:
     - script: echo '##vso[task.setvariable variable=options]$(options) --'
   - ${{ if eq(parameters.single_threaded, 'true') }}:
