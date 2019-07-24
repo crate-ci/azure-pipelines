@@ -8,15 +8,7 @@ parameters:
   single_threaded: false
   raw_opts: ''
 
-variables:
-  options: 
-    - 'cargo test --all'
-    - ${{ or(eq(parameters.single_threaded, 'true'), eq(parameters.test_ignored, 'true'))}}
-      - '--'
-    - ${{ if eq(parameters.single_threaded, 'true') }}
-      - '--test_threads=1'
-    - ${{ if eq(parameters.test_ignored, 'true')}}
-      - '--ignored'
+
 
 jobs:
 - job: ${{ parameters.name }}
@@ -39,6 +31,15 @@ jobs:
       vmImage: ubuntu-16.04
   pool:
     vmImage: $(vmImage)
+  variables:
+    options: 
+      - 'cargo test --all'
+      - ${{ or(eq(parameters.single_threaded, 'true'), eq(parameters.test_ignored, 'true'))}}
+        - '--'
+      - ${{ if eq(parameters.single_threaded, 'true') }}
+        - '--test_threads=1'
+      - ${{ if eq(parameters.test_ignored, 'true')}}
+        - '--ignored'
   steps:
   - template: _setup.yml
     parameters:
