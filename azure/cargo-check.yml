@@ -3,13 +3,22 @@ parameters:
   benches: false
   setup: []
   all_features: false
+  err_on_warn: false
+  allow_fail: false
 
 jobs:
 - job: ${{ parameters.name }}
   ${{ if eq(parameters.rust, 'stable') }}:
-    displayName: cargo check
+    ${{ if eq(parameters.err_on_warn, 'true') }}:
+      displayName: "cargo check -Dwarnings"
+    ${{ if ne(parameters.err_on_warn, 'true') }}:
+      displayName: cargo check
   ${{ if ne(parameters.rust, 'stable') }}:
-    displayName: cargo +${{ parameters.rust }} check
+    ${{ if eq(parameters.err_on_warn, 'true') }}:
+      displayName: "cargo +${{ parameters.rust }} check -Dwarnings"
+    ${{ if ne(parameters.err_on_warn, 'true') }}:
+      displayName: cargo +${{ parameters.rust }} check
+  continueOnError: ${{ parameters.allow_fail }}
   pool:
     vmImage: ubuntu-16.04
   steps:
@@ -17,6 +26,9 @@ jobs:
     parameters:
       rust: ${{ parameters.rust }}
       setup: ${{ parameters.setup }}
+  - ${{ if eq(parameters.err_on_warn, 'true') }}:
+    - bash: echo "##vso[task.setvariable variable=RUSTFLAGS;]-Dwarnings"
+      displayName: "Enable warnings from rustc"
   - script: cargo check --all --bins --examples --tests
     displayName: Check compilation w/ default features
   - script: cargo check --all --bins --examples --tests --no-default-features

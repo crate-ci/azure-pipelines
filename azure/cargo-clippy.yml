@@ -19,5 +19,5 @@ jobs:
         setup: ${{ parameters.setup }}
         components:
           - clippy
-    - script: cargo clippy --all 
+    - script: cargo clippy --all
       displayName: Run clippy

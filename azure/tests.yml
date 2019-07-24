@@ -5,6 +5,7 @@ parameters:
   single_threaded: false
   nightly_feature: ''
   features: ''
+  canaries: true
 
 jobs:
  - template: test.yml
@@ -15,21 +16,22 @@ jobs:
      setup: ${{ parameters.setup }}
      test_ignored: ${{ parameters.test_ignored }}
      features: ${{ parameters.features }}
- - template: test.yml
-   parameters:
-     name: cargo_test_beta
-     rust: beta
-     envs: ${{ parameters.envs }}
-     setup: ${{ parameters.setup }}
-     test_ignored: ${{ parameters.test_ignored }}
-     single_threaded: ${{ parameters.single_threaded }}
-     features: ${{ parameters.features }}
- - template: test.yml
-   parameters:
-     name: cargo_test_nightly
-     rust: nightly
-     allow_fail: true
-     envs: ${{ parameters.envs }}
-     setup: ${{ parameters.setup }}
-     test_ignored: ${{ parameters.test_ignored }}
-     features: "${{ parameters.features }},${{ parameters.nightly_feature }}"
+ - ${{ if eq(parameters.canaries, 'true') }}:
+   - template: test.yml
+     parameters:
+       name: cargo_test_beta
+       rust: beta
+       envs: ${{ parameters.envs }}
+       setup: ${{ parameters.setup }}
+       test_ignored: ${{ parameters.test_ignored }}
+       single_threaded: ${{ parameters.single_threaded }}
+       features: ${{ parameters.features }}
+   - template: test.yml
+     parameters:
+       name: cargo_test_nightly
+       rust: nightly
+       allow_fail: true
+       envs: ${{ parameters.envs }}
+       setup: ${{ parameters.setup }}
+       test_ignored: ${{ parameters.test_ignored }}
+       features: "${{ parameters.features }},${{ parameters.nightly_feature }}"
