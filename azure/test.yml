@@ -32,14 +32,15 @@ jobs:
   pool:
     vmImage: $(vmImage)
   variables:
-    options: 
-      - 'cargo test --all'
-      - ${{ or(eq(parameters.single_threaded, 'true'), eq(parameters.test_ignored, 'true'))}}
-        - '--'
-      - ${{ if eq(parameters.single_threaded, 'true') }}
-        - '--test_threads=1'
-      - ${{ if eq(parameters.test_ignored, 'true')}}
-        - '--ignored'
+    options: ''
+  ${{ if or(eq(parameters.single_threaded, 'true'), eq(parameters.test_ignored, 'true'))}}:
+    variables:
+      options: ${{format('$(options) {0}', '--')}}
+  ${{ if eq(parameters.single_threaded, 'true') }}:
+    variables:
+      options: ${{format('$(options) {0}', '--test_threads=1')}}
+  ${{ if eq(parameters.test_ignored, 'true')}}:
+    variables: ${{format('$(options) {0}', '--ignored')}}
   steps:
   - template: _setup.yml
     parameters:
@@ -51,7 +52,7 @@ jobs:
       env:
         ${{ insert }}: ${{ parameters.envs }}
   - ${{ if ne(parameters.raw_opts, 'true') }}:
-    - script: ${{join(' ', $(options))}}
+    - script: cargo test $(options)
       displayName: Run tests
       env:
         ${{ insert }}: ${{ parameters.envs }}
