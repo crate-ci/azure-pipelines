@@ -38,12 +38,12 @@ jobs:
       rust: ${{ parameters.rust }}
       setup: ${{ parameters.setup }}
   # Cargo options go here
-  - bash: echo '##vso[task.setvariable variable=options]$(cargo_opts) --all'
+  - bash: echo '##vso[task.setvariable variable=cargo_opts]$(cargo_opts) --all'
   - ${{ if eq(true, parameters.features)}}:
-    - bash: echo '##vso[task.setvariable variable=options]$(cargo_opts) --features "${{ parameters.features }}"'
+    - bash: echo '##vso[task.setvariable variable=cargo_opts]$(cargo_opts) --features "${{ parameters.features }}"'
   # Libtest options go here
   - ${{ if eq('true', parameters.single_threaded) }}:
-    - bash: echo '##vso[task.setvariable variable=options]$(libtest_opts) --test-threads=1'
+    - bash: echo '##vso[task.setvariable variable=libtest_opts]$(libtest_opts) --test-threads=1'
   # Run tests with the given options
   - bash: cargo test $(cargo_opts) ${{ parameters.raw_opts }} $(libtest_opts)
     displayName: Run tests
