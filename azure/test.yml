@@ -9,8 +9,6 @@ parameters:
   features: '' # empty feature list is == default
   raw_opts: ''
 
-
-
 jobs:
 - job: ${{ parameters.name }}
   ${{ if eq('true', parameters.test_ignored) }}:
