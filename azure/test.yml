@@ -27,9 +27,10 @@ jobs:
           vmImage: macOS-10.14
         Windows:
           vmImage: windows-2019
-  ${{ if ne('true', parameters.cross) }}:
-    variables:
+  variables:
+    ${{ if ne('true', parameters.cross) }}:
       vmImage: ubuntu-16.04
+    options: ''
   pool:
     vmImage: $(vmImage)
   steps:
@@ -37,7 +38,6 @@ jobs:
     parameters:
       rust: ${{ parameters.rust }}
       setup: ${{ parameters.setup }}
-  - script: echo '##vso[task.setvariable variable=options] '
   # Cargo options go here
   - script: echo '##vso[task.setvariable variable=options]$(options) --all'
   - ${{ if eq(true, parameters.features)}}:
@@ -52,12 +52,12 @@ jobs:
     - script: echo '##vso[task.setvariable variable=options]$(options) --ignored'
   # Run tests with the given options
   - ${{ if eq(true, parameters.raw_opts) }}:
-    - script: cargo test ${{ parameters.raw_opts }}
+    - bash: cargo test ${{ parameters.raw_opts }}
       displayName: Run tests (with... ${{ parameters.raw_opts }})
       env:
         ${{ insert }}: ${{ parameters.envs }}
   - ${{ if ne(true, parameters.raw_opts) }}:
-    - script: cargo test $(options)
+    - bash: cargo test $(options)
       displayName: Run tests
       env:
         ${{ insert }}: ${{ parameters.envs }}
