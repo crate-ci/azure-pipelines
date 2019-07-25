@@ -7,7 +7,7 @@ parameters:
   test_ignored: false
   single_threaded: false
   features: '' # empty feature list is == default
-  raw_opts: ''
+  raw_opts: '--' # Defaults to the separator between cargo opts and libtest opts
 
 jobs:
 - job: ${{ parameters.name }}
@@ -28,7 +28,8 @@ jobs:
   variables:
     ${{ if ne('true', parameters.cross) }}:
       vmImage: ubuntu-16.04
-    options: ''
+    cargo_opts: ''
+    libtest_opts: ''
   pool:
     vmImage: $(vmImage)
   steps:
@@ -37,26 +38,19 @@ jobs:
       rust: ${{ parameters.rust }}
       setup: ${{ parameters.setup }}
   # Cargo options go here
-  - bash: echo '##vso[task.setvariable variable=options]$(options) --all'
+  - bash: echo '##vso[task.setvariable variable=options]$(cargo_opts) --all'
   - ${{ if eq(true, parameters.features)}}:
-    - bash: echo '##vso[task.setvariable variable=options]$(options) --features "${{ parameters.features }}"'
-  # Add any raw args
-  - ${{ if eq(true, parameters.raw_opts) }}:
-    - bash: echo '##vso[task.setvariable variable=options]$(options) ${{ parameters.raw_opts }}'
-  # Add any additional conditional libtest options to this check
-  # Attempts to ensure that any raw args passed do not interfere
-  - ${{ if and(or(eq('true', parameters.single_threaded), eq('true', parameters.test_ignored)), not(endsWith(parameters.raw_opts, '--'))) }}:
-    - bash: echo '##vso[task.setvariable variable=options]$(options) --'
-  # Options passed to libtest go here
+    - bash: echo '##vso[task.setvariable variable=options]$(cargo_opts) --features "${{ parameters.features }}"'
+  # Libtest options go here
   - ${{ if eq('true', parameters.single_threaded) }}:
-    - bash: echo '##vso[task.setvariable variable=options]$(options) --test-threads=1'
+    - bash: echo '##vso[task.setvariable variable=options]$(libtest_opts) --test-threads=1'
   # Run tests with the given options
-  - bash: cargo test $(options)
+  - bash: cargo test $(cargo_opts) ${{ parameters.raw_opts }} $(libtest_opts)
     displayName: Run tests
     env:
       ${{ insert }}: ${{ parameters.envs }}
   - ${{ if eq('true', parameters.test_ignored)}}:
-    - bash: cargo test $(options) --ignored
+    - bash: cargo test $(cargo_opts) ${{ parameters.raw_opts }} $(libtest_opts) --ignored
       displayName: Run ignored tests
       env:
         ${{ insert }}: ${{ parameters.envs }}
