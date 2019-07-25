@@ -45,7 +45,7 @@ jobs:
     - bash: echo '##vso[task.setvariable variable=options]$(options) ${{ parameters.raw_opts }}'
   # Add any additional conditional libtest options to this check
   # Attempts to ensure that any raw args passed do not interfere
-  - ${{ if and( or(eq(true, parameters.single_threaded), eq(true, parameters.test_ignored)), not(endsWith(parameters.raw_opts, '--')) ) }}:
+  - ${{ if and(or(eq(true, parameters.single_threaded), eq(true, parameters.test_ignored)), not(endsWith(parameters.raw_opts, '--'))) }}:
     - bash: echo '##vso[task.setvariable variable=options]$(options) --'
   # Options passed to libtest go here
   - ${{ if eq(true, parameters.single_threaded) }}:
@@ -57,7 +57,7 @@ jobs:
       ${{ insert }}: ${{ parameters.envs }}
   - ${{ if eq(true, parameters.test_ignored)}}:
     - bash: cargo test $(options) --ignored
-    displayName: Run ignored tests
-    env:
-      ${{ insert }}: ${{ parameters.envs }}
+      displayName: Run ignored tests
+      env:
+        ${{ insert }}: ${{ parameters.envs }}
 
