@@ -42,7 +42,7 @@ jobs:
   - script: echo '##vso[task.setvariable variable=options]$(options) --all'
   - ${{ if eq(true, parameters.features)}}:
     - script: echo '##vso[task.setvariable variable=options]$(options) --features "${{ parameters.features }}"'
-  # Add any additional conditional cargo options to this check
+  # Add any additional conditional libtest options to this check
   - ${{ if or(eq(true, parameters.single_threaded), eq(true, parameters.test_ignored))}}:
     - script: echo '##vso[task.setvariable variable=options]$(options) --'
   # Options passed to libtest go here
