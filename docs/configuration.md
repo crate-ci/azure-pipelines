@@ -107,7 +107,7 @@ with `--test-threads=1`.
 stages:
  - template: azure/stages.yml@templates
    parameters:
-     all_features: <bool> = true
+     check_all_features: <bool> = true
 ```
 
 The default CI setup will run `cargo check --all-features` to ensure
