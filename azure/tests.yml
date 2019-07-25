@@ -5,6 +5,7 @@ parameters:
   single_threaded: false
   nightly_feature: ''
   features: ''
+  raw_opts: ''
 
 jobs:
  - template: test.yml
@@ -16,6 +17,7 @@ jobs:
      test_ignored: ${{ parameters.test_ignored }}
      single_threaded: ${{ parameters.single_threaded }}
      features: ${{ parameters.features }}
+     raw_opts: ${{ parameters.raw_opts }}
  - template: test.yml
    parameters:
      name: cargo_test_beta
@@ -25,6 +27,7 @@ jobs:
      test_ignored: ${{ parameters.test_ignored }}
      single_threaded: ${{ parameters.single_threaded }}
      features: ${{ parameters.features }}
+     raw_opts: ${{ parameters.raw_opts }}
  - template: test.yml
    parameters:
      name: cargo_test_nightly
@@ -35,3 +38,4 @@ jobs:
      test_ignored: ${{ parameters.test_ignored }}
      single_threaded: ${{ parameters.single_threaded }}
      features: "${{ parameters.features }},${{ parameters.nightly_feature }}"
+     raw_opts: ${{ parameters.raw_opts }}

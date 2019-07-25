@@ -10,6 +10,7 @@ parameters:
   check_all_features: true
   nightly_feature: ''
   test_features: ''
+  test_args_raw: ''
 
 stages:
  # the format here is so that we can have _two_ instances of this whole
@@ -58,6 +59,7 @@ stages:
          single_threaded: ${{ parameters.single_threaded }}
          nightly_feature: ${{ parameters.nightly_feature }}
          features: ${{ parameters.test_features }}
+         raw_opts: ${{ parameters.test_args_raw }}
  - stage: ${{ format('{0}style', parameters.prefix) }}
    ${{ if ne(parameters.prefix, '') }}:
      displayName: ${{ format('Style linting ({0})', parameters.prefix) }}

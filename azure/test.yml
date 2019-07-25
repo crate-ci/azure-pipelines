@@ -7,6 +7,9 @@ parameters:
   test_ignored: false
   single_threaded: false
   features: '' # empty feature list is == default
+  raw_opts: ''
+
+
 
 jobs:
 - job: ${{ parameters.name }}
@@ -34,23 +37,28 @@ jobs:
     parameters:
       rust: ${{ parameters.rust }}
       setup: ${{ parameters.setup }}
-  - ${{ if ne('true', parameters.single_threaded) }}:
-    - script: cargo test --all --features "${{ parameters.features }}"
+  - script: echo '##vso[task.setvariable variable=options] '
+  # Cargo options go here
+  - script: echo '##vso[task.setvariable variable=options]$(options) --all'
+  - ${{ if eq(true, parameters.features)}}:
+    - script: echo '##vso[task.setvariable variable=options]$(options) --features "${{ parameters.features }}"'
+  # Add any additional conditional cargo options to this check
+  - ${{ if or(eq(true, parameters.single_threaded), eq(true, parameters.test_ignored))}}:
+    - script: echo '##vso[task.setvariable variable=options]$(options) --'
+  # Options passed to libtest go here
+  - ${{ if eq(true, parameters.single_threaded) }}:
+    - script: echo '##vso[task.setvariable variable=options]$(options) --test_threads=1'
+  - ${{ if eq(true, parameters.test_ignored)}}:
+    - script: echo '##vso[task.setvariable variable=options]$(options) --ignored'
+  # Run tests with the given options
+  - ${{ if eq(true, parameters.raw_opts) }}:
+    - script: cargo test ${{ parameters.raw_opts }}
+      displayName: Run tests (with... ${{ parameters.raw_opts }})
+      env:
+        ${{ insert }}: ${{ parameters.envs }}
+  - ${{ if ne(true, parameters.raw_opts) }}:
+    - script: cargo test $(options)
       displayName: Run tests
       env:
         ${{ insert }}: ${{ parameters.envs }}
-  - ${{ if eq('true', parameters.single_threaded) }}:
-    - script: cargo test --all --features "${{ parameters.features }}" -- --test-threads=1
-      displayName: Run tests (single-threaded)
-      env:
-        ${{ insert }}: ${{ parameters.envs }}
-  - ${{ if and(eq('true', parameters.test_ignored), ne('true', parameters.single_threaded)) }}:
-    - script: cargo test --all --features "${{ parameters.features }}" -- --ignored
-      displayName: Run ignored tests
-      env:
-        ${{ insert }}: ${{ parameters.envs }}
-  - ${{ if and(eq('true', parameters.test_ignored), eq('true', parameters.single_threaded)) }}:
-    - script: cargo test --all --features "${{ parameters.features }}" -- --ignored --test-threads=1
-      displayName: Run ignored tests (single-threaded)
-      env:
-        ${{ insert }}: ${{ parameters.envs }}
+
