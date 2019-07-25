@@ -5,7 +5,7 @@ parameters:
   single_threaded: false
   nightly_feature: ''
   features: ''
-  raw_opts: ''
+  raw_opts: '--'
 
 jobs:
  - template: test.yml

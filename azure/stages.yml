@@ -10,7 +10,7 @@ parameters:
   check_all_features: true
   nightly_feature: ''
   test_features: ''
-  test_args_raw: ''
+  test_args_raw: '--' # Defaults to a separator
 
 stages:
  # the format here is so that we can have _two_ instances of this whole
