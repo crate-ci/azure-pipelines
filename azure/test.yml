@@ -37,26 +37,27 @@ jobs:
       rust: ${{ parameters.rust }}
       setup: ${{ parameters.setup }}
   # Cargo options go here
-  - script: echo '##vso[task.setvariable variable=options]$(options) --all'
+  - bash: echo '##vso[task.setvariable variable=options]$(options) --all'
   - ${{ if eq(true, parameters.features)}}:
-    - script: echo '##vso[task.setvariable variable=options]$(options) --features "${{ parameters.features }}"'
+    - bash: echo '##vso[task.setvariable variable=options]$(options) --features "${{ parameters.features }}"'
+  # Add any raw args
+  - ${{ if eq(true, parameters.raw_opts) }}:
+    - bash: echo '##vso[task.setvariable variable=options]$(options) ${{ parameters.raw_opts }}'
   # Add any additional conditional libtest options to this check
-  - ${{ if or(eq(true, parameters.single_threaded), eq(true, parameters.test_ignored))}}:
-    - script: echo '##vso[task.setvariable variable=options]$(options) --'
+  # Attempts to ensure that any raw args passed do not interfere
+  - ${{ if and( or(eq(true, parameters.single_threaded), eq(true, parameters.test_ignored)), not(endsWith($(options), '--')) ) }}:
+    - bash: echo '##vso[task.setvariable variable=options]$(options) --'
   # Options passed to libtest go here
   - ${{ if eq(true, parameters.single_threaded) }}:
-    - script: echo '##vso[task.setvariable variable=options]$(options) --test-threads=1'
-  - ${{ if eq(true, parameters.test_ignored)}}:
-    - script: echo '##vso[task.setvariable variable=options]$(options) --ignored'
+    - bash: echo '##vso[task.setvariable variable=options]$(options) --test-threads=1'
   # Run tests with the given options
-  - ${{ if eq(true, parameters.raw_opts) }}:
-    - bash: cargo test ${{ parameters.raw_opts }}
-      displayName: Run tests (with... ${{ parameters.raw_opts }})
-      env:
-        ${{ insert }}: ${{ parameters.envs }}
-  - ${{ if ne(true, parameters.raw_opts) }}:
-    - bash: cargo test $(options)
-      displayName: Run tests
-      env:
-        ${{ insert }}: ${{ parameters.envs }}
+  - bash: cargo test $(options)
+    displayName: Run tests
+    env:
+      ${{ insert }}: ${{ parameters.envs }}
+  - ${{ if eq(true, parameters.test_ignored)}}:
+    - bash: cargo test $(options) --ignored
+    displayName: Run tests (ignored)
+    env:
+      ${{ insert }}: ${{ parameters.envs }}
 
