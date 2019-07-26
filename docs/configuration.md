@@ -101,6 +101,25 @@ fashion](https://doc.rust-lang.org/book/ch11-02-running-tests.html#running-tests
 case for you, set this parameter to `true` and your tests will be run
 with `--test-threads=1`.
 
+### Custom Arguments
+
+```yaml
+stages:
+ - template: azure/stages.yml@templates
+   parameters:
+     test_arguments: <string> = '--'
+```
+
+If the pre-baked `cargo test` parameters are not extensible enough for your
+use case, (for example, if you need to pass unstable `-Z` options) you can
+pass `cargo test` custom arguments that are used *in addition* to any others
+set by parameters. This parameter has a syntax:
+
+`<cargo test args> -- <libtest args>`
+
+However, even if you do not include any custom libtest arguments,
+you still **must** include a trailing `--`.
+
 ### Disable checking all features
 
 ```yaml
