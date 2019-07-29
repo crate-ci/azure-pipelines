@@ -119,7 +119,7 @@ set by parameters. This parameter has a syntax:
 
 Note that even if you include no libtest arguments, you must still include
 a trailing `--` so that any libtest arguments passed by other
-configuration options (such as single_threaded) will still work correctly.
+configuration options (such as `single_threaded`) will still work correctly.
 
 ### Disable checking all features
 
