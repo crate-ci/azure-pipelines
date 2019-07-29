@@ -117,8 +117,9 @@ set by parameters. This parameter has a syntax:
 
 `<cargo test args> -- <libtest args>`
 
-However, even if you do not include any custom libtest arguments,
-you still **must** include a trailing `--`.
+Note that even if you include no libtest arguments, you must still include
+a trailing `--` so that any libtest arguments passed by other
+configuration options (such as single_threaded) will still work correctly.
 
 ### Disable checking all features
 
