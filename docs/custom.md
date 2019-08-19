@@ -94,7 +94,7 @@ To re-use the CI steps from the template `azure/foobar.yml`.
 ### Install Rust
 
 ```yaml
-template: azure/install-rust.yml.yml@templates
+template: azure/install-rust.yml@templates
 ```
 
 Installs Rust and additional components and targets as needed.
