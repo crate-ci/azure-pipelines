@@ -160,7 +160,7 @@ to run [additional setup
 steps](configuration.md#additional-setup-steps). You can also pass
 `features` and/or `nightly_feature` to include additional cargo features
 when running the tests. `nightly_feature` will only be included on runs
-with the nightly compiler. See the [test docs](#test) for details.
+with the nightly compiler. See the [test docs](#test) for details. 
 
 ### Test
 
@@ -173,6 +173,7 @@ parameters:
   test_ignored: <bool> = false
   single_threaded: <bool> = false
   features: <string> = ''
+  arguments: <string> = '--'
   envs:
     NAME: value
   setup:
@@ -192,6 +193,7 @@ set `test_ignored: true`. To run tests with
 [`--test-threads=1`](https://doc.rust-lang.org/book/ch11-02-running-tests.html#running-tests-in-parallel-or-consecutively),
 set `single_threaded: true`. To run tests with particular features
 enabled, pass `features: "feat1,feat2,subcrate/feat3"`.
+To include arbitrary `cargo test` arguments, pass `arguments: <test args -- libtest args>`, but note that you must always include the `--`, even if you add no libtest args.
 
 ### Style
 
