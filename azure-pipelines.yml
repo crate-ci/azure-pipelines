@@ -57,6 +57,6 @@ stages:
 resources:
   containers:
   - container: any
-    image: panubo/sshd
+    image: httpd:alpine
     ports:
-      - 2222:22
+      - 8080:80
