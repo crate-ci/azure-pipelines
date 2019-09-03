@@ -57,6 +57,6 @@ stages:
 resources:
   containers:
   - container: any
-    image: alpine:latest
+    image: panubo/sshd
     ports:
       - 2222:22
