@@ -176,7 +176,7 @@ parameters:
   envs:
     NAME: value
   services:
-    HOSTNAME: container
+    NAME: container
   setup:
     - task
 ```

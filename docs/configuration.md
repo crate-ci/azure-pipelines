@@ -166,7 +166,7 @@ stages:
  - template: azure/stages.yml@templates
    parameters:
      services:
-       <hostname>: <container>
+       <name>: <container>
 ```
 
 If you tests require particular [service

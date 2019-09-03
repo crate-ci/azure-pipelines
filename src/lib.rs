@@ -34,8 +34,9 @@ fn test_must_exist() {
 #[test]
 fn test_service_running() {
     use std::net::ToSocketAddrs;
-    let mut addrs_iter = "test_service:22".to_socket_addrs().unwrap();
-    assert_ne!(addrs_iter.next(), None);
+    let mut addrs_iter = "127.0.0.1:22".to_socket_addrs().unwrap();
+    let addr = addrs_iter.next().unwrap();
+    std::net::TcpStream::connect(addr).unwrap();
 }
 
 #[cfg(test)]

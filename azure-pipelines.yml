@@ -58,3 +58,5 @@ resources:
   containers:
   - container: any
     image: ubuntu:16.04
+    ports:
+      - 22
