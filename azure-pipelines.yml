@@ -6,6 +6,8 @@ stages:
      test_features: ci
      envs:
        ENV_IS_SET: true
+     services:
+       test_service: any
      setup:
        - script: touch src/setup.rs
  # should work without code coverage token
@@ -17,6 +19,8 @@ stages:
      test_features: ci
      envs:
        ENV_IS_SET: true
+     services:
+       test_service: any
      setup:
        - script: touch src/setup.rs
  # also test with various other configuration changes
@@ -33,6 +37,8 @@ stages:
      check_all_features: false
      envs:
        ENV_IS_SET: true
+     services:
+       test_service: any
      setup:
        - script: touch src/setup.rs
  # test binary-focused stages (no min rust version test)
@@ -43,5 +49,12 @@ stages:
      test_features: ci
      envs:
        ENV_IS_SET: true
+     services:
+       test_service: any
      setup:
        - script: touch src/setup.rs
+
+resources:
+  containers:
+  - container: any
+    image: ubuntu:16.04

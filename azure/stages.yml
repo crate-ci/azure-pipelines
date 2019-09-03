@@ -3,6 +3,7 @@ parameters:
   benches: false
   prefix: ''
   envs: {}
+  services: {}
   setup: []
   test_ignored: false
   single_threaded: false
@@ -53,6 +54,7 @@ stages:
      - template: tests.yml
        parameters:
          envs: ${{ parameters.envs }}
+         services: ${{ parameters.services }}
          setup: ${{ parameters.setup }}
          test_ignored: ${{ parameters.test_ignored }}
          single_threaded: ${{ parameters.single_threaded }}
@@ -80,6 +82,7 @@ stages:
           parameters:
             codecov_token: ${{ parameters.codecov_token }}
             envs: ${{ parameters.envs }}
+            services: ${{ parameters.services }}
             setup: ${{ parameters.setup }}
             nightly: ${{ parameters.nightly_coverage }}
             features: ${{ parameters.test_features }}

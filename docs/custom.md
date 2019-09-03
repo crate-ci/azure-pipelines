@@ -175,6 +175,8 @@ parameters:
   features: <string> = ''
   envs:
     NAME: value
+  services:
+    HOSTNAME: container
   setup:
     - task
 ```
@@ -192,6 +194,9 @@ set `test_ignored: true`. To run tests with
 [`--test-threads=1`](https://doc.rust-lang.org/book/ch11-02-running-tests.html#running-tests-in-parallel-or-consecutively),
 set `single_threaded: true`. To run tests with particular features
 enabled, pass `features: "feat1,feat2,subcrate/feat3"`.
+To spin up additional [service
+containers](https://docs.microsoft.com/en-us/azure/devops/pipelines/process/service-containers?view=azure-devops&tabs=yaml),
+pass them in `services`.
 
 ### Style
 
@@ -235,8 +240,10 @@ and upload the coverage test results to
 `codecov_token` that includes the codecov.io upload token (see the
 [setup instructions](setup.md#code-coverage)). You can also pass the
 parameter `envs: {...}` to pass [environment
-variables](configuration.md#environment-variables), and `setup: [...]`
-to run [additional setup
+variables](configuration.md#environment-variables), `services: {...}` to
+run additional [service
+containers](https://docs.microsoft.com/en-us/azure/devops/pipelines/process/service-containers?view=azure-devops&tabs=yaml),
+and `setup: [...]` to run [additional setup
 steps](configuration.md#additional-setup-steps).
 
 By default, your pipeline will test against the stable Rust version

@@ -32,6 +32,14 @@ fn test_must_exist() {
 
 #[cfg(test)]
 #[test]
+fn test_service_running() {
+    use std::net::ToSocketAddrs;
+    let mut addrs_iter = "test_service:22".to_socket_addrs().unwrap();
+    assert_ne!(addrs_iter.next(), None);
+}
+
+#[cfg(test)]
+#[test]
 fn require_setup_file() {
     include_str!("setup.rs");
 }

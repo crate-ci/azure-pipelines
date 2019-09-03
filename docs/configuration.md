@@ -159,6 +159,21 @@ stages:
        ENV_B: $(PIPELINE_VAR)
 ```
 
+### Service containers
+
+```yaml
+stages:
+ - template: azure/stages.yml@templates
+   parameters:
+     services:
+       <hostname>: <container>
+```
+
+If you tests require particular [service
+containers](https://docs.microsoft.com/en-us/azure/devops/pipelines/process/service-containers?view=azure-devops&tabs=yaml)
+to be running, you can define these using the `services` parameter. The
+given service containers will be started in whenever your tests are run.
+
 ### Additional setup steps
 
 ```yaml

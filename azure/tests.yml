@@ -5,6 +5,7 @@ parameters:
   single_threaded: false
   nightly_feature: ''
   features: ''
+  services: {}
 
 jobs:
  - template: test.yml
@@ -12,6 +13,7 @@ jobs:
      name: cargo_test_stable
      cross: true # also test on Windows and macOS
      envs: ${{ parameters.envs }}
+     services: ${{ parameters.services }}
      setup: ${{ parameters.setup }}
      test_ignored: ${{ parameters.test_ignored }}
      single_threaded: ${{ parameters.single_threaded }}
@@ -21,6 +23,7 @@ jobs:
      name: cargo_test_beta
      rust: beta
      envs: ${{ parameters.envs }}
+     services: ${{ parameters.services }}
      setup: ${{ parameters.setup }}
      test_ignored: ${{ parameters.test_ignored }}
      single_threaded: ${{ parameters.single_threaded }}
@@ -31,6 +34,7 @@ jobs:
      rust: nightly
      allow_fail: true
      envs: ${{ parameters.envs }}
+     services: ${{ parameters.services }}
      setup: ${{ parameters.setup }}
      test_ignored: ${{ parameters.test_ignored }}
      single_threaded: ${{ parameters.single_threaded }}
