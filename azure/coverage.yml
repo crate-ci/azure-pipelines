@@ -1,5 +1,6 @@
 parameters:
   envs: {}
+  services: {}
   setup: []
   submodules: recursive
   nightly: false
@@ -10,6 +11,14 @@ jobs:
    displayName: tarpaulin
    pool:
      vmImage: ubuntu-16.04
+   # this is sad: we need to spin up the service containers even if the token
+   # isn't set, since we can't set a service in a particular script step.
+   # once the fix to
+   # https://developercommunity.visualstudio.com/content/problem/642219/setting-output-variable-when-multiple-stages-share.html
+   # lands everywhere, we can move to multiple jobs instead, and then only the
+   # (conditional) second job will have this service.
+   services:
+     ${{ insert }}: ${{ parameters.services }}
    continueOnError: ${{ parameters.nightly }}
    container:
      ${{ if eq('true', parameters.nightly) }}:
