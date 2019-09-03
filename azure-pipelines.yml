@@ -57,6 +57,6 @@ stages:
 resources:
   containers:
   - container: any
-    image: ubuntu:16.04
+    image: alpine:latest
     ports:
-      - 22
+      - 2222:22
