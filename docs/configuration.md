@@ -31,6 +31,8 @@ you would give that version number as the `minrust` parameter to
 `azure/stages.yml`. If you wish to disable the MSRV check, set `minrust`
 to `false`.
 
+**This is not supported on `nightly-stages.yml`.**
+
 ### Coverage on Rust nightly
 
 ```yaml
@@ -49,6 +51,8 @@ that you cannot set a _specific_ nightly version, but are instead tied
 to the version that tarpaulin ships. For this reason, nightly coverage
 will always be run with failures allowed (yellow CI) to avoid spurious
 CI failures.
+
+**This is not supported on `nightly-stages.yml`.**
 
 ### Ignored tests
 
@@ -85,6 +89,8 @@ If you are working within a cargo workspace, you will have to pass
 features as `subcrate/feature` as described in [this
 issue](https://github.com/rust-lang/cargo/issues/5015). There is not
 currently a way to disabling default features for CI tests.
+
+**`nightly_feature is not supported (or needed) on `nightly-stages.yml`.**
 
 ### Single-threaded test execution
 

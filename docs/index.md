@@ -47,6 +47,12 @@ And now, to quote the French, [allons-y](https://www.lawlessfrench.com/expressio
    
    Where `PLACEHOLDER` is the service connection name from setup.
 
+## My project is nightly-only
+
+Great! Give `azure/nightly-stages.yml` a try. It takes mostly all the
+same [configuration parameters](configuration.md) as `stages.yml`, but
+runs everything only on nightly without allowing failures.
+
 ## My project is special
 
 The main template this repository provides, `azure/stages.yml`, is
