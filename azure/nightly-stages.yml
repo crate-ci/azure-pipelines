@@ -53,11 +53,12 @@ stages:
        parameters:
          name: rustfmt
          rust: nightly
-     - template: cargo-clippy.yml
-       parameters:
-         name: clippy
-         setup: ${{ parameters.setup }}
-         rust: nightly
+   # disabled until we get https://github.com/rust-lang/rustup.rs/issues/2005
+   # - template: cargo-clippy.yml
+   #   parameters:
+   #     name: clippy
+   #     setup: ${{ parameters.setup }}
+   #     rust: nightly
  - ${{ if ne('', parameters.codecov_token) }}:
     - stage: ${{ format('{0}coverage', parameters.prefix) }}
       ${{ if ne(parameters.prefix, '') }}:
