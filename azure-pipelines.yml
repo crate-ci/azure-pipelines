@@ -35,6 +35,19 @@ stages:
        ENV_IS_SET: true
      setup:
        - script: touch src/setup.rs
+ # and on nightly-only stages
+ - template: azure/nightly-stages.yml
+   parameters:
+     benches: true
+     test_features: ci,opt_in
+     test_ignored: true
+     single_threaded: true
+     prefix: "nightly_"
+     check_all_features: false
+     envs:
+       ENV_IS_SET: true
+     setup:
+       - script: touch src/setup.rs
  # test binary-focused stages (no min rust version test)
  - template: azure/stages.yml
    parameters:

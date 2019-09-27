@@ -1,0 +1,76 @@
+parameters:
+  benches: false
+  prefix: ''
+  envs: {}
+  setup: []
+  test_ignored: false
+  single_threaded: false
+  check_all_features: true
+  test_features: ''
+
+stages:
+ # the format here is so that we can have _two_ instances of this whole
+ # template in the upstream repository's testing setup, and give the stages
+ # unique names.
+ - stage: ${{ format('{0}check', parameters.prefix) }}
+   ${{ if ne(parameters.prefix, '') }}:
+     displayName: ${{ format('Compilation check ({0})', parameters.prefix) }}
+   ${{ if eq(parameters.prefix, '') }}:
+     displayName: Compilation check
+   dependsOn: []
+   jobs:
+     - template: cargo-check.yml
+       parameters:
+         name: cargo_check
+         benches: ${{ parameters.benches }}
+         setup: ${{ parameters.setup }}
+         all_features: ${{ parameters.check_all_features }}
+         rust: nightly
+ - stage: ${{ format('{0}test', parameters.prefix) }}
+   ${{ if ne(parameters.prefix, '') }}:
+     displayName: ${{ format('Test suite ({0})', parameters.prefix) }}
+   ${{ if eq(parameters.prefix, '') }}:
+     displayName: Test suite
+   dependsOn: ${{ format('{0}check', parameters.prefix) }}
+   jobs:
+     - template: test.yml
+       parameters:
+         name: cargo_test
+         rust: nightly
+         envs: ${{ parameters.envs }}
+         setup: ${{ parameters.setup }}
+         test_ignored: ${{ parameters.test_ignored }}
+         single_threaded: ${{ parameters.single_threaded }}
+         features: ${{ parameters.test_features }}
+ - stage: ${{ format('{0}style', parameters.prefix) }}
+   ${{ if ne(parameters.prefix, '') }}:
+     displayName: ${{ format('Style linting ({0})', parameters.prefix) }}
+   ${{ if eq(parameters.prefix, '') }}:
+     displayName: Style linting
+   dependsOn: ${{ format('{0}check', parameters.prefix) }}
+   jobs:
+     - template: rustfmt.yml
+       parameters:
+         name: rustfmt
+         rust: nightly
+   # disabled until we get https://github.com/rust-lang/rustup.rs/issues/2005
+   # - template: cargo-clippy.yml
+   #   parameters:
+   #     name: clippy
+   #     setup: ${{ parameters.setup }}
+   #     rust: nightly
+ - ${{ if ne('', parameters.codecov_token) }}:
+    - stage: ${{ format('{0}coverage', parameters.prefix) }}
+      ${{ if ne(parameters.prefix, '') }}:
+        displayName: ${{ format('Code coverage ({0})', parameters.prefix) }}
+      ${{ if eq(parameters.prefix, '') }}:
+        displayName: Code coverage
+      dependsOn: ${{ format('{0}test', parameters.prefix) }}
+      jobs:
+        - template: coverage.yml
+          parameters:
+            codecov_token: ${{ parameters.codecov_token }}
+            envs: ${{ parameters.envs }}
+            setup: ${{ parameters.setup }}
+            nightly: true
+            features: ${{ parameters.test_features }}
