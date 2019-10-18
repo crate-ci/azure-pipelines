@@ -48,5 +48,6 @@ resources:
     - repository: templates
       type: github
       name: crate-ci/azure-pipelines
+      ref: refs/heads/v0.1
       endpoint: YOU_NEED_TO_SET_THIS
 ```

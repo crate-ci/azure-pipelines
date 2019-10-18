@@ -27,6 +27,7 @@ resources:
     - repository: templates
       type: github
       name: crate-ci/azure-pipelines
+      ref: refs/heads/v0.1
       endpoint: PLACEHOLDER
 ```
 
