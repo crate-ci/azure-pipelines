@@ -54,7 +54,7 @@ jobs:
        name: features
        displayName: Determine feature flags
        env:
-         FEATURES: ${{ join(",", parameters.features) }}
+         FEATURES: ${{ join(',', parameters.features) }}
      - script: cargo tarpaulin $(variables.features) --out Xml
        displayName: Run tarpaulin
        condition: and(succeeded(), eq('true', variables.has_secret))

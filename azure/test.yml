@@ -41,7 +41,7 @@ jobs:
     name: features
     displayName: Determine feature flags
     env:
-      FEATURES: ${{ join(",", parameters.features) }}
+      FEATURES: ${{ join(',', parameters.features) }}
   - ${{ if ne('true', parameters.single_threaded) }}:
     - script: cargo test --all $(variables.features)
       displayName: Run tests
