@@ -42,7 +42,7 @@ And now, to quote the French, [allons-y](https://www.lawlessfrench.com/expressio
        - repository: templates
          type: github
          name: crate-ci/azure-pipelines
-         ref: refs/heads/v0.1
+         ref: refs/heads/v0.2
          endpoint: PLACEHOLDER
    ```
    
