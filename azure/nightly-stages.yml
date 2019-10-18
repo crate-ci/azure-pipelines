@@ -6,7 +6,7 @@ parameters:
   test_ignored: false
   single_threaded: false
   check_all_features: true
-  test_features: ''
+  test_features: []
 
 stages:
  # the format here is so that we can have _two_ instances of this whole

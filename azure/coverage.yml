@@ -4,7 +4,7 @@ parameters:
   setup: []
   submodules: recursive
   nightly: false
-  features: '' # empty feature list is == default
+  features: []
 
 jobs:
  - job: tarpaulin
@@ -49,7 +49,13 @@ jobs:
      # Run any user-specific setup steps
      # Sadly we don't have a way of communicating the condition on has_secret
      - ${{ parameters.setup }}
-     - script: cargo tarpaulin --features "${{ parameters.features }}" --out Xml
+     # Determine what features to use
+     - bash: "if [[ -z $FEATURES ]]; then echo \"##vso[task.setvariable variable=features]\"; else echo \"##vso[task.setvariable variable=features]--features \\\"$FEATURES\\\"\"; fi"
+       name: features
+       displayName: Determine feature flags
+       env:
+         FEATURES: ${{ join(',', parameters.features) }}
+     - script: cargo tarpaulin $(features) --out Xml
        displayName: Run tarpaulin
        condition: and(succeeded(), eq('true', variables.has_secret))
        env:

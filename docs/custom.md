@@ -159,8 +159,8 @@ You can pass the parameter `envs: {...}` to pass [environment
 variables](configuration.md#environment-variables), and `setup: [...]`
 to run [additional setup
 steps](configuration.md#additional-setup-steps). You can also pass
-`features` and/or `nightly_feature` to include additional cargo features
-when running the tests. `nightly_feature` will only be included on runs
+`features` and/or `nightly_features` to include additional cargo features
+when running the tests. `nightly_features` will only be included on runs
 with the nightly compiler. See the [test docs](#test) for details.
 
 ### Test
@@ -173,7 +173,7 @@ parameters:
   allow_fail: <bool> = false
   test_ignored: <bool> = false
   single_threaded: <bool> = false
-  features: <string> = ''
+  features: <[string]> = []
   envs:
     NAME: value
   services:
@@ -194,7 +194,7 @@ nightly versions of the compiler. To run tests [marked with
 set `test_ignored: true`. To run tests with
 [`--test-threads=1`](https://doc.rust-lang.org/book/ch11-02-running-tests.html#running-tests-in-parallel-or-consecutively),
 set `single_threaded: true`. To run tests with particular features
-enabled, pass `features: "feat1,feat2,subcrate/feat3"`.
+enabled, pass `features: [feat1,feat2,subcrate/feat3]`.
 To spin up additional [service
 containers](https://docs.microsoft.com/en-us/azure/devops/pipelines/process/service-containers?view=azure-devops&tabs=yaml),
 pass them in `services` (though note that these will generally only work
