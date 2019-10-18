@@ -72,13 +72,13 @@ Set this parameter to `true` to also run tests [marked with
 stages:
  - template: azure/stages.yml@templates
    parameters:
-     test_features: <string> = ''
-     nightly_feature: <string> = ''
+     test_features: <[string]> = []
+     nightly_features: <[string]> = []
 ```
 
 If this parameter is set, it is passed along with `--features` to `cargo
 test`. This is useful if you have non-default features that you'd like
-to test on CI. You can also set `nightly_feature` which will only be
+to test on CI. You can also set `nightly_features` which will only be
 included when run on nightly, though do note that since nightly tests
 are always allowed to fail, you will only see yellow CI if these tests
 fail. If you have features like this, you _probably_ also want to
@@ -90,7 +90,7 @@ features as `subcrate/feature` as described in [this
 issue](https://github.com/rust-lang/cargo/issues/5015). There is not
 currently a way to disabling default features for CI tests.
 
-**`nightly_feature is not supported (or needed) on `nightly-stages.yml`.**
+**`nightly_features is not supported (or needed) on `nightly-stages.yml`.**
 
 ### Single-threaded test execution
 
