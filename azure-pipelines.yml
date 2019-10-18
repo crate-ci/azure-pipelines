@@ -58,3 +58,13 @@ stages:
        ENV_IS_SET: true
      setup:
        - script: touch src/setup.rs
+ # test no features
+ - template: azure/stages.yml
+   parameters:
+     minrust: false
+     prefix: "nofeat_"
+     envs:
+       ENV_IS_SET: true
+       ALLOW_NO_FEATURES: true
+     setup:
+       - script: touch src/setup.rs
