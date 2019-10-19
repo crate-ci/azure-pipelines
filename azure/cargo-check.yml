@@ -2,6 +2,7 @@ parameters:
   rust: stable
   benches: false
   setup: []
+  no_features: true
   all_features: false
 
 jobs:
@@ -31,8 +32,9 @@ jobs:
     displayName: Check that Cargo.lock is satisfiable
   - script: cargo check --all --bins --examples --tests
     displayName: Check compilation w/ default features
-  - script: cargo check --all --bins --examples --tests --no-default-features
-    displayName: Check compilation w/ no features
+  - ${{ if eq('true', parameters.no_features) }}:
+    - script: cargo check --all --bins --examples --tests --no-default-features
+      displayName: Check compilation w/ no features
   - ${{ if eq('true', parameters.all_features) }}:
     - script: cargo check --all --bins --examples --tests --all-features
       displayName: Check compilation w/ all features

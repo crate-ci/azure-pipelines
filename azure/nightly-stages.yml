@@ -6,6 +6,7 @@ parameters:
   test_ignored: false
   single_threaded: false
   check_all_features: true
+  check_no_features: true
   test_features: []
 
 stages:
@@ -25,6 +26,7 @@ stages:
          benches: ${{ parameters.benches }}
          setup: ${{ parameters.setup }}
          all_features: ${{ parameters.check_all_features }}
+         no_features: ${{ parameters.check_no_features }}
          rust: nightly
  - stage: ${{ format('{0}test', parameters.prefix) }}
    ${{ if ne(parameters.prefix, '') }}:
