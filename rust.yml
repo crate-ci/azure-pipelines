@@ -27,7 +27,7 @@ steps:
   - task: DownloadPipelineArtifact@2
     inputs:
       # no artifact name so that download won't fail if artifact does not exist
-      itemPattern: (target|cargo)-$(suffix)/**
+      itemPattern: @(target|cargo)-$(suffix)/**
 
   # restore $HOME/.cargo from cache
   - script: rm -rf $(home)/.cargo
