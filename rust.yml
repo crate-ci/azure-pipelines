@@ -19,12 +19,6 @@ steps:
     displayName: "Find HOME (windows)"
     condition: eq(variables['Agent.OS'], 'Windows_NT')
 
-  - task: DownloadPipelineArtifact@2
-    inputs:
-      # no artifact name so that download won't fail if artifact does not exist
-      targetPath: $(home)/.rustup
-      itemPattern: rustup-$(Agent.OS)-$(Agent.OSArchitecture)-${{ parameters.rust }}
-
   # Linux and macOS.
   - script: |
       set -e
@@ -63,9 +57,6 @@ steps:
   - ${{ each component in parameters.components }}:
     - script: rustup component add ${{ component }}
       displayName: "Adding component '${{ component }}'"
-
-  - publish: $(home)/.rustup
-    artifact: rustup-$(Agent.OS)-$(Agent.OSArchitecture)-${{ parameters.rust }}
 
   # See what we got
   - script: |
