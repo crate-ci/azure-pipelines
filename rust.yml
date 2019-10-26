@@ -36,21 +36,22 @@ steps:
     condition: not(eq(variables['Agent.OS'], 'Windows_NT'))
 
   # Windows.
-  - script: |
+  - bash: |
       curl -sSf -o rustup-init.exe https://win.rustup.rs
-      rustup-init.exe -y --profile minimal --default-toolchain %RUSTUP_TOOLCHAIN%
-      set PATH=%PATH%;%USERPROFILE%\.cargo\bin
-      echo "##vso[task.setvariable variable=PATH;]%PATH%;%USERPROFILE%\.cargo\bin"
+      rustup-init.exe -y --profile minimal --default-toolchain $RUSTUP_TOOLCHAIN
+      echo "##vso[task.setvariable variable=PATH;]$PATH;$USERPROFILE\.cargo\bin"
     env:
       RUSTUP_TOOLCHAIN: ${{parameters.rust}}
     displayName: "Install rust (windows)"
     condition: eq(variables['Agent.OS'], 'Windows_NT')
 
   # Set correct toolchain
-  - script: rustup default ${{parameters.rust}}
+  - bash: |
+      rustup default $RUSTUP_TOOLCHAIN
+      rustup update $RUSTUP_TOOLCHAIN
+    env:
+      RUSTUP_TOOLCHAIN: ${{parameters.rust}}
     displayName: "Set correct Rust version"
-  - script: rustup update ${{parameters.rust}}
-    displayName: "Avoid stale cached version"
 
   # Install additional targets:
   - ${{ each target in parameters.targets }}:
