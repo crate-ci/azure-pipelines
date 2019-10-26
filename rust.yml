@@ -76,7 +76,9 @@ steps:
 
   # restore $HOME/.cargo from cache
   - script: rm -rf $(home)/.cargo
-  - bash: |
+  - script: echo "$(suffix)"
+  - script: echo x$(suffix)x
+  - script: |
       [ ! -d $(Pipeline.Workspace)/cargo$(suffix) ] || mv $(Pipeline.Workspace)/cargo$(suffix) $(home)/.cargo
 
   # Set CARGO_TARGET_DIR to point to the artefact dir
