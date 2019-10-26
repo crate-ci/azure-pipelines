@@ -3,8 +3,16 @@ parameters:
   rust: stable
   components: []
   targets: []
+  run:
+    - script: cargo version
+  cache: true
 
 steps:
+  - download: current
+    artifact: rustup
+
+  - script: mv $(Pipeline.Workspace)/rustup $(Agent.HomeDirectory)/.rustup
+
   # Linux and macOS.
   - script: |
       set -e
@@ -44,9 +52,28 @@ steps:
     - script: rustup component add ${{ component }}
       displayName: "Adding component '${{ component }}'"
 
+  - publish: $(Agent.HomeDirectory)/.rustup
+    artifact: rustup
+
   # See what we got
   - script: |
       rustc --version
       cargo --version
       rustup --version
     displayName: Check installed rust version
+
+  - download: $(Agent.HomeDirectory)/.rustup
+    artifact: target_${{ parameters.rust }}
+
+  # Set CARGO_TARGET_DIR to point to the artefact dir
+  - script: echo "##vso[task.setvariable variable=CARGO_TARGET_DIR;]$(Pipeline.Workspace)/target_${{ parameters.rust }}"
+    condition: not(eq(variables['Agent.OS'], 'Windows_NT'))
+  - script: echo "##vso[task.setvariable variable=CARGO_TARGET_DIR;]$(Pipeline.Workspace)\target_${{ parameters.rust }}"
+    condition: eq(variables['Agent.OS'], 'Windows_NT')
+
+  # Run the user's commands
+  - ${{ parameters.run }}
+
+  # Cache the updated target dir
+  - publish: $(Pipeline.Workspace)/target_${{ parameters.rust }}
+    artifact: target_${{ parameters.rust }}
