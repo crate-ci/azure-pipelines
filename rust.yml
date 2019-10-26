@@ -96,8 +96,18 @@ steps:
     condition: and(${{ parameters.use_cache }}, eq(variables['Agent.OS'], 'Windows_NT'))
     displayName: "Make cargo use pipeline cache (windows)"
 
+  - bash: echo "$CARGO_TARGET_DIR"
+  - bash: ls "$CARGO_TARGET_DIR"
+  - bash: ls -la $CARGO_TARGET_DIR/debug/build/arrayvec-e4bfcc6ff835dcb5/build-script-build
+    condition: not(eq(variables['Agent.OS'], 'Windows_NT'))
+  - bash: mount
+    condition: not(eq(variables['Agent.OS'], 'Windows_NT'))
+
   # Run the user's commands
   - ${{ parameters.run }}
+
+  - bash: ls -la $CARGO_TARGET_DIR/debug/build/arrayvec-e4bfcc6ff835dcb5/build-script-build
+    condition: not(eq(variables['Agent.OS'], 'Windows_NT'))
 
   # Cache the updated target dir
   - publish: $(Pipeline.Workspace)/target-$(suffix)
