@@ -54,3 +54,4 @@ jobs:
      - template: rust.yml
        parameters:
          rust: $(rust)
+         cache: false
