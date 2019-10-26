@@ -11,11 +11,11 @@ steps:
   # Get home directory
   # We need this due to https://github.com/MicrosoftDocs/vsts-docs/issues/4337
   - script: |
-      echo "##vso[task.setvariable variable=home;]$HOME"
+      echo ##vso[task.setvariable variable=home;]$HOME
     displayName: "Find HOME (*nix)"
     condition: not(eq(variables['Agent.OS'], 'Windows_NT'))
   - script: |
-      echo "##vso[task.setvariable variable=home;]%USERPROFILE%"
+      echo ##vso[task.setvariable variable=home;]%USERPROFILE%
     displayName: "Find HOME (windows)"
     condition: eq(variables['Agent.OS'], 'Windows_NT')
 
@@ -24,12 +24,6 @@ steps:
       # no artifact name so that download won't fail if artifact does not exist
       targetPath: $(home)/.rustup
       itemPattern: rustup-$(Agent.OS)-$(Agent.OSArchitecture)-${{ parameters.rust }}
-    condition: not(eq(variables['Agent.OS'], 'Windows_NT'))
-  - task: DownloadPipelineArtifact@2
-    inputs: # windows version with \
-      targetPath: $(home)\.rustup
-      itemPattern: rustup-$(Agent.OS)-$(Agent.OSArchitecture)-${{ parameters.rust }}
-    condition: eq(variables['Agent.OS'], 'Windows_NT')
 
   # Linux and macOS.
   - script: |
@@ -88,7 +82,7 @@ steps:
   # Set CARGO_TARGET_DIR to point to the artefact dir
   - script: echo "##vso[task.setvariable variable=CARGO_TARGET_DIR;]$(Pipeline.Workspace)/target-${{ parameters.rust }}"
     condition: not(eq(variables['Agent.OS'], 'Windows_NT'))
-  - script: echo "##vso[task.setvariable variable=CARGO_TARGET_DIR;]$(Pipeline.Workspace)\\target-${{ parameters.rust }}"
+  - script: echo "##vso[task.setvariable variable=CARGO_TARGET_DIR;]$(Pipeline.Workspace)\target-${{ parameters.rust }}"
     condition: eq(variables['Agent.OS'], 'Windows_NT')
 
   # Run the user's commands
