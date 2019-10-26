@@ -23,6 +23,18 @@ steps:
       echo "##vso[task.setvariable variable=suffix;]$(Agent.OS)-$(Agent.OSArchitecture)-${{ parameters.rust }}"
     displayName: "Set cache suffix"
 
+  # Restore cache if we have one
+  - task: DownloadPipelineArtifact@2
+    inputs:
+      # no artifact name so that download won't fail if artifact does not exist
+      itemPattern: (target|cargo)-$(suffix)/**
+
+  # restore $HOME/.cargo from cache
+  - script: rm -rf $(home)/.cargo
+  - script: |
+      [ ! -d $(Pipeline.Workspace)/cargo-$(suffix) ] || mv $(Pipeline.Workspace)/cargo-$(suffix) $(home)/.cargo
+
+  # Next, install rustup to manage our install
   # Linux and macOS.
   - script: |
       set -e
@@ -68,16 +80,6 @@ steps:
       cargo --version
       rustup --version
     displayName: Check installed rust version
-
-  - task: DownloadPipelineArtifact@2
-    inputs:
-      # no artifact name so that download won't fail if artifact does not exist
-      itemPattern: (target|cargo)-$(suffix)/**
-
-  # restore $HOME/.cargo from cache
-  - script: rm -rf $(home)/.cargo
-  - script: |
-      [ ! -d $(Pipeline.Workspace)/cargo-$(suffix) ] || mv $(Pipeline.Workspace)/cargo-$(suffix) $(home)/.cargo
 
   # Set CARGO_TARGET_DIR to point to the artefact dir
   - script: echo "##vso[task.setvariable variable=CARGO_TARGET_DIR;]$(Pipeline.Workspace)/target-$(suffix)"
