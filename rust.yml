@@ -71,16 +71,16 @@ steps:
       itemPattern: target-$(Agent.OS)-$(Agent.OSArchitecture)-${{ parameters.rust }}/**
 
   # Set CARGO_TARGET_DIR to point to the artefact dir
-  - script: echo "##vso[task.setvariable variable=CARGO_TARGET_DIR;]$(Pipeline.Workspace)/target-${{ parameters.rust }}"
+  - script: echo "##vso[task.setvariable variable=CARGO_TARGET_DIR;]$(Pipeline.Workspace)/target-$(Agent.OS)-$(Agent.OSArchitecture)-${{ parameters.rust }}"
     condition: not(eq(variables['Agent.OS'], 'Windows_NT'))
   - script: |
-      echo ##vso[task.setvariable variable=CARGO_TARGET_DIR;]$(Pipeline.Workspace)\target-${{ parameters.rust }}
+      echo ##vso[task.setvariable variable=CARGO_TARGET_DIR;]$(Pipeline.Workspace)\target-$(Agent.OS)-$(Agent.OSArchitecture)-${{ parameters.rust }}
     condition: eq(variables['Agent.OS'], 'Windows_NT')
 
   # Run the user's commands
   - ${{ parameters.run }}
 
   # Cache the updated target dir
-  - publish: $(Pipeline.Workspace)/target-${{ parameters.rust }}
+  - publish: $(Pipeline.Workspace)/target-$(Agent.OS)-$(Agent.OSArchitecture)-${{ parameters.rust }}
     artifact: target-$(Agent.OS)-$(Agent.OSArchitecture)-${{ parameters.rust }}
     condition: ${{ parameters.cache }}
