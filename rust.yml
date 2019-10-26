@@ -47,12 +47,10 @@ steps:
     condition: eq(variables['Agent.OS'], 'Windows_NT')
 
   # Set correct toolchain
-  - bash: |
-      rustup default $RUSTUP_TOOLCHAIN
-      rustup update $RUSTUP_TOOLCHAIN
-    env:
-      RUSTUP_TOOLCHAIN: ${{parameters.rust}}
+  - script: rustup default ${{parameters.rust}}
     displayName: "Set correct Rust version"
+  - script: rustup update ${{parameters.rust}}
+    displayName: "Avoid stale cached version"
 
   # Install additional targets:
   - ${{ each target in parameters.targets }}:
