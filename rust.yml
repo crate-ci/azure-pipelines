@@ -5,6 +5,7 @@ parameters:
   targets: []
   run:
     - script: cargo test
+  use_cache: true
   cache: true
 
 steps:
@@ -29,14 +30,14 @@ steps:
       # no artifact name so that download won't fail if artifact does not exist
       itemPattern: '@(target|cargo)-$(suffix)/**'
     displayName: "Download pipeline cache"
-    condition: ${{ parameters.cache }}
+    condition: ${{ parameters.use_cache }}
 
   # restore $HOME/.cargo from cache
   - script: |
       rm -rf $(home)/.cargo
       [ ! -d $(Pipeline.Workspace)/cargo-$(suffix) ] || mv $(Pipeline.Workspace)/cargo-$(suffix) $(home)/.cargo
     displayName: "Restore cargo cache"
-    condition: ${{ parameters.cache }}
+    condition: ${{ parameters.use_cache }}
 
   # Next, install rustup to manage our install
   # Linux and macOS.
