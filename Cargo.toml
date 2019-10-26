@@ -4,6 +4,9 @@ version = "0.1.0"
 authors = ["Jon Gjengset <jon@thesquareplanet.com>"]
 edition = "2018"
 
+[dependencies]
+tokio = "0.1"
+
 [badges]
 azure-devops = { project = "crate-ci/crate-ci", pipeline = "azure-pipelines", build = "3" }
 codecov = { repository = "crate-ci/azure-pipelines", branch = "master", service = "github" }
