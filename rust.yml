@@ -4,7 +4,7 @@ parameters:
   components: []
   targets: []
   run:
-    - script: cargo version
+    - script: cargo test
   cache: true
 
 steps:
