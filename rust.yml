@@ -8,10 +8,13 @@ parameters:
   cache: true
 
 steps:
-  - download: current
-    artifact: rustup
+  - task: DownloadPipelineArtifact@2
+    inputs:
+      # no artifact name so that download won't fail if artifact does not exist
+      targetPath: $(Agent.HomeDirectory)/.rustup
+      itemPattern: rustup/**
 
-  - script: mv $(Pipeline.Workspace)/rustup $(Agent.HomeDirectory)/.rustup
+  - script: ls $(Agent.HomeDirectory)/.rustup
 
   # Linux and macOS.
   - script: |
