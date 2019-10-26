@@ -36,6 +36,7 @@ steps:
   - script: |
       rm -rf $(home)/.cargo
       [ ! -d $(Pipeline.Workspace)/cargo-$(suffix) ] || mv $(Pipeline.Workspace)/cargo-$(suffix) $(home)/.cargo
+      rm -rf $(home)/.cargo/bin
     displayName: "Restore cargo cache"
     condition: ${{ parameters.use_cache }}
 
