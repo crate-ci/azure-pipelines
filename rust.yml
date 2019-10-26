@@ -15,7 +15,7 @@ steps:
     displayName: "Find HOME (*nix)"
     condition: not(eq(variables['Agent.OS'], 'Windows_NT'))
   - script: |
-      echo "##vso[task.setvariable variable=PATH;]%USERPROFILE%"
+      echo "##vso[task.setvariable variable=home;]%USERPROFILE%"
     displayName: "Find HOME (windows)"
     condition: eq(variables['Agent.OS'], 'Windows_NT')
 
@@ -36,10 +36,11 @@ steps:
     condition: not(eq(variables['Agent.OS'], 'Windows_NT'))
 
   # Windows.
-  - bash: |
+  - script: |
       curl -sSf -o rustup-init.exe https://win.rustup.rs
-      rustup-init.exe -y --profile minimal --default-toolchain $RUSTUP_TOOLCHAIN
-      echo "##vso[task.setvariable variable=PATH;]$PATH;$USERPROFILE\.cargo\bin"
+      rustup-init.exe -y --profile minimal --default-toolchain %RUSTUP_TOOLCHAIN%
+      set PATH=%PATH%;%USERPROFILE%\.cargo\bin
+      echo "##vso[task.setvariable variable=PATH;]%PATH%;%USERPROFILE%\.cargo\bin"
     env:
       RUSTUP_TOOLCHAIN: ${{parameters.rust}}
     displayName: "Install rust (windows)"
