@@ -19,8 +19,11 @@ steps:
     displayName: "Find HOME (windows)"
     condition: eq(variables['Agent.OS'], 'Windows_NT')
 
-  - bash: |
-      echo ##vso[task.setvariable variable=suffix;]-$(Agent.OS)-$(Agent.OSArchitecture)-${{ parameters.rust }}
+  - script: |
+      echo $(Agent.OS)-$(Agent.OSArchitecture)-${{ parameters.rust }}
+      echo '$(Agent.OS)-$(Agent.OSArchitecture)-${{ parameters.rust }}'
+      echo "$(Agent.OS)-$(Agent.OSArchitecture)-${{ parameters.rust }}"
+      echo ##vso[task.setvariable variable=suffix;]$(Agent.OS)-$(Agent.OSArchitecture)-${{ parameters.rust }}
     displayName: "Set cache suffix"
 
   # Linux and macOS.
@@ -79,13 +82,13 @@ steps:
   - script: echo "$(suffix)"
   - script: echo x$(suffix)x
   - script: |
-      [ ! -d $(Pipeline.Workspace)/cargo$(suffix) ] || mv $(Pipeline.Workspace)/cargo$(suffix) $(home)/.cargo
+      [ ! -d "$(Pipeline.Workspace)/cargo${suffix}" ] || mv "$(Pipeline.Workspace)/cargo${suffix}" "$(home)/.cargo"
 
   # Set CARGO_TARGET_DIR to point to the artefact dir
-  - script: echo "##vso[task.setvariable variable=CARGO_TARGET_DIR;]$(Pipeline.Workspace)/target$(suffix)"
+  - script: echo "##vso[task.setvariable variable=CARGO_TARGET_DIR;]$(Pipeline.Workspace)/target${suffix}"
     condition: not(eq(variables['Agent.OS'], 'Windows_NT'))
   - script: |
-      echo ##vso[task.setvariable variable=CARGO_TARGET_DIR;]$(Pipeline.Workspace)\target$(suffix)
+      echo ##vso[task.setvariable variable=CARGO_TARGET_DIR;]$(Pipeline.Workspace)\target%suffix%
     condition: eq(variables['Agent.OS'], 'Windows_NT')
 
   # Run the user's commands
