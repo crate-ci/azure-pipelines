@@ -101,7 +101,7 @@ steps:
     condition: and(${{ parameters.use_cache }}, not(eq(variables['Agent.OS'], 'Windows_NT')))
 
   # Workaround for https://github.com/rust-lang/cargo/issues/7542
-  - bash: chmod a+x $CARGO_TARGET_DIR/*/build/*/build-script-build* || true
+  - bash: chmod -v a+x $CARGO_TARGET_DIR/*/build/*/build-script-build* || true
     condition: and(${{ parameters.use_cache }}, not(eq(variables['Agent.OS'], 'Windows_NT')))
 
   # Run the user's commands
