@@ -26,32 +26,7 @@ jobs:
      - template: rust.yml
        parameters:
          rust: $(rust)
-  - job: again
-    dependsOn: all
-    strategy:
-      matrix:
-        Linux:
-          vmImage: ubuntu-16.04
-          rust: stable
-        MacOS:
-          vmImage: macOS-10.14
-          rust: stable
-        Windows:
-          vmImage: windows-2019
-          rust: stable
-        Linux_b:
-          vmImage: ubuntu-16.04
-          rust: beta
-        MacOS_b:
-          vmImage: macOS-10.14
-          rust: beta
-        Windows_b:
-          vmImage: windows-2019
-          rust: beta
-    pool:
-      vmImage: $(vmImage)
-    steps:
+     # Do it again and see that it re-uses artifacts
      - template: rust.yml
        parameters:
          rust: $(rust)
-         cache: false

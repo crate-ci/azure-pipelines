@@ -5,8 +5,6 @@ parameters:
   targets: []
   run:
     - script: cargo test
-  use_cache: true
-  cache: true
 
 steps:
   # Get home directory
@@ -20,27 +18,6 @@ steps:
     displayName: "Find HOME (windows)"
     condition: eq(variables['Agent.OS'], 'Windows_NT')
 
-  - bash: |
-      echo "##vso[task.setvariable variable=suffix;]$(Agent.OS)-$(Agent.OSArchitecture)-${{ parameters.rust }}"
-    displayName: "Set cache suffix"
-
-  # Restore cache if we have one
-  - task: DownloadPipelineArtifact@2
-    inputs:
-      # no artifact name so that download won't fail if artifact does not exist
-      itemPattern: '@(target|cargo)-$(suffix)/**'
-    displayName: "Download pipeline cache"
-    condition: ${{ parameters.use_cache }}
-
-  # restore $HOME/.cargo from cache
-  - script: |
-      rm -rf $(home)/.cargo
-      [ ! -d $(Pipeline.Workspace)/cargo-$(suffix) ] || mv $(Pipeline.Workspace)/cargo-$(suffix) $(home)/.cargo
-      rm -rf $(home)/.cargo/bin
-    displayName: "Restore cargo cache"
-    condition: ${{ parameters.use_cache }}
-
-  # Next, install rustup to manage our install
   # Linux and macOS.
   - script: |
       set -e
@@ -87,34 +64,5 @@ steps:
       rustup --version
     displayName: Check installed rust version
 
-  # Set CARGO_TARGET_DIR to point to the artefact dir
-  - script: echo "##vso[task.setvariable variable=CARGO_TARGET_DIR;]$(Pipeline.Workspace)/target-$(suffix)"
-    condition: and(${{ parameters.use_cache }}, not(eq(variables['Agent.OS'], 'Windows_NT')))
-    displayName: "Make cargo use pipeline cache (*nix)"
-  - script: |
-      echo ##vso[task.setvariable variable=CARGO_TARGET_DIR;]$(Pipeline.Workspace)\target-$(suffix)
-    condition: and(${{ parameters.use_cache }}, eq(variables['Agent.OS'], 'Windows_NT'))
-    displayName: "Make cargo use pipeline cache (windows)"
-
-  # Workaround for https://github.com/rust-lang/cargo/issues/7542
-  - bash: ls $CARGO_TARGET_DIR/*/build/*/build-script-build* || true
-    condition: and(${{ parameters.use_cache }}, not(eq(variables['Agent.OS'], 'Windows_NT')))
-
-  # Workaround for https://github.com/rust-lang/cargo/issues/7542
-  - bash: chmod -v a+x $CARGO_TARGET_DIR/*/build/*/build-script-build* || true
-    condition: and(${{ parameters.use_cache }}, not(eq(variables['Agent.OS'], 'Windows_NT')))
-
   # Run the user's commands
   - ${{ parameters.run }}
-
-  # Cache the updated target dir
-  - publish: $(Pipeline.Workspace)/target-$(suffix)
-    artifact: target-$(suffix)
-    displayName: "Upload pipeline cache of target/"
-    condition: ${{ parameters.cache }}
-
-  # And the .cargo dir
-  - publish: $(home)/.cargo
-    artifact: cargo-$(suffix)
-    displayName: "Upload pipeline cache of ~/.cargo"
-    condition: ${{ parameters.cache }}
