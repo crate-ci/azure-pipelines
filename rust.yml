@@ -97,6 +97,10 @@ steps:
     displayName: "Make cargo use pipeline cache (windows)"
 
   # Workaround for https://github.com/rust-lang/cargo/issues/7542
+  - bash: ls $CARGO_TARGET_DIR/*/build/*/build-script-build*
+    condition: and(${{ parameters.use_cache }}, not(eq(variables['Agent.OS'], 'Windows_NT')))
+
+  # Workaround for https://github.com/rust-lang/cargo/issues/7542
   - bash: chmod a+x $CARGO_TARGET_DIR/*/build/*/build-script-build* || true
     condition: and(${{ parameters.use_cache }}, not(eq(variables['Agent.OS'], 'Windows_NT')))
 
