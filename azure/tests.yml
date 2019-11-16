@@ -1,4 +1,5 @@
 parameters:
+  cross: true # per default also test on Windows and macOS
   envs: {}
   setup: []
   test_ignored: false
@@ -10,7 +11,7 @@ jobs:
  - template: test.yml
    parameters:
      name: cargo_test_stable
-     cross: true # also test on Windows and macOS
+     cross: ${{ parameters.cross }}
      envs: ${{ parameters.envs }}
      setup: ${{ parameters.setup }}
      test_ignored: ${{ parameters.test_ignored }}
