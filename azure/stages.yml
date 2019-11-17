@@ -2,6 +2,7 @@ parameters:
   minrust: 1.32.0 # Rust 2018 with uniform paths
   benches: false
   prefix: ''
+  cross: true
   envs: {}
   setup: []
   test_ignored: false
@@ -52,6 +53,7 @@ stages:
    jobs:
      - template: tests.yml
        parameters:
+         cross: ${{ parameters.cross }}
          envs: ${{ parameters.envs }}
          setup: ${{ parameters.setup }}
          test_ignored: ${{ parameters.test_ignored }}
