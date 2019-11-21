@@ -5,7 +5,9 @@ parameters:
   setup: []
   test_ignored: false
   single_threaded: false
+  cross: false
   check_all_features: true
+  check_no_features: true
   test_features: []
 
 stages:
@@ -25,6 +27,7 @@ stages:
          benches: ${{ parameters.benches }}
          setup: ${{ parameters.setup }}
          all_features: ${{ parameters.check_all_features }}
+         no_features: ${{ parameters.check_no_features }}
          rust: nightly
  - stage: ${{ format('{0}test', parameters.prefix) }}
    ${{ if ne(parameters.prefix, '') }}:
@@ -39,6 +42,7 @@ stages:
          rust: nightly
          envs: ${{ parameters.envs }}
          setup: ${{ parameters.setup }}
+         cross: ${{ parameters.cross }}
          test_ignored: ${{ parameters.test_ignored }}
          single_threaded: ${{ parameters.single_threaded }}
          features: ${{ parameters.test_features }}
@@ -53,12 +57,11 @@ stages:
        parameters:
          name: rustfmt
          rust: nightly
-   # disabled until we get https://github.com/rust-lang/rustup.rs/issues/2005
-   # - template: cargo-clippy.yml
-   #   parameters:
-   #     name: clippy
-   #     setup: ${{ parameters.setup }}
-   #     rust: nightly
+     - template: cargo-clippy.yml
+       parameters:
+         name: clippy
+         setup: ${{ parameters.setup }}
+         rust: nightly
  - ${{ if ne('', parameters.codecov_token) }}:
     - stage: ${{ format('{0}coverage', parameters.prefix) }}
       ${{ if ne(parameters.prefix, '') }}:
