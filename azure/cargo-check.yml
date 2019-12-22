@@ -26,6 +26,13 @@ jobs:
         echo '##vso[task.setvariable variable=is_locked]false';
       fi
     displayName: Are dependencies locked?
+  - bash: |
+      if grep '[workspace]' Cargo.toml; then
+        echo '##vso[task.setvariable variable=is_workspace]true';
+      else
+        echo '##vso[task.setvariable variable=is_workspace]false';
+      fi
+    displayName: Is repository a workspace?
   - script: cargo check --locked
     condition: and(succeeded(), eq(variables.is_locked, 'true'))
     displayName: Check that Cargo.lock is satisfiable
@@ -33,6 +40,8 @@ jobs:
     displayName: Check compilation w/ default features
   - script: cargo check --all --bins --examples --tests --no-default-features
     displayName: Check compilation w/ no features
+    # https://github.com/rust-lang/cargo/issues/7727
+    condition: and(succeeded(), eq(variables.is_workspace, 'false'))
   - ${{ if eq('true', parameters.all_features) }}:
     - script: cargo check --all --bins --examples --tests --all-features
       displayName: Check compilation w/ all features
