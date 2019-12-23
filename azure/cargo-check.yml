@@ -27,7 +27,7 @@ jobs:
       fi
     displayName: Are dependencies locked?
   - bash: |
-      if grep '[workspace]' Cargo.toml; then
+      if grep -P '^\s*\[workspace\]' Cargo.toml; then
         echo '##vso[task.setvariable variable=is_workspace]true';
       else
         echo '##vso[task.setvariable variable=is_workspace]false';
