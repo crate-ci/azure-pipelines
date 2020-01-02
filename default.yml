@@ -88,6 +88,8 @@ jobs:
      dependsOn: []
      # This represents the minimum Rust version supported.
      # Tests are not run as tests may require newer versions of rust.
+     pool:
+       vmImage: ubuntu-16.04
      steps:
        - template: install-rust.yml
          parameters:
