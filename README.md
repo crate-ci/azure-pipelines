@@ -42,7 +42,7 @@ If you've done this before, and just want the standard YAML again for
 `azure-pipelines.yml`, here it is:
 
 ```yaml
-stages:
+jobs:
  - template: default.yml@templates
 
 resources:
@@ -109,7 +109,7 @@ Now, create a file `azure-pipelines.yml` in the root of the repository
 you want CI for. If you want all the bells and whistles, write:
 
 ```yaml
-stages:
+jobs:
  - template: default.yml@templates
 
 resources:
@@ -258,7 +258,7 @@ too:
 ### Testing on multiple platforms
 
 ```yaml
-stages:
+jobs:
  - template: default.yml@templates
    parameters:
      cross: <bool> = true
@@ -270,7 +270,7 @@ only test on Linux, set `cross` to `false`.
 ### Minimum Supported Rust Version (MSRV)
 
 ```yaml
-stages:
+jobs:
  - template: default.yml@templates
    parameters:
      minrust: <false | rust version> = 1.32.0
@@ -288,7 +288,7 @@ to `false`.
 ### Environment variables
 
 ```yaml
-stages:
+jobs:
  - template: default.yml@templates
    parameters:
      env:
@@ -304,7 +304,7 @@ environment variables, and you can use
 ### Additional setup steps
 
 ```yaml
-stages:
+jobs:
  - template: default.yml
    parameters:
      setup:
