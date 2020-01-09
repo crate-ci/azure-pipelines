@@ -24,6 +24,8 @@ jobs:
          components:
            - rustfmt
            - clippy
+     # Run any user-specific setup steps
+     - ${{ parameters.setup }}
      - script: cargo fmt --all -- --check
        displayName: cargo fmt --check
      - script: cargo clippy --all
