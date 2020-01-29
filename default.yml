@@ -84,6 +84,8 @@ jobs:
        displayName: cargo test
        env:
          ${{ insert }}: ${{ parameters.env }}
+     - script: cargo doc --all --no-deps
+       displayName: cargo doc
  - ${{ if ne('false', parameters.minrust) }}:
    - job: msrv
      displayName: "${{ format('Minimum supported Rust version: {0}', parameters.minrust) }}"
