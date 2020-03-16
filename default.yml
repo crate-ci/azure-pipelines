@@ -15,7 +15,7 @@ jobs:
        beta:
          rust: beta
    pool:
-     vmImage: ubuntu-16.04
+     vmImage: ubuntu-18.04
    continueOnError: $[eq(variables.rust, 'beta')]
    steps:
      - template: install-rust.yml
@@ -37,16 +37,16 @@ jobs:
      strategy:
        matrix:
          "Linux (nightly)":
-           vmImage: ubuntu-16.04
+           vmImage: ubuntu-18.04
            rust: nightly
          "Linux (beta)":
-           vmImage: ubuntu-16.04
+           vmImage: ubuntu-18.04
            rust: beta
          Linux:
-           vmImage: ubuntu-16.04
+           vmImage: ubuntu-18.04
            rust: stable
          MacOS:
-           vmImage: macOS-10.14
+           vmImage: macOS-10.15
            rust: stable
          Windows:
            vmImage: windows-2019
@@ -55,13 +55,13 @@ jobs:
      strategy:
        matrix:
          "Linux (nightly)":
-           vmImage: ubuntu-16.04
+           vmImage: ubuntu-18.04
            rust: nightly
          "Linux (beta)":
-           vmImage: ubuntu-16.04
+           vmImage: ubuntu-18.04
            rust: beta
          Linux:
-           vmImage: ubuntu-16.04
+           vmImage: ubuntu-18.04
            rust: stable
    pool:
      vmImage: $(vmImage)
@@ -93,7 +93,7 @@ jobs:
      # This represents the minimum Rust version supported.
      # Tests are not run as tests may require newer versions of rust.
      pool:
-       vmImage: ubuntu-16.04
+       vmImage: ubuntu-18.04
      steps:
        - template: install-rust.yml
          parameters:
