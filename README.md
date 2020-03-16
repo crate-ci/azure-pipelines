@@ -50,7 +50,7 @@ resources:
     - repository: templates
       type: github
       name: crate-ci/azure-pipelines
-      ref: refs/heads/v0.3
+      ref: refs/heads/v0.4
       endpoint: YOU_NEED_TO_SET_THIS
 ```
 
@@ -117,7 +117,7 @@ resources:
     - repository: templates
       type: github
       name: crate-ci/azure-pipelines
-      ref: refs/heads/v0.3
+      ref: refs/heads/v0.4
       endpoint: PLACEHOLDER
 ```
 
