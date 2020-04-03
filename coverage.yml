@@ -5,6 +5,7 @@ parameters:
   services: {}
   env: {}
   args: ''
+  dir: "."
 
 jobs:
  - job: precheck
@@ -44,15 +45,18 @@ jobs:
      - ${{ parameters.setup }}
      - ${{ if eq('true', parameters.doctests) }}:
        - script: cargo tarpaulin ${{ parameters.args }} --run-types Doctests --run-types Tests --out Xml
+         workingDirectory: ${{ parameters.dir }}
          displayName: Run tarpaulin
          env:
            ${{ insert }}: ${{ parameters.env }}
      - ${{ if ne('true', parameters.doctests) }}:
        - script: cargo tarpaulin ${{ parameters.args }} --out Xml
+         workingDirectory: ${{ parameters.dir }}
          displayName: Run tarpaulin
          env:
            ${{ insert }}: ${{ parameters.env }}
      - script: bash <(curl -s https://codecov.io/bash)
+       workingDirectory: ${{ parameters.dir }}
        displayName: Upload results to codecov
        env:
          CODECOV_TOKEN: ${{ parameters.token }}

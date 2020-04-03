@@ -10,6 +10,18 @@ stages:
           setup:
             - script: touch src/setup.rs
               displayName: touch src/setup.rs
+  - stage: subdir
+    jobs:
+      - template: default.yml
+        parameters:
+          minrust: 1.34.0 # integer atomics
+          codecov_token: $(CODECOV_TOKEN_SECRET)
+          dir: sub
+          env:
+            SUBENV_IS_SET: true
+          setup:
+            - script: touch sub/src/setup.rs
+              displayName: touch sub/src/setup.rs
   # should work without code coverage token
   - stage: bad_coverage_token
     dependsOn: []
