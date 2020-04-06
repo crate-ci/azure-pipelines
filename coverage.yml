@@ -1,5 +1,6 @@
 parameters:
   nightly: false
+  version: 'latest'
   doctests: false
   setup: []
   services: {}
@@ -36,9 +37,9 @@ jobs:
    continueOnError: ${{ parameters.nightly }}
    container:
      ${{ if eq('true', parameters.nightly) }}:
-       image: xd009642/tarpaulin:latest-nightly
+       image: ${{ format('xd009642/tarpaulin:{0}-nightly', parameters.version) }}
      ${{ if ne('true', parameters.nightly) }}:
-       image: xd009642/tarpaulin:latest
+       image: ${{ format('xd009642/tarpaulin:{0}', parameters.version) }}
      options: --security-opt seccomp=unconfined
    steps:
      # Run any user-specific setup steps
