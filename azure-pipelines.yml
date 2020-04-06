@@ -48,3 +48,17 @@ stages:
           setup:
             - script: touch src/setup.rs
               displayName: touch src/setup.rs
+  # visual check that the develop-nightly image is used for tarpaulin
+  - stage: ci_image
+    dependsOn: []
+    jobs:
+      - template: coverage.yml
+        parameters:
+          token: $(CODECOV_TOKEN_SECRET)
+          version: develop
+          nightly: true
+          env:
+            ENV_IS_SET: true
+          setup:
+            - script: touch src/setup.rs
+              displayName: touch src/setup.rs
