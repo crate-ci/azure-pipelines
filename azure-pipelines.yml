@@ -56,7 +56,7 @@ stages:
         parameters:
           token: $(CODECOV_TOKEN_SECRET)
           version: develop
-          nightly: true
+          nightly: true # check that even with this set to true, image is still develop
           env:
             ENV_IS_SET: true
           setup:

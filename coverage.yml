@@ -36,10 +36,13 @@ jobs:
      ${{ insert }}: ${{ parameters.services }}
    continueOnError: ${{ parameters.nightly }}
    container:
-     ${{ if eq('true', parameters.nightly) }}:
-       image: ${{ format('xd009642/tarpaulin:{0}-nightly', parameters.version) }}
-     ${{ if ne('true', parameters.nightly) }}:
+     ${{ if ne('latest', parameters.version) }}:
        image: ${{ format('xd009642/tarpaulin:{0}', parameters.version) }}
+     ${{ if eq('latest', parameters.version) }}:
+       ${{ if eq('true', parameters.nightly) }}:
+         image: 'xd009642/tarpaulin:latest-nightly'
+       ${{ if ne('true', parameters.nightly) }}:
+         image: 'xd009642/tarpaulin:latest'
      options: --security-opt seccomp=unconfined
    steps:
      # Run any user-specific setup steps
