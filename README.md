@@ -21,10 +21,12 @@ code compiles with and without any features it may have, and ensures
 that your code works with an older Rust version. You can also
 mix-and-match these checks if you wish.
 
-The repository provides two main templates:
+The repository provides three main templates:
 
  - `default.yml`, which is a highly opinionated default CI that you can
    use for most "normal" Rust projects.
+ - `nightly-only.yml`, which is a highly opinionated default CI that you
+   can use for Rust projects that only support nightly versions of Rust.
  - `install-rust.yml`, a minimal template that just installs Rust and
    has you write out the commands you want CI to run (see
    `default.yml` for inspiration). You can specify a Rust version,
@@ -253,7 +255,7 @@ with
 Then you can tweak it to your heart's desire!
 
 There are some smaller configuration parameters available for `default.yml`
-too:
+too. Most of these also apply to `nightly-only.yml`.
 
 ### Testing on multiple platforms
 
@@ -284,6 +286,20 @@ months). If you wish to test a _particular_ minimum version, say 1.34.0,
 you would give that version number as the `minrust` parameter to
 `default.yml`. If you wish to disable the MSRV check, set `minrust`
 to `false`.
+
+#### Minimum supported nightly
+
+If you are using the `nightly-only.yml` template, the equivalent of MSRV
+checking is to check that you support some particular "oldest" nightly.
+You can check this by specifying a date for the `min` parameter:
+
+```yaml
+jobs:
+ - template: nightly-only.yml@templates
+   parameters:
+     minrust: <false | YYYY-MM-DD> = false
+```
+
 
 ### Environment variables
 
