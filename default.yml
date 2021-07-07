@@ -5,6 +5,7 @@ parameters:
   env: {}
   cross: true
   dir: "."
+  clippy: -D warnings
 
 jobs:
  - job: style
@@ -30,9 +31,9 @@ jobs:
      - script: cargo fmt --all -- --check
        workingDirectory: ${{ parameters.dir }}
        displayName: cargo fmt --check
-     - script: cargo clippy --all
+     - script: cargo clippy --all -- ${{ parameters.clippy }}
        workingDirectory: ${{ parameters.dir }}
-       displayName: cargo clippy -- -D warnings
+       displayName: cargo clippy -- ${{ parameters.clippy }}
  - job: main
    displayName: Compile and test
    dependsOn: []
