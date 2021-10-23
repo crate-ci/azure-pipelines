@@ -30,7 +30,7 @@ jobs:
      - script: cargo fmt --all -- --check
        workingDirectory: ${{ parameters.dir }}
        displayName: cargo fmt --check
-     - script: cargo clippy --all
+     - script: cargo clippy --all -- -D warnings
        workingDirectory: ${{ parameters.dir }}
        displayName: cargo clippy -- -D warnings
  - job: main
