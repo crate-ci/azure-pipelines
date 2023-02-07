@@ -10,7 +10,7 @@ jobs:
  - job: style
    displayName: Style linting
    pool:
-     vmImage: ubuntu-18.04
+     vmImage: ubuntu-22.04
    continueOnError: true
    steps:
      # latest nightly may not have rustfmt/clippy
@@ -42,10 +42,10 @@ jobs:
      strategy:
        matrix:
          Linux:
-           vmImage: ubuntu-18.04
+           vmImage: ubuntu-22.04
            rust: nightly
          MacOS:
-           vmImage: macOS-10.15
+           vmImage: macOS-12
            rust: nightly
          Windows:
            vmImage: windows-2019
@@ -54,7 +54,7 @@ jobs:
      strategy:
        matrix:
          Linux:
-           vmImage: ubuntu-18.04
+           vmImage: ubuntu-22.04
            rust: nightly
    pool:
      vmImage: $(vmImage)
@@ -90,7 +90,7 @@ jobs:
      # This represents the minimum Rust version supported.
      # Tests are not run as tests may require newer versions of nightly.
      pool:
-       vmImage: ubuntu-18.04
+       vmImage: ubuntu-22.04
      steps:
        - template: install-rust.yml
          parameters:
