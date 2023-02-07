@@ -12,7 +12,7 @@ jobs:
  - job: precheck
    displayName: Check for code coverage token
    pool:
-     vmImage: ubuntu-18.04
+     vmImage: ubuntu-22.04
    steps:
      # workaround for https://github.com/MicrosoftDocs/vsts-docs/issues/4841
      # note that we intentionally do not leak the secret itself
@@ -31,7 +31,7 @@ jobs:
    displayName: tarpaulin
    condition: and(succeeded(), eq(dependencies.precheck.outputs['secret_check.has_secret'], 'true'))
    pool:
-     vmImage: ubuntu-18.04
+     vmImage: ubuntu-22.04
    services:
      ${{ insert }}: ${{ parameters.services }}
    continueOnError: ${{ parameters.nightly }}
